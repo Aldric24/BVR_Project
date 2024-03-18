@@ -1,112 +1,104 @@
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public class PlaneController : MonoBehaviour
 {
-    //public float maxThrustForce = 10f; // Maximum upward force based on slider
-    //public Slider throttleSlider; // Reference to the UI slider for throttle control
-    //public float turnSpeed = 100f; // Rotation speed in degrees per second
-    //public int maxSpeed = 10;
-    //private Rigidbody rb;
-
-    //void Start()
-    //{
-    //    rb = GetComponent<Rigidbody>();
-    //    // Ensure neutral starting rotation
-
-    //}
-
-    //void Update()
-    //{
-    //    // Apply upward force based on slider value
-
-
-
-    //    // Rotate on Z-axis based on input (optional)
-    //    //get accelerometer input
-    //    float horizontal = Input.acceleration.x; // Assuming vertical input for Z-axis rotation
-    //    //float horizontal = Input.GetAxis("Horizontal"); // Assuming vertical input for Z-axis rotation
-    //    if (horizontal != 0)
-    //    {
-    //        float rotationAmount = horizontal* turnSpeed * Time.deltaTime;
-    //        transform.Rotate(Vector3.back, rotationAmount);
-    //    }
-
-    //    Vector3 finalForward = transform.rotation * UpdateVectorXYBasedOnZRotation(Vector3.) ; // Get final forward after Z-axis rotation
-
-    //    // Project the final forward direction onto the XZ plane to eliminate Y-axis movement
-    //    finalForward = Vector3.ProjectOnPlane(finalForward, Vector3.up);
-
-    //    // Apply normalized thrust force in the corrected forward direction
-    //    float currentThrustForce = throttleSlider.value * maxThrustForce;
-    //    Vector3 thrustForce = finalForward * currentThrustForce;
-    //    rb.AddForce(thrustForce);
-
-    //    // Limit maximum speed
-    //    rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
-
-    //    Debug.Log("Applied force: " + thrustForce);
-    //    Debug.Log("Current velocity: " + rb.velocity);
-    //}
-    //public static Vector3 UpdateVectorXYBasedOnZRotation(Vector3 originalVector, float zRotation)
-    //{
-    //    // Convert rotation angle to radians
-    //    float radians = Mathf.Deg2Rad * zRotation;
-
-    //    // Calculate sine and cosine of the rotation angle
-    //    float sinTheta = Mathf.Sin(radians);
-    //    float cosTheta = Mathf.Cos(radians);
-
-    //    // Extract original X and Y values
-    //    float originalX = originalVector.x;
-    //    float originalY = originalVector.y;
-
-    //    // Update X and Y based on rotation
-    //    float newX = originalX * cosTheta - originalY * sinTheta;
-    //    float newY = originalX * sinTheta + originalY * cosTheta;
-
-    //    // Return the updated vector
-    //    return new Vector3(newX, originalVector.z, newY); // Preserve original Z value
-    //}
-
-    // Public variables for flexibility and potential editor changes
-    // Public variables for flexibility and potential editor changes
-    // Public variables for flexibility and potential editor changes
-    // Public variables for flexibility and potential editor changes
-    public Transform aircraftTransform; // Reference to the aircraft's transform component
-    public Rigidbody2D aircraftRigidbody; // Use Rigidbody2D in 2D
-    public Slider throttleSlider;       // Reference to the throttle UI slider
-
-    public float maxThrustForce = 10f;  // Maximum thrust force
-    public float moveSpeed = 5f;        // Base speed multiplier
-    public float rotationSpeed = 5f;   // Adjusted rotation speed (slower)
-
+    [SerializeField] private float thrustForce;
+    [SerializeField] private float maxSpeedKnots;
+    [SerializeField] private float dragCoefficient;
+    [SerializeField] private Slider throttleSlider;
+    [SerializeField] public Text speedText;
+    [SerializeField] private float thrustTransitionTime = 0.5f; // Time in seconds
+    private float currentThrust; //
+    private Rigidbody2D rb;
+    public float speedKnots;
+    private const float KNOTS_TO_MS_CONVERSION = 5.4444f;
+    [SerializeField] private float rotationSensitivity;
     void Start()
     {
-        // Get the required components (assuming they are attached to this object)
-        aircraftTransform = GetComponent<Transform>();
-        aircraftRigidbody = GetComponent<Rigidbody2D>(); // Use Rigidbody2D
+        rb = GetComponent<Rigidbody2D>();
+        Input.gyro.enabled = true;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // Get user input (ignore vertical input for thrust)
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float throttleInput = throttleSlider.value; // Get throttle value (0 - 1)
-
-        // Combine rotation and movement into a single step
-        MoveAndRotateAircraft(horizontalInput, throttleInput);
+        HandleRotation();
+        ApplySteeringForce(); // Replace ApplyThrust
+        LimitMaxSpeed();
+        HandleDrag();
+        UpdateSpeedDisplay();
     }
 
-    // Rotates the aircraft model and applies thrust simultaneously
-    void MoveAndRotateAircraft(float rotationInput, float throttleInput)
+    void ApplyThrust()
     {
-        // Calculate desired rotation angle based on input
-        float desiredRotation = rotationInput * rotationSpeed * Time.deltaTime;
+        float targetThrust = throttleSlider.value * thrustForce;
 
-        // Rotate the aircraft and apply thrust based on facing direction
-        aircraftTransform.Rotate(0, 0, desiredRotation);
-        Vector2 thrustDirection = aircraftTransform.up * throttleInput;
-        aircraftRigidbody.AddForce(thrustDirection * maxThrustForce * moveSpeed);
+        // Smoothly transition thrust
+        currentThrust = Mathf.MoveTowards(currentThrust, targetThrust, Time.fixedDeltaTime / thrustTransitionTime);
+
+        Vector2 direction = -GetDirectionFromRotation();
+        rb.AddForce(direction * currentThrust);
+    }
+
+        void HandleDrag()
+    {
+        if (throttleSlider.value == 0 && speedKnots > 0)
+        {
+            speedKnots -= dragCoefficient * Time.fixedDeltaTime;
+            speedKnots = Mathf.Max(0, speedKnots);
+        }
+
+        speedKnots = Mathf.Min(speedKnots, maxSpeedKnots);
+    }
+    Vector2 GetDirectionFromRotation()
+    {
+        float baseRotationRadians = transform.eulerAngles.z * Mathf.Deg2Rad;
+        float offsetRotationRadians = baseRotationRadians + Mathf.PI; // 180 degrees in radians
+
+        return new Vector2(Mathf.Sin(offsetRotationRadians), Mathf.Cos(offsetRotationRadians));
+    }
+    void ApplySteeringForce()
+    {
+        float targetThrust = throttleSlider.value * thrustForce;
+        currentThrust = Mathf.MoveTowards(currentThrust, targetThrust, Time.fixedDeltaTime / thrustTransitionTime);
+
+        Vector2 desiredDirection = GetDirectionFromRotation();
+        Vector2 steeringForce =-desiredDirection * currentThrust;
+
+        // Optionally limit the steering force magnitude here if needed
+
+        rb.AddForce(steeringForce);
+    }
+    void UpdateSpeedDisplay()
+    {
+        float speedMS = rb.velocity.magnitude;
+
+        // Convert meters per second to knots
+        speedKnots = speedMS * KNOTS_TO_MS_CONVERSION;
+       
+    }
+    void HandleRotation()
+    {
+        float tiltAroundX = Input.acceleration.x * rotationSensitivity;
+        
+        transform.Rotate(0, 0, tiltAroundX);
+        // Y-axis Rotation (New Logic)
+        float tiltAroundY = Input.acceleration.y * rotationSensitivity;
+        float targetRotationY = Mathf.Lerp(120.0f, 240.0f, (tiltAroundY + 1.0f) / 2.0f);
+
+        transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, targetRotationY, transform.localEulerAngles.z);
+    }
+    void LimitMaxSpeed()
+    {
+        // Calculate current speed in meters per second
+        float speedMS = rb.velocity.magnitude;
+        speedText.text = "Speed: " + speedKnots.ToString("F1") + " Knots";
+        // If exceeding max speed, limit velocity
+        if (speedMS > maxSpeedKnots * KNOTS_TO_MS_CONVERSION)
+        {
+            Vector2 normalizedVelocity = rb.velocity.normalized;
+            rb.velocity = normalizedVelocity * (maxSpeedKnots * KNOTS_TO_MS_CONVERSION);
+        }
     }
 }

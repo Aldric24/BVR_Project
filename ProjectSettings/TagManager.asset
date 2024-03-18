@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Radar
   - Water
   - UI
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: MG_Ground
+    uniqueID: 15779
+    locked: 0
+  - name: MG_Water
+    uniqueID: 84183
+    locked: 0
+  - name: MG_Objects
+    uniqueID: 21789
+    locked: 0
+  - name: Radar
+    uniqueID: 3150064215
     locked: 0
