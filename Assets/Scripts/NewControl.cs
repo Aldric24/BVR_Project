@@ -10,6 +10,9 @@ public class NewControl: MonoBehaviour
     [SerializeField] private Slider throttleSlider;
     [SerializeField] public Text speedText;
     [SerializeField] private float thrustTransitionTime = 0.5f; // Time in seconds
+    [SerializeField] private float optimalTurningSpeed; // Speed in knots
+    [SerializeField] private float maxTurnSensitivityLoss; // Percentage (0 to 1)
+    [SerializeField] private float  someFactor = 0.05f;
     private float currentThrust; //
     private Rigidbody2D rb;
     public float speedKnots;
@@ -84,7 +87,12 @@ public class NewControl: MonoBehaviour
     {
         float tiltAroundX = Input.acceleration.x * rotationSensitivity;
 
-        transform.Rotate(0, 0, tiltAroundX);
+        float speedDifference = Mathf.Abs(speedKnots - optimalTurningSpeed);
+        float turnLossFactor = Mathf.Clamp01(speedDifference * someFactor); // You'll need to tune 'someFactor'
+        float turnSensitivityFactor = 1.0f - (maxTurnSensitivityLoss * turnLossFactor);
+
+        float adjustedRotationSensitivity = rotationSensitivity * turnSensitivityFactor;
+        transform.Rotate(0, 0, -tiltAroundX * adjustedRotationSensitivity);
         // Y-axis Rotation (New Logic)
         //float tiltAroundY = Input.acceleration.y * rotationSensitivity;
         //float targetRotationY = Mathf.Lerp(120.0f, 240.0f, (tiltAroundY + 1.0f) / 2.0f);

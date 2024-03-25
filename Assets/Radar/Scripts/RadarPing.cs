@@ -23,7 +23,7 @@ public class RadarPing : MonoBehaviour {
 
     private void Awake() {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        disappearTimerMax = 1f;
+        disappearTimerMax = 5f;
         disappearTimer = 0f;
         color = new Color(1, 1, 1, 1f);
     }
