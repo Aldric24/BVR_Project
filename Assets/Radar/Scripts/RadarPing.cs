@@ -16,36 +16,34 @@ using UnityEngine;
 
 public class RadarPing : MonoBehaviour {
 
-    private SpriteRenderer spriteRenderer;
-    private float disappearTimer;
-    private float disappearTimerMax;
-    private Color color;
-
-    private void Awake() {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        disappearTimerMax = 5f;
-        disappearTimer = 0f;
-        color = new Color(1, 1, 1, 1f);
+    //private SpriteRenderer spriteRenderer;
+    //private float disappearTimer;
+    //private float disappearTimerMax;
+    //private Color color;
+    public GameObject pingHighlight;
+    private void Awake()
+    {
+        pingHighlight = transform.Find("TGTselec").gameObject;
     }
 
-    private void Update() {
-        disappearTimer += Time.deltaTime;
+    //private void Update() {
+    //    disappearTimer += Time.deltaTime;
 
-        color.a = Mathf.Lerp(disappearTimerMax, 0f, disappearTimer / disappearTimerMax);
-        spriteRenderer.color = color;
+    //    color.a = Mathf.Lerp(disappearTimerMax, 0f, disappearTimer / disappearTimerMax);
+    //    spriteRenderer.color = color;
 
-        if (disappearTimer >= disappearTimerMax) {
-            Destroy(gameObject);
-        }
-    }
+    //    if (disappearTimer >= disappearTimerMax) {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
-    public void SetColor(Color color) {
-        this.color = color;
-    }
+    //public void SetColor(Color color) {
+    //    this.color = color;
+    //}
 
-    public void SetDisappearTimer(float disappearTimerMax) {
-        this.disappearTimerMax = disappearTimerMax;
-        disappearTimer = 0f;
-    }
+    //public void SetDisappearTimer(float disappearTimerMax) {
+    //    this.disappearTimerMax = disappearTimerMax;
+    //    disappearTimer = 0f;
+    //}
 
 }

@@ -20,13 +20,19 @@ public class SweepRotation : MonoBehaviour
     public GameObject RadarCursor;
     public GameObject Bearing;
     public List<GameObject> RadarObjects;
-    [SerializeField]private Dictionary<GameObject, float> lastPingedTimes = new Dictionary<GameObject, float>();
-  
+    [SerializeField] private Dictionary<GameObject, float> lastPingedTimes = new Dictionary<GameObject, float>();
+    [SerializeField] private Dictionary<GameObject, RadarPing> radarPings = new Dictionary<GameObject, RadarPing>();
+    bool isAtLeftExtreme;
+    bool isAtRightExtreme;
+    private bool wasAtLeftExtreme;
+    private bool wasAtRightExtreme;
+    float position;
     private void Awake()
     {
-        spriteRenderer =spriteExtreme.GetComponent<SpriteRenderer>();
+        spriteRenderer = spriteExtreme.GetComponent<SpriteRenderer>();
         StartCoroutine(SweepRotationCoroutine());
         StartCoroutine(CheckForStaleObjects());
+        //StartCoroutine(pingradarcontacts());
         //StartCoroutine(RadarSweep());
         radarDistance = 150f;
         //colliderList = new List<Collider2D>();
@@ -35,7 +41,7 @@ public class SweepRotation : MonoBehaviour
     {
         while (true)  // Run indefinitely
         {
-            float position = Mathf.PingPong(Time.time * rotationSpeed, 300f) - 150f;
+             position = Mathf.PingPong(Time.time * rotationSpeed, 300f) - 150f;
 
             // Sprite Switching Logic
             if (position <= -145f) // Check if near left extreme (adjust threshold as needed)
@@ -47,25 +53,52 @@ public class SweepRotation : MonoBehaviour
             {
                 //flipo the sprite on x axis
                 spriteRenderer.flipY = false;
-                
+
             }
+
+            // Update extreme flags
+            isAtLeftExtreme = position <= -145f;
+            isAtRightExtreme = position >= 145f;
+
+            // Check for full rotation and trigger actions (if needed)
+            if (isAtLeftExtreme && !wasAtLeftExtreme) // Just passed left extreme
+            {
+                // Full rotation completed (modify as needed)
+                Debug.Log("Full Rotation Completed!");
+                // You can call CycleAndLockOnTarget() or perform other full-rotation actions here.
+                wasAtLeftExtreme = true;
+            }
+            else if (isAtRightExtreme && !wasAtRightExtreme) // Just passed right extreme
+            {
+                wasAtRightExtreme = true;
+            }
+
+            wasAtLeftExtreme = isAtLeftExtreme; // Update previous state for next frame
+            wasAtRightExtreme = isAtRightExtreme;
 
             transform.localPosition = new Vector3(position, 0, 0);
 
-            yield return null; // Wait until the next frame
+            yield return null;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Collision");
-        RadarPing radarPing = Instantiate(pfRadarPing, collision.gameObject.transform.position, Quaternion.identity).GetComponent<RadarPing>();
+
 
         if (!RadarObjects.Contains(collision.gameObject)) // Check for duplicates
         {
-            
+
             RadarObjects.Add(collision.gameObject);
-            lastPingedTimes[collision.gameObject] = Time.time; // Record ping time
+            lastPingedTimes[collision.gameObject] = Time.time;
+            RadarPing radarPing = Instantiate(pfRadarPing, collision.gameObject.transform.position, Quaternion.identity).GetComponent<RadarPing>();
+
+            radarPings[collision.gameObject] = radarPing;// Record ping time
+        }
+        else
+        {
+            lastPingedTimes[collision.gameObject] = Time.time; // Update ping time
         }
     }
 
@@ -73,18 +106,56 @@ public class SweepRotation : MonoBehaviour
     {
         while (true)
         {
-            foreach (var pair in lastPingedTimes.ToList()) // Use ToList to iterate over a copy
+            foreach (var pair in lastPingedTimes.ToList()) // Use ToList to avoid modifying while iterating
             {
-                if (Time.time - pair.Value > 5f) // Adjust the threshold as needed
+                // Remove objects not detected in a full cycle
+
+
+                //// Remove objects not detected in a full cycle 
+                if (Time.time - pair.Value > 4f) // Adjust threshold as needed
                 {
+
+                    // Remove associated ping
+                    if (radarPings.ContainsKey(pair.Key))
+                    {
+                        Destroy(radarPings[pair.Key].gameObject); // Destroy the ping
+                        radarPings.Remove(pair.Key);
+                    }
                     RadarObjects.Remove(pair.Key);
                     lastPingedTimes.Remove(pair.Key);
+
                 }
+
             }
             yield return new WaitForSeconds(1f); // Check every second
         }
     }
+    int targetIndex = 0;
     public void CycleAndLockOnTarget()
+    {   
+        // 1. Check if there are targets
+        if (RadarObjects.Count == 0)
+        {
+            Debug.Log("No targets detected!");
+            return;
+        }
+        
+        // 2. Manage Target Index
+        targetIndex = (targetIndex + 1) % RadarObjects.Count; // Cycle through targets
+
+        // 3. Disable old highlight (if any)
+        if (radarPings.ContainsKey(RadarObjects[targetIndex - 1])) // Adjust for zero-based indexing
+        {
+            radarPings[RadarObjects[targetIndex - 1]].pingHighlight.SetActive(false);
+        }
+
+        // 4. Enable new highlight
+        if (radarPings.ContainsKey(RadarObjects[targetIndex]))
+        {
+            radarPings[RadarObjects[targetIndex]].pingHighlight.SetActive(true);
+        }
+    }
+    public void LockOnTarget()
     {
         // 1. Check if there are targets
         if (RadarObjects.Count == 0)
@@ -93,28 +164,17 @@ public class SweepRotation : MonoBehaviour
             return;
         }
 
-        // 2. Manage Target Index
-        int targetIndex = 0; // Start at the first target
-        targetIndex = (targetIndex + 1) % RadarObjects.Count; // Cycle through targets
-
-        // 3. Move Radar Cursor
-        GameObject targetObject = RadarObjects[targetIndex];
-        //add a buffer of 10 to the x axis to make the cursor appear on the edge of the object
-        StartCoroutine(updatecursor(targetObject));
-        // 4. Move Sweep to Target Position
-        
-        // You'll need logic here to adjust the sweep position for smooth transition,
-        // potentially using coroutines or tweening libraries like LeanTween.
-    }
-    IEnumerator updatecursor(GameObject target)
-    {
-        while (target)
+        // 2. Enable highlight
+        if (radarPings.ContainsKey(RadarObjects[targetIndex]))
         {
-            yield return new WaitForSeconds(0.1f);
+            GameObject tgt = radarPings[RadarObjects[targetIndex]].pingHighlight;
+            if(tgt.activeSelf)
+            {
+                tgt.SetActive(false);
+                radarPings[RadarObjects[targetIndex]].GetComponent<SpriteRenderer>().color = new Color(1, 0, 1, 1);
+            }
+            
 
-            //add a buffer of 10 to the x axis to make the cursor appear on the edge of the object
-            RadarCursor.transform.position = new Vector3(target.transform.position.x + 1, target.transform.position.y + 20, target.transform.position.z);
         }
-        
     }
 }
