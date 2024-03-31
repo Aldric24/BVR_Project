@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SweepRotation : MonoBehaviour
 {
@@ -27,6 +29,7 @@ public class SweepRotation : MonoBehaviour
     private bool wasAtLeftExtreme;
     private bool wasAtRightExtreme;
     float position;
+    [SerializeField] private GameObject LocekdTarget;
     private void Awake()
     {
         spriteRenderer = spriteExtreme.GetComponent<SpriteRenderer>();
@@ -85,8 +88,12 @@ public class SweepRotation : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Collision");
-
-
+        if(collision.gameObject.tag=="Player")
+        {
+            Debug.Log("Player Detected");
+            return;
+        }
+        
         if (!RadarObjects.Contains(collision.gameObject)) // Check for duplicates
         {
 
@@ -98,8 +105,12 @@ public class SweepRotation : MonoBehaviour
         }
         else
         {
-            lastPingedTimes[collision.gameObject] = Time.time; // Update ping time
+            lastPingedTimes[collision.gameObject] = Time.time;
+
         }
+        
+
+        
     }
 
     private IEnumerator CheckForStaleObjects()
@@ -123,16 +134,22 @@ public class SweepRotation : MonoBehaviour
                     }
                     RadarObjects.Remove(pair.Key);
                     lastPingedTimes.Remove(pair.Key);
+                    if (pair.Key == LocekdTarget)
+                    {
+                        LocekdTarget = null;
+                    }
 
                 }
+               
 
             }
             yield return new WaitForSeconds(1f); // Check every second
         }
     }
     int targetIndex = 0;
-    public void CycleAndLockOnTarget()
+    public void CycleTarget()
     {   
+
         // 1. Check if there are targets
         if (RadarObjects.Count == 0)
         {
@@ -140,18 +157,23 @@ public class SweepRotation : MonoBehaviour
             return;
         }
         
+        if (radarPings.ContainsKey(RadarObjects[targetIndex])) // Adjust for zero-based indexing
+        {
+
+            radarPings[RadarObjects[targetIndex]].pingHighlight.SetActive(false);
+            radarPings[RadarObjects[targetIndex]].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
         // 2. Manage Target Index
         targetIndex = (targetIndex + 1) % RadarObjects.Count; // Cycle through targets
 
         // 3. Disable old highlight (if any)
-        if (radarPings.ContainsKey(RadarObjects[targetIndex - 1])) // Adjust for zero-based indexing
-        {
-            radarPings[RadarObjects[targetIndex - 1]].pingHighlight.SetActive(false);
-        }
+        
 
         // 4. Enable new highlight
         if (radarPings.ContainsKey(RadarObjects[targetIndex]))
         {
+            RangeText.GetComponent<Text>().text ="Range: " + Vector3.Distance(transform.position, RadarObjects[targetIndex].transform.position).ToString("F2") + "m";
+            Bearing.GetComponent<Text>().text = "Bearing: " + (transform.position.x - RadarObjects[targetIndex].transform.position.x).ToString("F2") + "m";
             radarPings[RadarObjects[targetIndex]].pingHighlight.SetActive(true);
         }
     }
@@ -167,6 +189,7 @@ public class SweepRotation : MonoBehaviour
         // 2. Enable highlight
         if (radarPings.ContainsKey(RadarObjects[targetIndex]))
         {
+            LocekdTarget = RadarObjects[targetIndex];
             GameObject tgt = radarPings[RadarObjects[targetIndex]].pingHighlight;
             if(tgt.activeSelf)
             {
@@ -175,6 +198,15 @@ public class SweepRotation : MonoBehaviour
             }
             
 
+        }
+    }
+    public void deselect()
+    {  
+        if (radarPings.ContainsKey(RadarObjects[targetIndex]))
+        {
+            LocekdTarget=null;
+            radarPings[RadarObjects[targetIndex]].pingHighlight.SetActive(false);
+            radarPings[RadarObjects[targetIndex]].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         }
     }
 }

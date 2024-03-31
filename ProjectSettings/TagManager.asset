@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Adversary
   layers:
   - Default
   - TransparentFX
@@ -11,8 +12,8 @@ TagManager:
   - Radar
   - Water
   - UI
-  - 
-  - 
+  - Enemy Radar
+  - RWR
   - 
   - 
   - 
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: Radar
     uniqueID: 3150064215
+    locked: 0
+  - name: RWR
+    uniqueID: 346958273
     locked: 0
