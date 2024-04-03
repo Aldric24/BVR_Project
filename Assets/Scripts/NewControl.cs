@@ -12,6 +12,7 @@ public class NewControl: MonoBehaviour
     [SerializeField] private float optimalTurningSpeed; // Speed in knots
     [SerializeField] private float maxTurnSensitivityLoss; // Percentage (0 to 1)
     [SerializeField] private float  someFactor = 0.05f;
+    [SerializeField] private RWR rwr;
     private float currentThrust; //
     private Rigidbody2D rb;
     public float speedKnots;
@@ -110,4 +111,13 @@ public class NewControl: MonoBehaviour
             rb.velocity = normalizedVelocity * (maxSpeedKnots * KNOTS_TO_MS_CONVERSION);
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Trigger");
+        if (collision.gameObject.CompareTag("Adversary"))
+        {
+            rwr.Popup(collision.gameObject.transform.parent.gameObject);
+        }
+    }
+    
 }
