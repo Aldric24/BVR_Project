@@ -14,7 +14,16 @@ public class RWR : MonoBehaviour
     [SerializeField] private GameObject popup;
     [SerializeField] Dictionary<GameObject, float> lastPingedTimes = new Dictionary<GameObject, float>();
     [SerializeField] List<GameObject> RWRObjects = new List<GameObject>();
-    [SerializeField] Dictionary<GameObject, RadarPing> RWRpings = new Dictionary<GameObject, RadarPing>();
+    [SerializeField] Dictionary<GameObject, PopUp> RWRpings = new Dictionary<GameObject, PopUp>();
+    private void Awake()
+    {
+        StartCoroutine(CheckForStaleRWRObjects());
+    }
+    private void Update()
+    {
+        transform.position = system.position;
+        transform.rotation = system.rotation;
+    }
     internal void Popup(GameObject gameObject)
     {
         if (!RWRObjects.Contains(gameObject)) // Check for duplicates
@@ -23,7 +32,7 @@ public class RWR : MonoBehaviour
             RWRObjects.Add(gameObject);
             lastPingedTimes[gameObject] = Time.time;
             popup.GetComponent<PopUp>().system = system;
-            RadarPing radarPing = Instantiate(popup, gameObject.transform.position, Quaternion.identity).GetComponent<RadarPing>();
+            PopUp radarPing = Instantiate(popup, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
 
             RWRpings[gameObject] = radarPing;// Record ping time
         }
@@ -41,16 +50,15 @@ public class RWR : MonoBehaviour
         {
             foreach (var pair in lastPingedTimes.ToList()) // Use ToList to avoid modifying while iterating
             {
-                // Remove objects not detected in a full cycle
-
-
+              
                 //// Remove objects not detected in a full cycle 
                 if (Time.time - pair.Value > 4f) // Adjust threshold as needed
                 {
 
                     // Remove associated ping
-                    if (RWRpings.ContainsKey(pair.Key) && RWRpings[pair.Key].gameObject!=null)
+                    if (RWRpings.ContainsKey(pair.Key))
                     {
+                       
                         Destroy(RWRpings[pair.Key].gameObject); // Destroy the ping
                         RWRpings.Remove(pair.Key);
                     }
@@ -65,14 +73,6 @@ public class RWR : MonoBehaviour
             yield return new WaitForSeconds(1f); // Check every second
         }
     }
-    private void Awake()
-    {
-        StartCoroutine(CheckForStaleRWRObjects());
-    }
-    private void Update()
-    {
-        transform.position = system.position;
-        transform.rotation = system.rotation;
-    }
+    
 
 }

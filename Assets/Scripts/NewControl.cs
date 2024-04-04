@@ -69,7 +69,7 @@ public class NewControl: MonoBehaviour
 
         Vector2 desiredDirection = GetDirectionFromRotation(); // Get the direction the aircraft is pointed
         Vector2 steeringForce = -desiredDirection * currentThrust;
-
+        Debug.Log("Steering Force Magnitude: " + steeringForce.magnitude);  
         // Optionally limit the steering force magnitude here if needed
 
         rb.AddForce(steeringForce);
@@ -87,17 +87,23 @@ public class NewControl: MonoBehaviour
     {
         float tiltAroundX = Input.acceleration.x * rotationSensitivity;
 
-        float speedDifference = Mathf.Abs(speedKnots - optimalTurningSpeed);
-        float turnLossFactor = Mathf.Clamp01(speedDifference * someFactor); // You'll need to tune 'someFactor'
-        float turnSensitivityFactor = 1.0f - (maxTurnSensitivityLoss * turnLossFactor);
+        // Calculate sensitivity based on speed
+        float normalizedSpeed = Mathf.Clamp01(speedKnots / maxSpeedKnots);
+        float turnSensitivityFactor = normalizedSpeed * 0.7f;
 
         float adjustedRotationSensitivity = rotationSensitivity * turnSensitivityFactor;
-        transform.Rotate(0, 0, -tiltAroundX * adjustedRotationSensitivity);
-        // Y-axis Rotation (New Logic)
-        //float tiltAroundY = Input.acceleration.y * rotationSensitivity;
-        //float targetRotationY = Mathf.Lerp(120.0f, 240.0f, (tiltAroundY + 1.0f) / 2.0f);
+        transform.Rotate(0, 0, tiltAroundX * adjustedRotationSensitivity);
+        //float tiltAroundX = Input.acceleration.x * rotationSensitivity;
 
-        //transform.localEulerAngles = new Vector3(0, targetRotationY, transform.localEulerAngles.z);
+        //float speedDifference = Mathf.Abs(speedKnots - optimalTurningSpeed);
+        //float turnLossFactor = Mathf.Clamp01(speedDifference * someFactor); // You'll need to tune 'someFactor'
+        //float turnSensitivityFactor = 1.0f - (maxTurnSensitivityLoss * 0.01f * turnLossFactor);
+
+        //float adjustedRotationSensitivity = rotationSensitivity * turnSensitivityFactor;
+        //Debug.Log("Rotation Sensitivity: " + rotationSensitivity);
+        //Debug.Log("Turn Sensitivity Factor: " + turnSensitivityFactor);
+        //transform.Rotate(0, 0, -tiltAroundX * adjustedRotationSensitivity);
+
     }
     void LimitMaxSpeed()
     {

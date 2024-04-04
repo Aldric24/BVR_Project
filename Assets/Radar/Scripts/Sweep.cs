@@ -30,12 +30,13 @@ public class SweepRotation : MonoBehaviour
     private bool wasAtRightExtreme;
     float position;
     [SerializeField] private GameObject LocekdTarget;
+    [SerializeField] private GameObject CursorTarget;
     private void Awake()
     {
         spriteRenderer = spriteExtreme.GetComponent<SpriteRenderer>();
         StartCoroutine(SweepRotationCoroutine());
         StartCoroutine(CheckForStaleObjects());
-        //StartCoroutine(pingradarcontacts());
+        StartCoroutine(RangeandBearing());
         //StartCoroutine(RadarSweep());
         radarDistance = 150f;
         //colliderList = new List<Collider2D>();
@@ -112,7 +113,32 @@ public class SweepRotation : MonoBehaviour
 
         
     }
+    private IEnumerator RangeandBearing()
+    {
+        float playerRotation = transform.parent.eulerAngles.z;
+        Vector2 playerDirection = new Vector2(Mathf.Sin(playerRotation * Mathf.Deg2Rad), Mathf.Cos(playerRotation * Mathf.Deg2Rad));
+        while (true)
+        {
+            if (CursorTarget)
+            {
+                Vector3 objectDirection = CursorTarget.transform.position - transform.parent.position;
+                float angleToTarget = Mathf.Atan2(objectDirection.y, objectDirection.x) * Mathf.Rad2Deg;
+                float relativeAngle = angleToTarget - playerRotation;  // Ensure playerRotation is in degrees
+                RangeText.GetComponent<Text>().text = "Range: " + Vector3.Distance(transform.parent.position, CursorTarget.transform.position).ToString("F2") + "m";
+                Bearing.GetComponent<Text>().text = "Bearing: " + (relativeAngle.ToString("F2"));
+            }
+            else
+            {
+                RangeText.GetComponent<Text>().text = "Range:--";
+                Bearing.GetComponent<Text>().text = "Bearing:--";
+            }
+                
 
+
+
+            yield return new WaitForSeconds(1.5f);
+        }
+    }
     private IEnumerator CheckForStaleObjects()
     {
         while (true)
@@ -138,7 +164,7 @@ public class SweepRotation : MonoBehaviour
                     {
                         LocekdTarget = null;
                     }
-
+                    CursorTarget = null;
                 }
                
 
@@ -167,15 +193,16 @@ public class SweepRotation : MonoBehaviour
         targetIndex = (targetIndex + 1) % RadarObjects.Count; // Cycle through targets
 
         // 3. Disable old highlight (if any)
-        
+
 
         // 4. Enable new highlight
         if (radarPings.ContainsKey(RadarObjects[targetIndex]))
         {
-            RangeText.GetComponent<Text>().text ="Range: " + Vector3.Distance(transform.position, RadarObjects[targetIndex].transform.position).ToString("F2") + "m";
-            Bearing.GetComponent<Text>().text = "Bearing: " + (transform.position.x - RadarObjects[targetIndex].transform.position.x).ToString("F2") + "m";
             radarPings[RadarObjects[targetIndex]].pingHighlight.SetActive(true);
+            CursorTarget = RadarObjects[targetIndex];
+
         }
+        
     }
     public void LockOnTarget()
     {
