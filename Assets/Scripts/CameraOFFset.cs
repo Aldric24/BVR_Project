@@ -12,7 +12,7 @@ public class CameraOFFset : MonoBehaviour
         if (target != null)
         {
             // Calculate the desired position with offset
-            Vector3 desiredPosition = target.position + offset;
+            Vector3 desiredPosition = transform.position + offset;
 
             // Set the position of the camera directly
             transform.position = desiredPosition;

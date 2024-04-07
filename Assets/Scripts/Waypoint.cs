@@ -8,12 +8,20 @@ public class Waypoint : MonoBehaviour
     public bool isStart = false;
     public bool isEnd = false;
 
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        if (other.gameObject.CompareTag("Player"))
+        waypointManager = FindFirstObjectByType<WaypointManager>();   
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("collided with Waypoint");
+        if (collision.gameObject.CompareTag("Player"))
         {
             // Waypoint Reached!
             waypointManager.WaypointReached(this);
         }
     }
+    
+    
+    
 }

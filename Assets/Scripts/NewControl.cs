@@ -69,7 +69,7 @@ public class NewControl: MonoBehaviour
 
         Vector2 desiredDirection = GetDirectionFromRotation(); // Get the direction the aircraft is pointed
         Vector2 steeringForce = -desiredDirection * currentThrust;
-        Debug.Log("Steering Force Magnitude: " + steeringForce.magnitude);  
+        //Debug.Log("Steering Force Magnitude: " + steeringForce.magnitude);  
         // Optionally limit the steering force magnitude here if needed
 
         rb.AddForce(steeringForce);

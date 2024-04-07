@@ -1,5 +1,6 @@
 using CodeMonkey;
 using CodeMonkey.Utils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class RadarRotation : MonoBehaviour
     [SerializeField]private float rotationSpeed;
     private float radarDistance;
     private List<Collider2D> colliderList;
+    [SerializeField]Camera radarcam;
   
     private void Update()
     {
@@ -22,6 +24,16 @@ public class RadarRotation : MonoBehaviour
 
 
     }
-
+    public void WaypointScreen()
+    {
+        Debug.Log("Radar Culling masek " + radarcam.cullingMask);   
+        if (radarcam.cullingMask != 256)
+        {
+            radarcam.cullingMask =256;
+        }
+        else
+            radarcam.cullingMask = 8;
+        
+    }
     
 }
