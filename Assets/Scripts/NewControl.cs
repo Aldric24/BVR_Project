@@ -14,13 +14,13 @@ public class NewControl: MonoBehaviour
     [SerializeField] private float  someFactor = 0.05f;
     [SerializeField] private RWR rwr;
     private float currentThrust; //
-    private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
     public float speedKnots;
     private const float KNOTS_TO_MS_CONVERSION = 5.4444f;
     [SerializeField] private float rotationSensitivity;
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        //rb = GetComponent<Rigidbody2D>();
         Input.gyro.enabled = true;
     }
 
@@ -42,6 +42,7 @@ public class NewControl: MonoBehaviour
 
         Vector2 direction = -GetDirectionFromRotation();
         rb.AddForce(direction * currentThrust);
+        
     }
 
     void HandleDrag()
@@ -73,7 +74,8 @@ public class NewControl: MonoBehaviour
         // Optionally limit the steering force magnitude here if needed
 
         rb.AddForce(steeringForce);
-        
+        //rb.velocity = transform.up * thrustForce;
+
     }
     void UpdateSpeedDisplay()
     {
@@ -120,7 +122,7 @@ public class NewControl: MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Trigger");
-        if (collision.gameObject.CompareTag("Adversary"))
+        if (collision.gameObject.CompareTag("Adversary Radar"))
         {
             rwr.Popup(collision.gameObject.transform.parent.gameObject);
         }

@@ -60,7 +60,13 @@ public class WaypointManager : MonoBehaviour
         {
             int numPositions = waypoints.Count - currentWaypointIndex + 1; // Calculate positions needed (including player)
             lineRenderer.positionCount = numPositions;
-            lineRenderer.SetPosition(0, new Vector3(player.transform.position.x, player.transform.position.y,0));
+            if (player != null)
+            {
+                lineRenderer.SetPosition(0, new Vector3(player.transform.position.x, player.transform.position.y, 0));
+            }
+            else
+                return;
+            
 
 
             // Set remaining positions based on waypoints from current index onwards

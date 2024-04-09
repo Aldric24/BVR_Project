@@ -29,6 +29,8 @@ public class RadarRotation : MonoBehaviour
         Debug.Log("Radar Culling masek " + radarcam.cullingMask);   
         if (radarcam.cullingMask != 256)
         {
+            
+         
             radarcam.cullingMask =256;
         }
         else

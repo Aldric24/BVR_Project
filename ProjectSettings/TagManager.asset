@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Adversary
+  - Adversary Radar
   layers:
   - Default
   - TransparentFX
