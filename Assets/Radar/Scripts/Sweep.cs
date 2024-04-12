@@ -28,7 +28,7 @@ public class SweepRotation : MonoBehaviour
     private bool wasAtLeftExtreme;
     private bool wasAtRightExtreme;
     float position;
-    [SerializeField] private GameObject LocekdTarget;
+    public  GameObject LocekdTarget= null;
     [SerializeField] private GameObject CursorTarget;
     private void Awake()
     {
@@ -87,7 +87,7 @@ public class SweepRotation : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision");
+        //Debug.Log("Collision");
         if(collision.gameObject.tag=="Player")
         {
             Debug.Log("Player Detected");
@@ -106,6 +106,7 @@ public class SweepRotation : MonoBehaviour
         else
         {
             lastPingedTimes[collision.gameObject] = Time.time;
+            radarPings[collision.gameObject].transform.position = collision.gameObject.transform.position;
 
         }
         

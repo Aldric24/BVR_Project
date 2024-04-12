@@ -22,8 +22,8 @@ public class Cannon : MonoBehaviour
             var spread = Random.insideUnitCircle * cannonSpread;
 
             var bulletGO = Instantiate(bulletPrefab, cannonSpawnPoint.position, cannonSpawnPoint.rotation * Quaternion.Euler(spread.x, spread.y, 0));
-            var bullet = bulletGO.GetComponent<Bullet>();
-            bullet.Fire(transform.parent.gameObject);
+            
+            
         }
     }
 }

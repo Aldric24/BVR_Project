@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
@@ -13,24 +14,22 @@ public class AmraamScript : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private ParticleSystem missileParticleEffect;
     // Target Related
-    public Transform target; // Set externally or retrieved from the player
+    private Transform target; // Set externally or retrieved from the player
     private Vector3 targetDirection;
     [SerializeField] private float raycastDistance = 2f; // Adjust as needed
     [SerializeField] private LayerMask collisionMask;
-
+    SweepRotation S = new SweepRotation();
     Vector3 lastposition;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        // Initial Setup (Get reference to target, etc.)
-        if (target != null) targetDirection = (target.position - transform.position).normalized;
     }
 
     void FixedUpdate()
     {
+        guidance();
         UpdateParticleEffect();
-        if (target != null) targetDirection = (target.position - transform.position).normalized;
+        
         if (isBoosting)
         {
             BoostPhase();
@@ -42,7 +41,17 @@ public class AmraamScript : MonoBehaviour
         CheckRaycastCollision();
         //AlignWithVelocity();
     }
-
+    private void guidance()
+    {
+        if(target != null)
+        {
+            targetDirection = (target.position - transform.position).normalized;
+        }
+        else
+        {
+            targetDirection = transform.up;
+        }
+    }
     void BoostPhase()
     {
         AlignWithVelocity();
@@ -121,7 +130,7 @@ public class AmraamScript : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player hit by missile!");
-            Destroy(collision.transform.parent.gameObject);
+            //Destroy(collision.transform.parent.gameObject);
         }
         else
         {
@@ -147,5 +156,25 @@ public class AmraamScript : MonoBehaviour
                 missileParticleEffect.Stop();
             }
         }
+    }
+
+    internal void fire(WeaponsManager parent)
+    {
+        if(parent!=null)
+        {
+            
+            
+            if(parent.target!=null)
+            {
+                target = parent.target.transform;
+            }
+            else
+            {
+                target = null;
+            }
+        }
+        
+        gameObject.GetComponent<Rigidbody2D>().simulated=true;
+       
     }
 }

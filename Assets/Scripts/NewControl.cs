@@ -121,7 +121,7 @@ public class NewControl: MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger");
+        
         if (collision.gameObject.CompareTag("Adversary Radar"))
         {
             rwr.Popup(collision.gameObject.transform.parent.gameObject);

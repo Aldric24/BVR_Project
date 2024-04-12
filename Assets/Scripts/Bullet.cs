@@ -19,15 +19,15 @@ public class Bullet : MonoBehaviour {
     Vector3 lastPosition;
     float startTime;
 
-    public void Fire(GameObject owner) {
-        this.owner = owner;
-        rigidbody = GetComponent<Rigidbody>();
-        startTime = Time.time;
+    //public void Fire(GameObject owner) {
+    //    this.owner = owner;
+    //    rigidbody = GetComponent<Rigidbody>();
+    //    startTime = Time.time;
 
-        rigidbody.AddRelativeForce(new Vector3(0, 0, speed), ForceMode.VelocityChange);
-        rigidbody.AddForce(owner.GetComponent<Rigidbody2D>().velocity, ForceMode.VelocityChange);
-        lastPosition = rigidbody.position;
-    }
+    //    rigidbody.AddRelativeForce(new Vector3(0, 0, speed), ForceMode.VelocityChange);
+    //    rigidbody.AddForce(owner.GetComponent<Rigidbody2D>().velocity, ForceMode.VelocityChange);
+    //    lastPosition = rigidbody.position;
+    //}
 
     void FixedUpdate() {
         if (Time.time > startTime + lifetime) {
