@@ -282,7 +282,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7615198544311990732}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f03dabe52d330bb46982373f255a98fd, type: 3}
   m_Name: 
@@ -293,6 +293,10 @@ MonoBehaviour:
   isBoosting: 1
   missileParticleEffect: {fileID: 797892825701264389}
   target: {fileID: 0}
+  raycastDistance: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!61 &8244528163197660207
 BoxCollider2D:
   m_ObjectHideFlags: 0
