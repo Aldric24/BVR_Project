@@ -14,7 +14,7 @@ public class Bullet : MonoBehaviour {
     [SerializeField]
     float width;
 
-    GameObject owner;
+    public GameObject owner;
     new Rigidbody rigidbody;
     Vector3 lastPosition;
     float startTime;
@@ -23,7 +23,14 @@ public class Bullet : MonoBehaviour {
     //    this.owner = owner;
     //    rigidbody = GetComponent<Rigidbody>();
     //    startTime = Time.time;
-
+    private void Start()
+    {
+         startTime = Time.time;
+           rigidbody = GetComponent<Rigidbody>();
+          rigidbody.AddRelativeForce(new Vector3(0, 0, speed), ForceMode.VelocityChange);
+          rigidbody.AddForce(owner.GetComponent<Rigidbody2D>().velocity, ForceMode.VelocityChange);
+          lastPosition = rigidbody.position;
+    }
     //    rigidbody.AddRelativeForce(new Vector3(0, 0, speed), ForceMode.VelocityChange);
     //    rigidbody.AddForce(owner.GetComponent<Rigidbody2D>().velocity, ForceMode.VelocityChange);
     //    lastPosition = rigidbody.position;
@@ -44,7 +51,7 @@ public class Bullet : MonoBehaviour {
         if (Physics.SphereCast(ray, width, out hit, diff.magnitude, collisionMask.value)) {
             Plane other = hit.collider.GetComponent<Plane>();
 
-            
+            Debug.Log("Hit " + hit.collider.gameObject.name);
 
             Destroy(gameObject);
         }

@@ -13,7 +13,7 @@ public class WeaponsManager : MonoBehaviour
     // Index for the currently selected weapon (0-based)
     [SerializeField]private int currentWeaponIndex = 0;
     public GameObject target;
-    [SerializeField] private SweepRotation S = new SweepRotation();
+    [SerializeField] private SweepRotation S;
     void Start()
     {
         

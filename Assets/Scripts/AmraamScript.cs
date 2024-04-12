@@ -18,7 +18,7 @@ public class AmraamScript : MonoBehaviour
     private Vector3 targetDirection;
     [SerializeField] private float raycastDistance = 2f; // Adjust as needed
     [SerializeField] private LayerMask collisionMask;
-    SweepRotation S = new SweepRotation();
+    SweepRotation S;
     Vector3 lastposition;
     void Start()
     {
@@ -39,13 +39,20 @@ public class AmraamScript : MonoBehaviour
             InertialPhase();
         }
         CheckRaycastCollision();
-        //AlignWithVelocity();
     }
     private void guidance()
     {
-        if(target != null)
+        if (target != null)
         {
-            targetDirection = (target.position - transform.position).normalized;
+            // Calculate target velocity (assuming target has a Rigidbody2D component)
+            Vector3 targetVelocity = target.GetComponent<Rigidbody2D>().velocity;
+
+            // Use first-order intercept to predict target position
+            float timeToIntercept = Vector3.Distance(transform.position, target.position) / maxSpeed;
+            Vector3 predictedTargetPosition = target.position + (targetVelocity * timeToIntercept);
+
+            // Update target direction based on predicted position
+            targetDirection = (predictedTargetPosition - transform.position).normalized;
         }
         else
         {
@@ -84,26 +91,45 @@ public class AmraamScript : MonoBehaviour
         //    boostTimer = 0; // Reset the timer
         //}
     }
-    void CheckRaycastCollision()
+    bool CheckValidCollision(Collider2D collider )
     {
-        Vector3 currentPosition = transform.position;
-        Vector3 error = currentPosition - lastposition;
-        Ray ray = new Ray(lastposition, error.normalized);
-        RaycastHit hit;
+        if (collider == null) return false;
 
-        if (Physics.Raycast(ray, out hit, error.magnitude, collisionMask.value))
+        if (collider.gameObject.CompareTag("Player")) return false; // Ignore player collisions
+
+        return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
+    }
+    bool CheckRaycastCollision()
+    {
+        // Continuous Raycast Detection (adjust numRays and offset as needed)
+        int numRays = 3;
+        float rayOffset = 0.5f;
+        for (int i = 0; i < numRays; i++)
         {
-            Debug.Log("HIT " + hit.collider.gameObject);
-            
-
-            if (hit.collider.gameObject.tag == "Player")
+            Vector3 rayDir = transform.up + (transform.right * (rayOffset * (i - 1)));
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, maxSpeed * Time.fixedDeltaTime);
+            if (CheckValidCollision(hit.collider))
             {
-                rb.position = hit.point;
-                Debug.Log("HIT " + hit.collider.gameObject);
+                Debug.Log("Hit something with Raycast!");
+                OnMissileHit(hit.collider.gameObject);
+                return true; // Collision detected!
             }
         }
 
-        lastposition = currentPosition;
+        // SphereCast Overlap Detection (adjust radius as needed)
+        float overlapRadius = 0.75f;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, overlapRadius, collisionMask);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.gameObject != gameObject && CheckValidCollision(collider)) // Avoid self-collision
+            {
+                Debug.Log("Hit something with Overlap!");
+                OnMissileHit(collider.gameObject);
+                return true; //  Collision detected! 
+            }
+        }
+
+        return false; // No collision detected
     }
     void OnMissileHit(GameObject objectHit)
     {
@@ -119,27 +145,27 @@ public class AmraamScript : MonoBehaviour
 
         }
     }
-    void OnTriggerEnter2D(UnityEngine.Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Adversary"))
-        {
-            Debug.Log("Enemy hit by missile! onject hit " + collision.gameObject.name);
-            Destroy(collision.transform.parent.gameObject);
+    //void OnTriggerEnter2D(UnityEngine.Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Adversary"))
+    //    {
+    //        Debug.Log("Enemy hit by missile! onject hit " + collision.gameObject.name);
+    //        Destroy(collision.transform.parent.gameObject);
 
-        }
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Player hit by missile!");
-            //Destroy(collision.transform.parent.gameObject);
-        }
-        else
-        {
-            Debug.Log("Object hit by missile!");
-        }
-        // Put a particle effect he
-        // {re
+    //    }
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        Debug.Log("Player hit by missile!");
+    //        //Destroy(collision.transform.parent.gameObject);
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Object hit by missile!");
+    //    }
+    //    // Put a particle effect he
+    //    // {re
 
-    }
+    //}
     void UpdateParticleEffect()
     {
         if (rb.velocity != Vector2.zero) // Check if we have any velocity

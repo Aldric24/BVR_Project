@@ -30,6 +30,7 @@ public class SweepRotation : MonoBehaviour
     float position;
     public  GameObject LocekdTarget= null;
     [SerializeField] private GameObject CursorTarget;
+    private int targetIndex = 0;
     private void Awake()
     {
         spriteRenderer = spriteExtreme.GetComponent<SpriteRenderer>();
@@ -90,7 +91,7 @@ public class SweepRotation : MonoBehaviour
         //Debug.Log("Collision");
         if(collision.gameObject.tag=="Player")
         {
-            Debug.Log("Player Detected");
+            //Debug.Log("Player Detected");
             return;
         }
         
@@ -172,7 +173,7 @@ public class SweepRotation : MonoBehaviour
             yield return new WaitForSeconds(1f); // Check every second
         }
     }
-    int targetIndex = 0;
+    
     public void CycleTarget()
     {   
 

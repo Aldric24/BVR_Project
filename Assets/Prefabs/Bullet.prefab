@@ -47,12 +47,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 15
-  lifetime: 5
-  speed: 50
+  lifetime: 20
+  speed: 10
   collisionMask:
     serializedVersion: 2
     m_Bits: 512
   width: 0.97
+  owner: {fileID: 0}
 --- !u!120 &2669934981140404944
 LineRenderer:
   serializedVersion: 2
@@ -173,7 +174,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0

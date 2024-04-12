@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4934638809903282702}
   - component: {fileID: 8734255833229504585}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Radar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 507117729594291416, guid: 3d77f121d66faea4a9108870672df3d6, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 507117729594291416, guid: 3d77f121d66faea4a9108870672df3d6, type: 3}
       propertyPath: m_IsActive
@@ -249,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d47d00046b8c4164d9022276a7e94156, type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrustForce: 5
-  maxSpeed: 82.2
+  maxSpeed: 100
   thrustDuration: 10
   isBoosting: 1
   missileParticleEffect: {fileID: 797892825701264389}
@@ -314,10 +314,10 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2559
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
