@@ -39,7 +39,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2423764351348321613}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -295,13 +295,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrustForce: 5
   maxSpeed: 100
-  thrustDuration: 10
+  thrustDuration: 3
   isBoosting: 1
   missileParticleEffect: {fileID: 797892825701264389}
   raycastDistance: 32.66
   collisionMask:
     serializedVersion: 2
     m_Bits: 512
+  minVelocityThreshold: 1
+  decelerationRate: 0.5
+  acceleration: 35
+  velocity: 0
 --- !u!61 &8244528163197660207
 BoxCollider2D:
   m_ObjectHideFlags: 0
