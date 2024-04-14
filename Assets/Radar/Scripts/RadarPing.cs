@@ -21,29 +21,20 @@ public class RadarPing : MonoBehaviour {
     //private float disappearTimerMax;
     //private Color color;
     public GameObject pingHighlight;
+    public Transform rotation;
     private void Awake()
     {
         pingHighlight = transform.Find("TGTselec").gameObject;
     }
+    private void Update()
+    {
+        transform.rotation=rotation.rotation;
+        if(pingHighlight)
+        {
+            pingHighlight.transform.rotation = rotation.rotation;
 
-    //private void Update() {
-    //    disappearTimer += Time.deltaTime;
-
-    //    color.a = Mathf.Lerp(disappearTimerMax, 0f, disappearTimer / disappearTimerMax);
-    //    spriteRenderer.color = color;
-
-    //    if (disappearTimer >= disappearTimerMax) {
-    //        Destroy(gameObject);
-    //    }
-    //}
-
-    //public void SetColor(Color color) {
-    //    this.color = color;
-    //}
-
-    //public void SetDisappearTimer(float disappearTimerMax) {
-    //    this.disappearTimerMax = disappearTimerMax;
-    //    disappearTimer = 0f;
-    //}
+        }
+    }
+    
 
 }

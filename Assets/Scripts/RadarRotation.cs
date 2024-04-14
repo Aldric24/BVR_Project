@@ -28,7 +28,7 @@ public class RadarRotation : MonoBehaviour
         if (radarcam.cullingMask != 256)
         {
             
-            radarcam.transform.position = new Vector3(radarcam.transform.position.x, radarcam.transform.position.y+10, radarcam.transform.position.z);
+            //radarcam.transform.position = new Vector3(radarcam.transform.position.x, radarcam.transform.position.y+10, radarcam.transform.position.z);
             radarcam.cullingMask =256;
         }
         else

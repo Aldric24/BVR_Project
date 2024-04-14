@@ -101,7 +101,7 @@ public class SweepRotation : MonoBehaviour
             RadarObjects.Add(collision.gameObject);
             lastPingedTimes[collision.gameObject] = Time.time;
             RadarPing radarPing = Instantiate(pfRadarPing, collision.gameObject.transform.position, Quaternion.identity).GetComponent<RadarPing>();
-
+            radarPing.rotation = collision.gameObject.transform;
             radarPings[collision.gameObject] = radarPing;// Record ping time
         }
         else
