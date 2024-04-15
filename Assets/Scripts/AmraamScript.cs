@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Android.Types;
 using Unity.Burst.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AmraamScript : MonoBehaviour
@@ -15,7 +16,7 @@ public class AmraamScript : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private ParticleSystem missileParticleEffect;
     // Target Related
-    private Transform target; // Set externally or retrieved from the player
+    [SerializeField]private Transform target; // Set externally or retrieved from the player
     private Vector3 targetDirection;
     [SerializeField] private float raycastDistance = 2f; // Adjust as needed
     [SerializeField] private LayerMask collisionMask;
@@ -35,8 +36,11 @@ public class AmraamScript : MonoBehaviour
     private float timeOfLastLock;
     [SerializeField] float radarAngle = 30f;  // Half the angle of the radar cone
     [SerializeField] float radarRange = 20f;
+    
+    [SerializeField]Collider2D radar;
     void Start()
     {
+        
         boostTimer = 0;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -120,26 +124,37 @@ public class AmraamScript : MonoBehaviour
         //    Destroy(gameObject);
         //}
     }
+    void OnTriggerStay2D(Collider2D radar)
+    {
+        if(radar.gameObject.CompareTag("Adversary"))
+        {
+            acquiredtarget = radar.gameObject;
+            target = acquiredtarget.transform;
+        }
+        
+    }
     bool RadarSweep()
     {
+        radar.enabled = true;
         
+        //get collision info from the collider
+       
+        //int numRays = 5; // Number of rays within the cone
+        //float angleIncrement = radarAngle / numRays;
 
-        int numRays = 5; // Number of rays within the cone
-        float angleIncrement = radarAngle / numRays;
+        //for (float angle = -radarAngle; angle <= radarAngle; angle += angleIncrement)
+        //{
+        //    Vector3 rayDir = Quaternion.Euler(0, 0, angle) * transform.up;
+        //    RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, radarRange);
 
-        for (float angle = -radarAngle; angle <= radarAngle; angle += angleIncrement)
-        {
-            Vector3 rayDir = Quaternion.Euler(0, 0, angle) * transform.up;
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, radarRange);
-
-            // Customize what qualifies as a "detected" target
-            if (CheckValidCollision(hit.collider) && hit.collider.CompareTag("Adversary"))
-            {
-                Debug.Log("missile radar sees something");
-                target = hit.transform; // Assign the detected object as the target
-                return true;
-            }
-        }
+        //    // Customize what qualifies as a "detected" target
+        //    if (CheckValidCollision(hit.collider) && hit.collider.CompareTag("Adversary"))
+        //    {
+        //        Debug.Log("missile radar sees something");
+        //        target = hit.transform; // Assign the detected object as the target
+        //        return true;
+        //    }
+        //}
         return false; // No target detected
     }
     IEnumerator checkTargetinginfo(WeaponsManager info)

@@ -8,7 +8,7 @@ public class WeaponsManager : MonoBehaviour
     public List<HardPoint> hardpoints = new List<HardPoint>();
 
     // Currently equipped cannon object (if applicable)
-    public GameObject equippedCannon;
+    public Cannon equippedCannon;
     private int currentMissileIndex = 0;
     // Index for the currently selected weapon (0-based)
     [SerializeField]private int currentWeaponIndex = 0;
@@ -50,8 +50,8 @@ public class WeaponsManager : MonoBehaviour
     {
         if (currentWeaponIndex == 0)
         {
-            // Fire Cannon 
-            equippedCannon.GetComponent<Cannon>().fire();
+           equippedCannon.StartFiring();
+            
         }
         else // currentWeaponIndex == 1 (missiles)
         {
@@ -66,4 +66,5 @@ public class WeaponsManager : MonoBehaviour
             }
         }
     }
+
 }

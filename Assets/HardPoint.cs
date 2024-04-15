@@ -12,8 +12,16 @@ public class HardPoint : MonoBehaviour
     AmraamScript missileScript;
     void Start()
     {
-        missile=Instantiate(Missile, hardpoint.position,hardpoint.rotation);
-        missile.transform.parent = hardpoint;
+        
+        
+            missile = Instantiate(Missile, hardpoint.position, hardpoint.rotation);
+            missile.transform.parent = hardpoint;
+        
+        
+        
+           
+        
+        
     }
     public void Fire(WeaponsManager wp)
     {

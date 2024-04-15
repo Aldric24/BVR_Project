@@ -39,15 +39,15 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2423764351348321613}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -61,7 +61,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -76,9 +76,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.0932094, y: 1.9227967}
-      - {x: -0.9221186, y: 1.916677}
-      - {x: 0.00089996774, y: 0.014396403}
+    - - {x: 237.15875, y: 442.8392}
+      - {x: -246.7041, y: 440.01865}
+      - {x: 0.00015131617, y: 0.024960423}
   m_UseDelaunayMesh: 0
 --- !u!1001 &4217971308500074254
 PrefabInstance:
@@ -205,15 +205,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d47d00046b8c4164d9022276a7e94156, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 741
+      value: 1450.21
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d47d00046b8c4164d9022276a7e94156, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 295
+      value: -31.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d47d00046b8c4164d9022276a7e94156, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 77
+      value: 69.46
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d47d00046b8c4164d9022276a7e94156, type: 3}
       propertyPath: m_LocalRotation.w
@@ -294,18 +294,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrustForce: 5
-  maxSpeed: 100
-  thrustDuration: 3
+  maxSpeed: 1
+  thrustDuration: 3.45
   isBoosting: 1
   missileParticleEffect: {fileID: 797892825701264389}
+  target: {fileID: 0}
   raycastDistance: 32.66
   collisionMask:
     serializedVersion: 2
     m_Bits: 512
-  minVelocityThreshold: 1
+  minVelocityThreshold: 0
+  baseDecelerationRate: 0.5
+  turningDecelerationMultiplier: 2
   decelerationRate: 0.5
   acceleration: 35
   velocity: 0
+  acquiredtarget: {fileID: 0}
+  radarAngle: 30
+  radarRange: 20
+  radar: {fileID: 8734255833229504585}
 --- !u!61 &8244528163197660207
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -370,11 +377,11 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
