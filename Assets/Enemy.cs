@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private float patrolRadius = 10f;
 
-    private Vector3 currentWaypoint;
+    private Vector2 currentWaypoint;
 
     void Start()
     {
@@ -18,10 +18,10 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         // Move toward the current waypoint
-        transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
 
         // Check if we reached the waypoint
-        if (Vector3.Distance(transform.position, currentWaypoint) < 0.5f)
+        if (Vector2.Distance(transform.position, currentWaypoint) < 0.5f)
         {
             SetNewPatrolDestination();
         }

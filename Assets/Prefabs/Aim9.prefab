@@ -45,6 +45,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15c72c2db1f0a247b410eca5dd05c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thrustForce: 0
+  maxSpeed: 0
+  thrustDuration: 0
+  isBoosting: 0
+  missileParticleEffect: {fileID: 0}
+  target: {fileID: 0}
+  raycastDistance: 2
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 0
+  minVelocityThreshold: 1
+  baseDecelerationRate: 0.5
+  turningDecelerationMultiplier: 2
+  decelerationRate: 0.5
+  acceleration: 10
+  velocity: 0
+  acquiredtarget: {fileID: 0}
+  radarAngle: 30
+  radarRange: 20
+  radarCollider: {fileID: 0}
 --- !u!1001 &3085816531095914295
 PrefabInstance:
   m_ObjectHideFlags: 0

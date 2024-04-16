@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrustForce: 5
-  maxSpeed: 1
+  maxSpeed: 100
   thrustDuration: 3.45
   isBoosting: 1
   missileParticleEffect: {fileID: 797892825701264389}

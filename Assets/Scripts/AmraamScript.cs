@@ -1,9 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Android.Types;
-using Unity.Burst.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AmraamScript : MonoBehaviour
@@ -90,7 +86,6 @@ public class AmraamScript : MonoBehaviour
     void BoostPhase()
     {
         AlignWithVelocity();
-        AlignWithVelocity();
 
         // Accelerate towards maxSpeed
         rb.velocity = Vector2.MoveTowards(rb.velocity, transform.up * maxSpeed, acceleration * Time.fixedDeltaTime);
@@ -105,6 +100,7 @@ public class AmraamScript : MonoBehaviour
 
     void InertialPhase()
     {
+        AlignWithVelocity();
         // Determine Angular Velocity (how fast the missile is turning)
         float angularVelocityMagnitude = Mathf.Abs(rb.angularVelocity);
 
@@ -124,14 +120,34 @@ public class AmraamScript : MonoBehaviour
         //    Destroy(gameObject);
         //}
     }
-    void OnTriggerStay2D(Collider2D radar)
+    void OnTriggerEnter2D(Collider2D radar)
     {
-        if(radar.gameObject.CompareTag("Adversary"))
+        if (radar.gameObject.CompareTag("Adversary"))
         {
             acquiredtarget = radar.gameObject;
-            target = acquiredtarget.transform;
+            target = radar.transform;
         }
         
+
+    }
+    void OnTriggerStay2D(Collider2D radar)
+    {
+        if (radar.gameObject.CompareTag("Adversary"))
+        {
+            acquiredtarget = radar.gameObject;
+            target = radar.transform;
+        }
+        
+        
+    }
+    void OnTriggerExit2D(Collider2D radar)
+    {
+
+        if (radar.gameObject.CompareTag("Adversary"))
+        {
+            target = null;
+        }
+
     }
     bool RadarSweep()
     {
@@ -268,7 +284,7 @@ public class AmraamScript : MonoBehaviour
         {
             StartCoroutine(checkTargetinginfo(parent));
         }
-        
+        transform.parent = null;
         gameObject.GetComponent<Rigidbody2D>().simulated=true;
        
     }

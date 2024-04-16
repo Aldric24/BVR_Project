@@ -560,7 +560,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0029964447, y: 7.3050003, z: 42.2119}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.1037, y: 3.1037, z: 3.1037}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5927572056831120196}
@@ -632,6 +632,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 2669934981140404945, guid: a6a331fa124eaf148bd5a44b8f133e51, type: 3}
   cannonSpawnPoint: {fileID: 3739791941560528626}
   player: {fileID: 7017944672044586463}
+  fireButton: {fileID: 0}
+  cannonequipped: 0
 --- !u!1 &3373889595629620334
 GameObject:
   m_ObjectHideFlags: 0
@@ -853,8 +855,8 @@ Transform:
   m_GameObject: {fileID: 3888776406903563262}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.0006926294, y: 5581.9995, z: 2877.3179}
-  m_LocalScale: {x: 37.32897, y: 35.079998, z: 37.32898}
+  m_LocalPosition: {x: 0.0006926294, y: 18227, z: 8993}
+  m_LocalScale: {x: 1.5483731, y: 1.4550878, z: 1.5483731}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7651457246171254629}
@@ -894,13 +896,13 @@ Camera:
   far clip plane: 1007.62
   field of view: 4.5
   orthographic: 1
-  orthographic size: 158.0462
+  orthographic size: 550.43994
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 8
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: a6eb959939629e645abb2e3674f3f91a, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: af649d185b2b3f34a99aa2196e288268, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -1046,7 +1048,7 @@ Camera:
   far clip plane: 1007.62
   field of view: 4.5
   orthographic: 1
-  orthographic size: 394.02563
+  orthographic size: 1226.3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1286,8 +1288,8 @@ Transform:
   m_GameObject: {fileID: 7519501343554238258}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.27742, y: -30.320656, z: 42.2119}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 4.27742, y: -30.320656, z: 123.1}
+  m_LocalScale: {x: 3.1294, y: 3.1294, z: 3.1294}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2882693052348994272}
@@ -1786,14 +1788,14 @@ PrefabInstance:
       insertIndex: 12
       addedObject: {fileID: 400363494273477241}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
+      insertIndex: 25
+      addedObject: {fileID: 5949041113870553958}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 708593358266045447}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6025910287681534330}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5949041113870553958}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3739791941560528626}
@@ -1895,7 +1897,7 @@ MonoBehaviour:
   - {fileID: 4688688928467950194}
   - {fileID: 1812023419424965068}
   - {fileID: 4013374647406700229}
-  equippedCannon: {fileID: 2414483910141838590}
+  equippedCannon: {fileID: 4150175464808764560}
   currentWeaponIndex: 0
   target: {fileID: 0}
   S: {fileID: 7174395216976712757}
