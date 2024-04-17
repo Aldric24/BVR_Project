@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+   
+
+    public List<GameObject> menuScreens;
+
+    // Ensure this GameObject persists between scenes
+    void Awake()
     {
-        
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowScreen(int screenIndex)
     {
-        
+        for (int i = 0; i < menuScreens.Count; i++)
+        {
+            menuScreens[i].SetActive(i == screenIndex);
+        }
     }
+    
 }

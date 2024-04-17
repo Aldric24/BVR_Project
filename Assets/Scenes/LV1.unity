@@ -4351,7 +4351,7 @@ GameObject:
   - component: {fileID: 889193417}
   - component: {fileID: 889193416}
   - component: {fileID: 889193415}
-  - component: {fileID: 889193414}
+  - component: {fileID: 889193418}
   m_Layer: 5
   m_Name: CameraSwitch
   m_TagString: Untagged
@@ -4378,21 +4378,6 @@ RectTransform:
   m_AnchoredPosition: {x: -1125, y: 468}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &889193414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889193412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f52d1e5345c395641b482217c8804ff9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Cameras:
-  - {fileID: 1241086177}
-  - {fileID: 1033025907}
 --- !u!114 &889193415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4437,13 +4422,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 889193414}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 889193418}
+        m_TargetAssemblyTypeName: SwitchCam, Assembly-CSharp
+        m_MethodName: SwitchCamera
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4487,6 +4472,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889193412}
   m_CullTransparentMesh: 1
+--- !u!114 &889193418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889193412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0fbf7c0dec9f7141932c6653c72f652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameras:
+  - {fileID: 1241086177}
+  - {fileID: 1033025907}
 --- !u!1 &897396992 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4900949242768475813, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
@@ -4794,7 +4794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 886209553}
-  offset: {x: 0.11, y: 0.14, z: -32.5}
+  offset: {x: 0.11, y: 0.56, z: -41.2}
 --- !u!114 &1241086180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4819,7 +4819,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 0
-  m_Antialiasing: 1
+  m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -6086,6 +6086,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 618983905838096222, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1651595169288908231, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
       propertyPath: m_CameraType
       value: 0
@@ -6152,7 +6156,7 @@ PrefabInstance:
       objectReference: {fileID: 897396992}
     - target: {fileID: 7619737213189208971, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7966133505426522600, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
       propertyPath: speedText
@@ -6198,7 +6202,7 @@ PrefabInstance:
     - target: {fileID: 1080945896894705152, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_FontData.m_Font
       value: 
-      objectReference: {fileID: 12800000, guid: 85c1d487a691e4d4191b0c9d17945382, type: 3}
+      objectReference: {fileID: 12800000, guid: b3152db8c2b7b2f4ca352ab2c544fc90, type: 3}
     - target: {fileID: 1253171100514657598, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5869462
@@ -6215,6 +6219,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 167
       objectReference: {fileID: 0}
+    - target: {fileID: 1488691291461076558, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: b3152db8c2b7b2f4ca352ab2c544fc90, type: 3}
     - target: {fileID: 1582593232069766117, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -6291,6 +6299,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 3538264282369370705, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 83437deaa823e8a488ec6b26084c5506, type: 2}
+    - target: {fileID: 3538264282369370705, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2579417188573727701, guid: 83437deaa823e8a488ec6b26084c5506, type: 2}
+    - target: {fileID: 3538264282369370705, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3702107443721431415, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -6307,6 +6327,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4913970067165550905, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: b3152db8c2b7b2f4ca352ab2c544fc90, type: 3}
     - target: {fileID: 5685143498755784935, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: player
       value: 
@@ -6327,6 +6351,10 @@ PrefabInstance:
       propertyPath: m_UVRect.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6265865552303670192, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: b3152db8c2b7b2f4ca352ab2c544fc90, type: 3}
     - target: {fileID: 6581469310835117559, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 172
@@ -6351,6 +6379,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7775304404453698628, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: b3152db8c2b7b2f4ca352ab2c544fc90, type: 3}
     - target: {fileID: 8347239188067682771, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
