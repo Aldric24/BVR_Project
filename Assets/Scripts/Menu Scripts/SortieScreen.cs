@@ -11,7 +11,7 @@ public class SortieScreen : MonoBehaviour
     public MissionButton SelectedMission;
     public GameObject brifingpanel;
     [SerializeField] Transform targetPosition;
-    private Transform oldpos;
+    public Vector3 oldpos;
    
     void Start()
     {
@@ -36,7 +36,6 @@ public class SortieScreen : MonoBehaviour
             }
         }
         this.gameObject.GetComponent<LayoutGroup>().enabled = false;
-        oldpos = SelectedMission.gameObject.transform;
         MovetoBrifing(SelectedMission.gameObject);
         brifingpanel.GetComponentInChildren<TextMeshProUGUI>().text = SelectedMission.GetComponent<MissionButton>()._missionDescription;
         brifingpanel.SetActive(true);
@@ -50,13 +49,14 @@ public class SortieScreen : MonoBehaviour
     {
         if(SelectedMission!=null)
         {
-            LeanTween.move(mission, oldpos, 1.5f).setEase(LeanTweenType.easeInOutSine);
+            LeanTween.move(mission, oldpos, 1.5f).setEase(LeanTweenType.easeInOutSine).setOnComplete(() => gameObject.GetComponent<LayoutGroup>().enabled = true );
             LeanTween.scale(mission, new Vector3(1f, 1f, 1f), 1.5f).setEase(LeanTweenType.easeInOutSine);
         }
       
     }
     public void back()
     {
+        
         MovetoOldPos(SelectedMission.gameObject);
         foreach (Transform t in transform)
         {
@@ -64,6 +64,8 @@ public class SortieScreen : MonoBehaviour
         }
         
         brifingpanel.SetActive(false);
+        SelectedMission = null;
+        
     }
     void fadeOut(GameObject mission)
     {

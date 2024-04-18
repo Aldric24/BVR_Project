@@ -14,19 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionImage: {fileID: 21300000, guid: 44c560c7e1b775540b6544536324ff86, type: 3}
   missionName: Training
-  missionDescription: 'Welcome, pilot. Today, you''ll be taking to the skies for
-    the very first time. We''ll cover the basics to get you comfortable with the
-    controls and handling of your [aircraft name].  Objectives:  Takeoff and Climb:
-    Get familiar with power settings, gentle liftoff, and ascending to a safe altitude.
-    Basic Maneuvers: Practice controlled turns, maintaining level flight, and gentle
-    descents. Airfield Familiarization: Overfly the airfield and learn to visually
-    identify key areas like the runway and traffic patterns. Landing: Align with
-    the runway, reduce speed, and safely touch down. Instructor Notes:  Focus: This
-    isn''t about speed or precision. We want smooth inputs and controlled flight.
-    Radio: I''ll be guiding you through each step. Don''t hesitate to ask if you
-    have questions. Safety: This is a safe environment to make mistakes. Learn from
-    them and we''ll have you flying like a pro soon. Additional Flavor (Optional): 
-    Backstory: "Legend says the first pilot to ever solo here went on to become an
-    ace..." Challenge: "If you''re feeling confident, we might even try a basic loop
-    by the end of the flight.'
+  missionDescription: "Instructor: \"Welcome to the cockpit, pilot.  Are you ready
+    to earn your wings? Today's your first flight, so let's focus on the fundamentals
+    that will make you a true ace.\"\r\n\r\nObjectives:\r\n\r\nTakeoff and Climb:\r\n\r\n\"We'll
+    start with the basics: throttle control for a smooth takeoff, and then establishing
+    a controlled climb to get some altitude.\"\r\nBasic Maneuvers:\r\n\r\n\"Once
+    we're at a safe height, practice some gentle turns. Focus on maintaining level
+    flight and controlling your speed.\"\r\nAirfield Familiarization:\r\n\r\n\"While
+    we're up there, I'll point out some key landmarks around the airfield. It's important
+    to know your way back home!\"\r\nInstructor Notes:\r\n\r\n\"Remember, pilot,
+    it's all about smooth inputs and awareness. This is your first step \u2013 there's
+    no rush.\"\r\n\r\n\"Don't be afraid to ask questions.  I'm here to guide you
+    through every maneuver.\""
   recommendedLoadout: 

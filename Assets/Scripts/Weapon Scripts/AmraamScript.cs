@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class AmraamScript : MonoBehaviour
+public class AmraamScript : Weapon
 {
+
+    // Missile Properties
     [SerializeField] private float thrustForce;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float thrustDuration;
@@ -36,7 +38,7 @@ public class AmraamScript : MonoBehaviour
     [SerializeField]Collider2D radar;
     void Start()
     {
-        
+        weaponName = "Amraam Aim120 -D";
         boostTimer = 0;
         rb = GetComponent<Rigidbody2D>();
     }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SidewinderScript : MonoBehaviour
+public class SidewinderScript : Weapon
 {
     [SerializeField] private float thrustForce;
     [SerializeField] private float maxSpeed;
@@ -41,6 +41,7 @@ public class SidewinderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        weaponName = "Sidewinder AIM-9M";
         // ... [Your existing Start() code] ...
     }
 

@@ -293,6 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f03dabe52d330bb46982373f255a98fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: Amraam Aim120 -D
   thrustForce: 5
   maxSpeed: 100
   thrustDuration: 3.45

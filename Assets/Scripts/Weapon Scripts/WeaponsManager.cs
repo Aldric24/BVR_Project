@@ -27,7 +27,7 @@ public class WeaponsManager : MonoBehaviour
     public void SwitchWeapon()
     {
         currentWeaponIndex = (currentWeaponIndex + 1) % 2; // Cycle between cannon (0) and missiles (1)
-
+        equippedCannon.cannonequipped = false;
         // Reset missile index if switching away from missiles
         if (currentWeaponIndex != 1)
         {
@@ -50,13 +50,15 @@ public class WeaponsManager : MonoBehaviour
     {
         if (currentWeaponIndex == 0)
         {
-           equippedCannon.StartFiring();
+           equippedCannon.cannonequipped=true;
+            //equippedCannon.StartFiring();
             
         }
         else // currentWeaponIndex == 1 (missiles)
         {
             if (HasAvailableMissile())
             {
+                
                 hardpoints[currentMissileIndex].Fire(this);
                 currentMissileIndex = (currentMissileIndex + 1) % hardpoints.Count;
             }

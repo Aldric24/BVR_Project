@@ -16,6 +16,7 @@ public class RadarRotation : MonoBehaviour
   
     private void Update()
     {
+
         transform.position = system.position;
         transform.rotation = system.rotation;
 

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15c72c2db1f0a247b410eca5dd05c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: Sidewinder AIM-9M
   thrustForce: 0
   maxSpeed: 0
   thrustDuration: 0

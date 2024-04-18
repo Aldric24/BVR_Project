@@ -36,7 +36,7 @@ public class Cannon : MonoBehaviour
     }
     private IEnumerator FireBurstCoroutine()
     {
-        while (cannonFiring && Ammo>0) // While the fire button is held down
+        while (cannonFiring && Ammo>0 && cannonequipped==true) // While the fire button is held down
         {
             fire(); // Fire a single shot
             Ammo--; // Decrement ammo count
@@ -46,8 +46,12 @@ public class Cannon : MonoBehaviour
     }
     public void StartFiring()
     {
-        cannonFiring = true;
-        StartCoroutine(FireBurstCoroutine());
+        if(cannonequipped)
+        {
+            cannonFiring = true;
+            StartCoroutine(FireBurstCoroutine());
+        }
+        
     }
 
     public void StopFiring()

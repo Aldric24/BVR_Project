@@ -6,7 +6,7 @@ public class NewControl: MonoBehaviour
     [SerializeField] private float thrustForce;
     [SerializeField] private float maxSpeedKnots;
     [SerializeField] private float dragCoefficient;
-    [SerializeField] private Slider throttleSlider;
+    [SerializeField] public Slider throttleSlider;
     [SerializeField] public Text speedText;
     [SerializeField] private float thrustTransitionTime = 0.5f; // Time in seconds
     [SerializeField] private float optimalTurningSpeed; // Speed in knots
@@ -20,6 +20,7 @@ public class NewControl: MonoBehaviour
     [SerializeField] private float rotationSensitivity;
     void Start()
     {
+        throttleSlider = FindAnyObjectByType<Slider>();
         //rb = GetComponent<Rigidbody2D>();
         Input.gyro.enabled = true;
     }

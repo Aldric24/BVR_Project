@@ -14,6 +14,9 @@ public class WaypointManager : MonoBehaviour
     void Start()
     {
 
+        player =FindObjectOfType<NewControl>().gameObject ;
+        
+        
         GenerateWaypoints();
         SetupLineRenderer();
     }
@@ -23,7 +26,7 @@ public class WaypointManager : MonoBehaviour
         for (int i = 0; i < numberOfWaypoints; i++)
         {
             Vector2 randomPosition = Random.insideUnitSphere * waypointAreaRadius;
-            randomPosition += new Vector2(transform.position.x, transform.position.y); // Offset based on WaypointManager's position
+            randomPosition += new Vector2(player.transform.position.x, player.transform.position.y); // Offset based on WaypointManager's position
 
             GameObject newWaypointObj = Instantiate(waypointPrefab, randomPosition, Quaternion.identity);
             if(i==0)

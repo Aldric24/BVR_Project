@@ -12,6 +12,7 @@ public class MissionButton : MonoBehaviour
     public string _missionDescription;
     [SerializeField] private TextMeshProUGUI missionname;
     public AnimationClip anim;
+    [SerializeField]Vector3 savepos;
     internal void SetMission(Mission mission)
     {
         _sprite = mission.missionImage;
@@ -22,10 +23,13 @@ public class MissionButton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        savepos = transform.position;
         missionname.text=_missionName;
         gameObject.GetComponent<UnityEngine.UI.Image>().sprite = _sprite;
         gameObject.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
         {
+            
+            gameObject.GetComponentInParent<SortieScreen>().oldpos=savepos;
             gameObject.GetComponentInParent<SortieScreen>().SelectedMission = this;
             gameObject.GetComponentInParent<SortieScreen>().displaybriefing();
         });

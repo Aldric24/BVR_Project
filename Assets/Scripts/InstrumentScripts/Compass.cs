@@ -9,7 +9,7 @@ public class Compass : MonoBehaviour
     [SerializeField]private Transform player;
     void Start()
     {
-       
+       player = FindObjectOfType<NewControl>().transform;
     }
 
     // Update is called once per frame
