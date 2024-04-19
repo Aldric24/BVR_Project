@@ -6,13 +6,14 @@ using UnityEngine.UI;
 
 public class SortieScreen : MonoBehaviour
 {
+    [SerializeField]MenuController menuController;
     public List<Mission> missions;
     public GameObject missionButtonPrefab;
     public MissionButton SelectedMission;
     public GameObject brifingpanel;
     [SerializeField] Transform targetPosition;
     public Vector3 oldpos;
-   
+    public GameObject loadout;
     void Start()
     {
         foreach (Mission mission in missions)
@@ -26,6 +27,7 @@ public class SortieScreen : MonoBehaviour
     }
     public void displaybriefing()
     {
+        loadout.GetComponent<Button>().interactable = true;
         foreach (Transform t in transform)
         {
             if (t.gameObject.name != SelectedMission.name) // Check if not the selected mission
@@ -79,6 +81,20 @@ public class SortieScreen : MonoBehaviour
         //turn up the alpha of the mission and then enable it
         mission.SetActive(true);
         LeanTween.alphaCanvas(mission.GetComponent<CanvasGroup>(), 1, 1.5f).setEase(LeanTweenType.easeInOutSine);
+    }
+    public void backtomainmenu()
+    {
+        if(SelectedMission==null)
+        {
+            loadout.GetComponent<Button>().interactable = true;
+            this.gameObject.transform.parent.gameObject.SetActive(false);
+            menuController.menuScreens[0].SetActive(true);
+        }
+        else
+        {
+            loadout.GetComponent<Button>().interactable = false;
+            back();
+        }
     }
 }
 

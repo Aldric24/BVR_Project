@@ -9,7 +9,7 @@ public class MenuController : MonoBehaviour
 
     public List<GameObject> menuScreens;
     [SerializeField]SortieScreen sortieScreen;
-    [SerializeField] GameObject loadout;
+
     // Ensure this GameObject persists between scenes
     
 
@@ -22,13 +22,6 @@ public class MenuController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(sortieScreen.SelectedMission!=null)
-        {
-            loadout.gameObject.GetComponent<Button>().interactable=true;
-        }
-        else
-        {
-            loadout.gameObject.GetComponent<Button>().interactable=false;
-        }
+        
     }
 }

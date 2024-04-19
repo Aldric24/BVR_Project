@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     [SerializeField] public GameObject[] Weapons;
     public Loadoutscreen Loadoutscreen;
     private Dictionary<int, Weapon> loadout;
+    public GameObject panel;
+    
+    
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -34,10 +37,10 @@ public class GameController : MonoBehaviour
         }
         
     }
-    public void spawnplayer()
+    public void StartGame()
     {
         
-        SceneManager.LoadScene("LV1");
+        
         //wait for scene to load
         StartCoroutine(waitforsecondsandlOad());
         
@@ -45,6 +48,9 @@ public class GameController : MonoBehaviour
     }
     IEnumerator waitforsecondsandlOad()
     {
+        panel.GetComponent<Animator>().SetTrigger("FadeIn");
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("LV1");
         yield return new WaitForSeconds(2);
         GameObject playerobj = Instantiate(player, new Vector3(0, 0, 0), Quaternion.identity);
         SetPlayerLoadout(loadout, playerobj);
