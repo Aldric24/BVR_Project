@@ -47,4 +47,6 @@ MonoBehaviour:
   player: {fileID: 380058069840666476, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
   enemy: {fileID: 0}
   WaypointSystem: {fileID: 3964594212722265507, guid: 66f8b3315ed5d9b42af84c26de552ec7, type: 3}
-  Weapons: []
+  Weapons:
+  - {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+  - {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}

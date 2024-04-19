@@ -5,24 +5,17 @@ using UnityEngine;
 public class HardPoint : MonoBehaviour
 {
     // Start is called before the first frame update
-    public GameObject Missile;
+   
     [SerializeField]Transform hardpoint;
     public  bool MissileFired = false;
-    GameObject missile;
+    public GameObject missile;
     AmraamScript missileScript;
-    void Start()
+    public void AttachMissile(GameObject Missile)
     {
-        
-        
-            missile = Instantiate(Missile, hardpoint.position, hardpoint.rotation);
-            missile.transform.parent = hardpoint;
-        
-        
-        
-           
-        
-        
+        missile = Instantiate(Missile, hardpoint.position, hardpoint.rotation);
+        missile.transform.parent = hardpoint;
     }
+   
     public void Fire(WeaponsManager wp)
     {
         MissileFired = true;

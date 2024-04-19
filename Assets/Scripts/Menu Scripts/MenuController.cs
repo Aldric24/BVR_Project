@@ -11,10 +11,7 @@ public class MenuController : MonoBehaviour
     [SerializeField]SortieScreen sortieScreen;
     [SerializeField] GameObject loadout;
     // Ensure this GameObject persists between scenes
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    
 
     public void ShowScreen(int screenIndex)
     {

@@ -38,7 +38,7 @@ public class WeaponsManager : MonoBehaviour
     {
         foreach (HardPoint hardpoint in hardpoints)
         {
-            if (hardpoint.Missile != null && !hardpoint.MissileFired)
+            if (hardpoint.missile != null && !hardpoint.MissileFired)
             {
                 return true;
             }

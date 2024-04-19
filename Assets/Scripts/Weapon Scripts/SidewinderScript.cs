@@ -42,6 +42,7 @@ public class SidewinderScript : Weapon
     void Start()
     {
         weaponName = "Sidewinder AIM-9M";
+        rb = GetComponent<Rigidbody2D>();
         // ... [Your existing Start() code] ...
     }
 

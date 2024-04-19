@@ -15,8 +15,15 @@ public class Loadoutscreen : MonoBehaviour
 
     void Start()
     {
+        Weapon empty = new Weapon();
+        empty.weaponName = "Empty";
+        availableWeapons.Add(empty);    
         selectedWeapons = new Dictionary<int, Weapon>();
         PopulateDropdowns();
+        for (int i = 0; i < hardpointDropdowns.Count; i++)
+        {
+            OnHardpointDropdownChange(i);
+        }
     }
 
     void PopulateDropdowns()
@@ -34,6 +41,7 @@ public class Loadoutscreen : MonoBehaviour
         TMP_Dropdown dropdown = hardpointDropdowns[hardpointIndex];
         Weapon selectedWeapon = availableWeapons[dropdown.value];
         selectedWeapons[hardpointIndex] = selectedWeapon;
+
     }
 
     public Dictionary<int, Weapon> GetSelectedWeapons()
