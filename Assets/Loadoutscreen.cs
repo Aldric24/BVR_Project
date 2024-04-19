@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,9 +14,9 @@ public class Loadoutscreen : MonoBehaviour
 
     void Start()
     {
-        Weapon empty = new Weapon();
-        empty.weaponName = "Empty";
-        availableWeapons.Add(empty);    
+        //Weapon empty = new Weapon();
+        //empty.weaponName = "Empty";
+        //availableWeapons.Add(empty);    
         selectedWeapons = new Dictionary<int, Weapon>();
         PopulateDropdowns();
         for (int i = 0; i < hardpointDropdowns.Count; i++)

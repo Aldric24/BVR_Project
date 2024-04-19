@@ -109,7 +109,7 @@ Transform:
   m_GameObject: {fileID: 380058069840666476}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1450, y: -39, z: -2.9199982}
+  m_LocalPosition: {x: 1450, y: -39, z: 60}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -979,6 +979,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7651457246171254629}
   offset: {x: -5, y: 158, z: -70}
+  moveDuration: 1.5
 --- !u!1 &5033268147776613870
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,6 +1132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7651457246171254629}
   offset: {x: -0.39, y: 11.79, z: -70}
+  moveDuration: 1.5
 --- !u!1 &5296366761475149461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1464,6 +1466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 7651457246171254629}
   offset: {x: 0.11, y: 0.14, z: -70}
+  moveDuration: 1.5
 --- !u!1 &7908286451775396877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,6 +1636,14 @@ PrefabInstance:
       value: CycleTarget
       objectReference: {fileID: 0}
     - target: {fileID: 6385323326719166593, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6385323326719166593, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 618983905838096222}
+    - target: {fileID: 6385323326719166593, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: cameras.Array.data[1]
       value: 
       objectReference: {fileID: 618983905838096222}
@@ -1646,7 +1657,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7643482921724915461, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845454176907725834, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SwitchCamera
       objectReference: {fileID: 0}
     - target: {fileID: 8347239188067682771, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1670,7 +1685,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8408339689256092311, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897587978428868511, guid: 5037208dfc1b9a4478f78ed4aea15bee, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target

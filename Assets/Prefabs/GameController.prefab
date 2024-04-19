@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8021119452208430997}
   m_Layer: 0
   m_Name: GameController
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,3 +50,5 @@ MonoBehaviour:
   Weapons:
   - {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   - {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  Loadoutscreen: {fileID: 0}
+  panel: {fileID: 0}

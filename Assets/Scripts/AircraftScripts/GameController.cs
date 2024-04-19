@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     
     void Start()
     {
+        
         loadout = Loadoutscreen.GetSelectedWeapons();
     }
     public void confirmLoadout()
@@ -46,15 +47,20 @@ public class GameController : MonoBehaviour
         
 
     }
-    IEnumerator waitforsecondsandlOad()
+    public IEnumerator waitforsecondsandlOad()
+    {
+        LeanTween.alphaCanvas(panel.GetComponent<CanvasGroup>(), 1, 2).setOnComplete(() => SceneManager.LoadScene("LV1"));
+        
+        yield return new WaitForSeconds(2);
+        GameObject playerobj = Instantiate(player, new Vector3(1450, -39, 60), Quaternion.identity);
+        SetPlayerLoadout(loadout, playerobj);
+        
+        
+    }
+    public IEnumerator transitiontoMainMenue()
     {
         panel.GetComponent<Animator>().SetTrigger("FadeIn");
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("LV1");
-        yield return new WaitForSeconds(2);
-        GameObject playerobj = Instantiate(player, new Vector3(0, 0, 0), Quaternion.identity);
-        SetPlayerLoadout(loadout, playerobj);
-        playerobj.GetComponentInChildren<NewControl>().throttleSlider.value=50;
-        
+        SceneManager.LoadScene("MainMenu");
     }
 }

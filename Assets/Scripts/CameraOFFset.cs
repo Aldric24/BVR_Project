@@ -5,17 +5,54 @@ using static UnityEngine.GraphicsBuffer;
 public class CameraOFFset : MonoBehaviour
 {
     public Transform target;
-    public Vector3 offset = Vector3.zero; // Offset from the target position
+    public Vector3 offset = Vector3.zero;
+    public float moveDuration = 1.5f;
 
-    void LateUpdate()
+    private bool foundPlayer = false;
+    private Camera cameraComponent;
+    private bool isFollowing = false;
+
+    void Start()
     {
-        if (target != null)
-        {
-            // Calculate the desired position with offset
-            Vector3 desiredPosition = target.position + offset;
+        cameraComponent = GetComponent<Camera>();
+    }
 
-            // Set the position of the camera directly
-            transform.position = desiredPosition;
+    void Update()
+    {
+        if (!foundPlayer)
+        {
+            FindPlayer();
         }
+        else if (isFollowing)
+        { // Only follow if not already following
+            FollowPlayer();
+        }
+    }
+
+    void FindPlayer()
+    {
+        GameObject player = GameObject.FindWithTag("Player");       ;
+        if (player != null)
+        {
+            GameObject aicraft=player.GetComponentInChildren<NewControl>().gameObject;
+            target = aicraft.transform;
+            foundPlayer = true;
+            StartMove();
+            
+        }
+    }
+
+    void StartMove()
+    {
+        Vector3 desiredPosition = target.position + offset;
+        LeanTween.move(gameObject, desiredPosition, moveDuration)
+                 .setEaseInOutSine()
+                 .setOnComplete(() => isFollowing = true); // Set flag on completion
+    }
+
+    void FollowPlayer()
+    {
+        Vector3 desiredPosition = target.position + offset;
+        transform.position = desiredPosition; // Continuously update position
     }
 }

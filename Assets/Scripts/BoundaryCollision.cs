@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class BoundaryCollision : MonoBehaviour
 {
+    GameObject player;
     [SerializeField] private Rigidbody2D playerRigidbody; // Assign the player's Rigidbody2D
     private void Start()
     {
-        playerRigidbody = FindObjectOfType<NewControl>().GetComponent<Rigidbody2D>();
+       
     }
-    
+    private void Update()
+    {
+        player= GameObject.FindWithTag("Player");
+        if(player!=null)
+        {
+            playerRigidbody = player.GetComponentInChildren<Rigidbody2D>();
+        }
+        
+    }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
