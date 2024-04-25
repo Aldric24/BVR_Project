@@ -7,6 +7,7 @@ public class Radarhandler : MonoBehaviour
 {
     public GameObject SmolRadar;
     public GameObject BigRadar;
+   
     // Start is called before the first frame update
     void Start()
     {

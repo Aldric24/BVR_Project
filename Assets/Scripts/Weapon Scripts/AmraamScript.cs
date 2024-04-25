@@ -98,6 +98,10 @@ public class AmraamScript : Weapon
             isBoosting = false;
             boostTimer = 0; // Reset the timer
         }
+        if (!missileParticleEffect.isPlaying)
+        {
+            missileParticleEffect.Play();
+        }
     }
 
     void InertialPhase()
@@ -112,7 +116,10 @@ public class AmraamScript : Weapon
         {
             decelerationRate *= turningDecelerationMultiplier;
         }
-
+        if (missileParticleEffect.isPlaying)
+        {
+            missileParticleEffect.Stop();
+        }
         // Adjust velocity based on dynamic deceleration
         rb.velocity = transform.up * (rb.velocity.magnitude - decelerationRate * Time.fixedDeltaTime);
 
@@ -250,6 +257,7 @@ public class AmraamScript : Weapon
     void OnMissileHit(GameObject objectHit)
     {
       Destroy(objectHit);
+      FindAnyObjectByType<HUD_Text>().SplashText(objectHit.name);
     }
     void AlignWithVelocity()
     {

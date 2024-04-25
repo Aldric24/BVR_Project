@@ -34,7 +34,7 @@ public class CameraOFFset : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");       ;
         if (player != null)
         {
-            GameObject aicraft=player.GetComponentInChildren<NewControl>().gameObject;
+            GameObject aicraft=FindAnyObjectByType<NewControl>().gameObject;
             target = aicraft.transform;
             foundPlayer = true;
             StartMove();

@@ -16,12 +16,18 @@ public class RadarRotation : MonoBehaviour
   
     private void Update()
     {
+        if (transform != null)
+        {
 
-        transform.position = system.position;
-        transform.rotation = system.rotation;
+            transform.position = system.position;
+            transform.rotation = system.rotation;
+        }
+        else
+        {
+            Debug.Log("System is null");
+        }
 
-
-
+        
     }
     public void WaypointScreen()
     {

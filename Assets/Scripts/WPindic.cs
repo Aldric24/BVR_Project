@@ -12,7 +12,5 @@ public class WPindic : MonoBehaviour
         transform.position = system.position;
         transform.rotation = system.rotation;
 
-
-
     }
 }

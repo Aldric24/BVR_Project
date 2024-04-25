@@ -10,11 +10,14 @@ public class MenuController : MonoBehaviour
     public GameObject Panel;
     public List<GameObject> menuScreens;
     [SerializeField]SortieScreen sortieScreen;
-
+    private void Awake()
+    {
+        Time.timeScale = 1;
+    }
     // Ensure this GameObject persists between scenes
     private void Start()
     {
-        LeanTween.alphaCanvas(Panel.GetComponent<CanvasGroup>(), 0, 2);
+       
         ShowScreen(0);
     }
 
