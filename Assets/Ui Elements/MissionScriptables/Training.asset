@@ -14,16 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionImage: {fileID: 21300000, guid: 44c560c7e1b775540b6544536324ff86, type: 3}
   missionName: Training
-  missionDescription: "Instructor: \"Welcome to the cockpit, pilot.  Are you ready
-    to earn your wings? Today's your first flight, so let's focus on the fundamentals
-    that will make you a true ace.\"\r\n\r\nObjectives:\r\n\r\nTakeoff and Climb:\r\n\r\n\"We'll
-    start with the basics: throttle control for a smooth takeoff, and then establishing
-    a controlled climb to get some altitude.\"\r\nBasic Maneuvers:\r\n\r\n\"Once
-    we're at a safe height, practice some gentle turns. Focus on maintaining level
-    flight and controlling your speed.\"\r\nAirfield Familiarization:\r\n\r\n\"While
-    we're up there, I'll point out some key landmarks around the airfield. It's important
-    to know your way back home!\"\r\nInstructor Notes:\r\n\r\n\"Remember, pilot,
-    it's all about smooth inputs and awareness. This is your first step \u2013 there's
-    no rush.\"\r\n\r\n\"Don't be afraid to ask questions.  I'm here to guide you
-    through every maneuver.\""
+  missionDescription: 'Instructor: "Welcome to the cockpit, pilot.  Are you ready
+    to earn your wings? Today''s your first flight, so let''s focus on the fundamentals
+    that will make you a true ace."
+
+    
+
+    Tasks:
+
+
+    "You''ll begin with
+    radar exercises. Practice acquiring, locking, and maintaining a lock on designated
+    targets."
+
+    "Next, you''ll transition to weapons systems. Learn targeting
+    procedures, weapon selection, and engagement of target drones."
+
+
+    "Throughout
+    the exercise, maintain awareness of your aircraft''s instruments. You''ll need
+    a solid grasp of your airspeed, heading, and altitude."
+
+    Motivation:
+
+
+    "These
+    drills are essential for your combat preparedness. Take this training seriously,
+    and it will pay dividends in the heat of battle."'
   recommendedLoadout: 

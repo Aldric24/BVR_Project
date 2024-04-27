@@ -4,8 +4,9 @@ using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Cannon : MonoBehaviour
+public class Cannon : Weapon
 {
+     
     [SerializeField] int Ammo = 360;
     bool cannonFiring = true;
     float cannonFiringTimer = 0;    
@@ -19,7 +20,8 @@ public class Cannon : MonoBehaviour
     // Start is called before the first frame update
     void Start() // Or Awake()
     {
-        
+        weaponName = "Cannon";
+        type  = "Cannon";
     }
     
 

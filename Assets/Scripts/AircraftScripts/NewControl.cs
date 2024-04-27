@@ -21,7 +21,7 @@ public class NewControl: MonoBehaviour
     void Start()
     {
         throttleSlider = FindAnyObjectByType<Slider>();
-        throttleSlider.value = 50;
+        throttleSlider.value = 0;
         //rb = GetComponent<Rigidbody2D>();
         Input.gyro.enabled = true;
     }

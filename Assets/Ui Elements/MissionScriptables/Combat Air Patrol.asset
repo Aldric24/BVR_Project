@@ -14,19 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionImage: {fileID: 21300000, guid: d286278a4de65f34898fb613c318c227, type: 3}
   missionName: Combat Air Patrol
-  missionDescription: 'Welcome, pilot. Today, you''ll be taking to the skies for
-    the very first time. We''ll cover the basics to get you comfortable with the
-    controls and handling of your [aircraft name].  Objectives:  Takeoff and Climb:
-    Get familiar with power settings, gentle liftoff, and ascending to a safe altitude.
-    Basic Maneuvers: Practice controlled turns, maintaining level flight, and gentle
-    descents. Airfield Familiarization: Overfly the airfield and learn to visually
-    identify key areas like the runway and traffic patterns. Landing: Align with
-    the runway, reduce speed, and safely touch down. Instructor Notes:  Focus: This
-    isn''t about speed or precision. We want smooth inputs and controlled flight.
-    Radio: I''ll be guiding you through each step. Don''t hesitate to ask if you
-    have questions. Safety: This is a safe environment to make mistakes. Learn from
-    them and we''ll have you flying like a pro soon. Additional Flavor (Optional): 
-    Backstory: "Legend says the first pilot to ever solo here went on to become an
-    ace..." Challenge: "If you''re feeling confident, we might even try a basic loop
-    by the end of the flight.'
+  missionDescription: 'Combat Air Patrol
+
+
+    Intel:
+
+
+    "Pilots, we have a developing
+    situation. Hostile aircraft have infiltrated Sector 4. Our radar confirms multiple
+    bogies. Your mission is intercept and engage."
+
+    Objectives:
+
+
+    "Primary
+    objective: Neutralize all hostile aircraft. Do not let any enemy fighters break
+    through our defensive perimeter."
+
+
+    "Secondary objective: Intel suggests
+    enemy ground support assets may be in the area. Be prepared for surprise air-to-ground
+    engagements as the situation develops."
+
+
+    Call to Action:
+
+    "Scramble
+    immediately. This is not a drill. The lives of our forces on the ground depend
+    on you. Good luck, pilots."'
   recommendedLoadout: 

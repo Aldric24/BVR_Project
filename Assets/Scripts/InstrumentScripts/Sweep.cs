@@ -68,7 +68,7 @@ public class SweepRotation : MonoBehaviour
             if (isAtLeftExtreme && !wasAtLeftExtreme) // Just passed left extreme
             {
                 // Full rotation completed (modify as needed)
-                Debug.Log("Full Rotation Completed!");
+                //Debug.Log("Full Rotation Completed!");
                 // You can call CycleAndLockOnTarget() or perform other full-rotation actions here.
                 wasAtLeftExtreme = true;
             }
@@ -101,14 +101,15 @@ public class SweepRotation : MonoBehaviour
             RadarObjects.Add(collision.gameObject);
             lastPingedTimes[collision.gameObject] = Time.time;
             RadarPing radarPing = Instantiate(pfRadarPing, collision.gameObject.transform.position, Quaternion.identity).GetComponent<RadarPing>();
-            radarPing.rotation = collision.gameObject.transform;
+            
+            radarPing.gameObject.transform.parent = gameObject.transform.parent;
             radarPings[collision.gameObject] = radarPing;// Record ping time
         }
         else
         {
             lastPingedTimes[collision.gameObject] = Time.time;
             radarPings[collision.gameObject].transform.position = collision.gameObject.transform.position;
-
+            radarPings[collision.gameObject].rotation = collision.gameObject.transform;
         }
         
 

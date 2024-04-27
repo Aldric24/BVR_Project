@@ -16,7 +16,7 @@ public class RadarRotation : MonoBehaviour
   
     private void Update()
     {
-        if (transform != null)
+        if (system != null)
         {
 
             transform.position = system.position;

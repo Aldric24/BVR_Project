@@ -9,7 +9,12 @@ public class HardPoint : MonoBehaviour
     [SerializeField]Transform hardpoint;
     public  bool MissileFired = false;
     public GameObject missile;
-    AmraamScript missileScript;
+    public string missiletype;
+
+    private void Start()
+    {
+        missiletype = missile.GetComponent<Weapon>().type;
+    }
     public void AttachMissile(GameObject Missile)
     {
         missile = Instantiate(Missile, hardpoint.position, hardpoint.rotation);
@@ -18,9 +23,60 @@ public class HardPoint : MonoBehaviour
    
     public void Fire(WeaponsManager wp)
     {
-        MissileFired = true;
-        missileScript = missile.GetComponent<AmraamScript>();
-        missileScript.fire(wp);
+        if(missile.GetComponent<Weapon>().type== "Fox3")
+        {
+            MissileFired = true;
+            missile.GetComponent<Fox3Script>().fire(wp); ;
+          
+        }
+        else if(missile.GetComponent<Weapon>().type == "Fox1")
+        {
+            MissileFired = true;
+            missile.GetComponent<Fox1Script>().fire(wp);
+
+        }
+        else if (missile.GetComponent<Weapon>().type == "Fox2")
+        {
+            MissileFired = true;
+            missile.GetComponent<Fox2Script>().fire(wp);
+
+        }
+
+
     }
+    public void EnableMissile()
+    {
+        if (missile.GetComponent<Weapon>().type == "Fox3")
+        {
+            
+
+        }
+        else if (missile.GetComponent<Weapon>().type == "Fox1")
+        {
+            
+
+        }
+        else if (missile.GetComponent<Weapon>().type == "Fox2")
+        {
+            missile.GetComponent<Fox2Script>().enabled=true;
+        }
+    }
+    public void DisableMissile()
+    {
+        if (missile.GetComponent<Weapon>().type == "Fox3")
+        {
+            missile.GetComponent<Fox3Script>().enabled = false;
+        }
+        else if (missile.GetComponent<Weapon>().type == "Fox1")
+        {
+            missile.GetComponent<Fox1Script>().enabled = false;
+        }
+        else if (missile.GetComponent<Weapon>().type == "Fox2")
+        {
+            missile.GetComponent<Fox2Script>().enabled = false;
+        }
+    }   
+    
+
 
 }

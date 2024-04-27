@@ -17,10 +17,13 @@ public class RadarPing : MonoBehaviour {
     }
     private void Update()
     {
-        transform.rotation=rotation.rotation;
+        if(rotation!=null)
+        {
+            transform.rotation = rotation.rotation;
+        }
         if(pingHighlight)
         {
-            pingHighlight.transform.rotation = rotation.rotation;
+            pingHighlight.transform.rotation = gameObject.transform.rotation;
 
         }
     }

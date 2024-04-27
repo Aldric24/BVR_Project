@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class AmraamScript : Weapon
+public class Fox3Script : Weapon
 {
 
     // Missile Properties
@@ -189,6 +189,9 @@ public class AmraamScript : Weapon
             if (info.target == null)
             {
                 target = null;
+                float timeSinceLastLock = Time.time - timeOfLastLock;
+                Vector3 estimatedPosition = lastKnownTargetPosition + (lastKnownTargetVelocity * timeSinceLastLock);
+                targetDirection = (estimatedPosition - transform.position).normalized;
                 RadarSweep();
             }
             else if (info.target != null)

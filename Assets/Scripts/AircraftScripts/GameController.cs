@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour
         LeanTween.alphaCanvas(panel.GetComponent<CanvasGroup>(), 1, 2).setOnComplete(() => SceneManager.LoadScene("LV1"));
         
         yield return new WaitForSeconds(2);
-        GameObject playerobj = Instantiate(player, new Vector3(1450, -39, 60), Quaternion.identity);
+        GameObject playerobj = Instantiate(player, new Vector3(1661, 219, 60), Quaternion.identity);
         SetPlayerLoadout(loadout, playerobj);
         
         
