@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour {
     LayerMask collisionMask;
     [SerializeField]
     float width;
-
+    [SerializeField] float detectionRadius;
     public GameObject owner;
     new Rigidbody2D rigidbody;
     Vector3 lastPosition;
@@ -30,51 +30,60 @@ public class Bullet : MonoBehaviour {
         rigidbody = GetComponent<Rigidbody2D>(); // Change to Rigidbody2D
         rigidbody.AddRelativeForce(new Vector2(1, -speed), (ForceMode2D)ForceMode.VelocityChange); // Change to Vector2
         rigidbody.AddForce(owner.GetComponent<Rigidbody2D>().velocity, (ForceMode2D)ForceMode.VelocityChange);
-        lastPosition = rigidbody.position;
+        //float distanceToTravel = speed * Time.deltaTime;
+        //RaycastHit2D hit = Physics2D.Raycast(lastPosition, transform.up, distanceToTravel, collisionMask);
+
+        //if (hit.collider != null)
+        //{
+        //    Debug.Log("Hit: " + hit.collider.name);
+        //    // Handle collision here
+        //}
+
+        //lastPosition = transform.position;
         // This stays the same, but will store Vector2 now
     }
-    //    rigidbody.AddRelativeForce(new Vector3(0, 0, speed), ForceMode.VelocityChange);
-    //    rigidbody.AddForce(owner.GetComponent<Rigidbody2D>().velocity, ForceMode.VelocityChange);
-    //    lastPosition = rigidbody.position;
-    //}
+    
 
     void FixedUpdate() {
         if (Time.time > startTime + lifetime) {
             Destroy(gameObject);
             return;
         }
+        FindHeatTarget();
+        float distanceToTravel = speed * Time.deltaTime;
+        RaycastHit2D hit = Physics2D.Raycast(lastPosition, transform.up, distanceToTravel, collisionMask);
 
-        //var diff = rigidbody.position - lastPosition;
-        //lastPosition = rigidbody.position;
-
-        //float distanceTravelled = diff.magnitude;
-        //int numberOfRaycasts = 4; // Adjust as needed for precision
-        //float raycastInterval = distanceTravelled / numberOfRaycasts;
-
-        //for (int i = 0; i < numberOfRaycasts; i++)
-        //{
-        //    Vector3 rayStart = lastPosition + diff.normalized * (i * raycastInterval);
-        //    Ray ray = new Ray(rayStart, diff.normalized);
-            
-        //    RaycastHit hit;
-        //    if (Physics.Raycast(ray, out hit, raycastInterval, collisionMask.value))
-        //    {
-        //        Plane other = hit.collider.GetComponent<Plane>();
-
-        //        Debug.Log("Hit " + hit.collider.gameObject.name);
-
-        //        Destroy(gameObject);
-        //    }
-        //}
-    }
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Hit " + other.gameObject.name);
-        if (other.gameObject.CompareTag("Adversary")) // Or your preferred check 
+        if (hit.collider != null)
         {
-           
-            Debug.Log("Hit " + other.gameObject.name);
-            Destroy(gameObject);
+            Debug.Log("Hit: " + hit.collider.name);
+            // Handle collision here
+        }
+
+        lastPosition = transform.position;
+        //This stays the same, but will store Vector2 now
+
+    }
+
+    private void FindHeatTarget()
+    {
+        Collider2D detectedColliders = Physics2D.OverlapCircle(transform.position, detectionRadius, collisionMask);
+        if(detectedColliders != null)
+        {
+            Debug.Log("Targets hit: " + detectedColliders.name);
+            if(detectedColliders.tag=="Adversary")
+            {
+                Destroy(detectedColliders.gameObject);
+            }
+        }
+        
+       
+    }
+    void OnDrawGizmos()
+    {
+        if (enabled)  // Only draw gizmo when the script is active
+        {
+            Gizmos.color = Color.yellow; // Adjust color as you like
+            Gizmos.DrawWireSphere(transform.position, detectionRadius);
         }
     }
 }

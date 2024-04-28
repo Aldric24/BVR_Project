@@ -58,6 +58,7 @@ public class HardPoint : MonoBehaviour
         }
         else if (missile.GetComponent<Weapon>().type == "Fox2")
         {
+            missile.GetComponent<AudioSource>().enabled = true;
             missile.GetComponent<Fox2Script>().enabled=true;
         }
     }
@@ -73,6 +74,7 @@ public class HardPoint : MonoBehaviour
         }
         else if (missile.GetComponent<Weapon>().type == "Fox2")
         {
+            missile.GetComponent<AudioSource>().enabled = false;
             missile.GetComponent<Fox2Script>().enabled = false;
         }
     }   

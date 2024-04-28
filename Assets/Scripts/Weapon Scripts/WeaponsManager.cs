@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -27,6 +28,7 @@ public class WeaponsManager : MonoBehaviour
     void Start()
     {
         Tempmattach();
+        SwitchMissile();
         missilecount = hardpoints.Count;
     }
     void FixedUpdate()
@@ -54,35 +56,32 @@ public class WeaponsManager : MonoBehaviour
             
         }
     }
-    
-   
 
-    public void SwitchWeapon()
+
+
+    public void FireMissile()
     {
-        // Cycle through weapon types (you might add "Cannon" as an option here)
-        List<string> weaponTypes = new List<string> { "Fox1", "Fox2", "Fox3" };
-        int typeIndex = weaponTypes.IndexOf(currentMissileType);
-        typeIndex = (typeIndex + 1) % weaponTypes.Count;
-        currentMissileType = weaponTypes[typeIndex];
-
-        currentMissileIndex = 0; // Reset index for the new type
-        FindNextAvailableOfType(currentMissileType); // Enable the first available missile
-        // Enable/Disable scripts
-        DisableAllMissileScripts();
-        UpdateWeaponUI();
-    }
-
-
-    public void FireWeapon()
-    {
-        if (currentMissileType == "Cannon")
-        {
-            // ... Fire cannon logic ...
-        }
-        else if (currentMissileType != null)
+        if (currentMissileType != null)
         {
             FireCurrentMissile();
         }
+    }
+
+    public void SwitchMissile() // Renamed for clarity
+    {
+        List<string> missileTypes = new List<string> { "Fox1", "Fox2", "Fox3" }; // Only missile types
+
+        do
+        {
+            currentWeaponTypeIndex = (currentWeaponTypeIndex + 1) % missileTypes.Count;
+            currentMissileType = missileTypes[currentWeaponTypeIndex];
+        } while (hardpoints.Count(hp => hp.missiletype == currentMissileType) == 0);
+
+        currentMissileIndex = FindNextAvailableOfType(currentMissileType);
+        
+
+        DisableAllMissileScripts();
+        UpdateWeaponUI();
     }
 
     //public void SwitchWeapon()
@@ -145,12 +144,39 @@ public class WeaponsManager : MonoBehaviour
     private void DisableAllMissileScripts()
     {
         // (Implement based on your missile script setup)
+        foreach (HardPoint hardpoint in hardpoints)
+        {
+            if (hardpoint.missiletype != currentMissileType)
+            {
+                hardpoint.DisableMissile();
+            }
+        }
     }
 
     private void UpdateWeaponUI()
     {
-        // ... Update your UI based on currentMissileType ...
+        if (availableWeaponTypes.Count == 0)  // Check for any weapons at all
+        {
+            Weapon.text = "No weapons available";
+            return;
+        }
+
+        // Ensure the current type is a missile type
+        string weaponTypeToDisplay = currentWeaponTypeIndex < availableWeaponTypes.Count
+                                     && IsMissileType(availableWeaponTypes[currentWeaponTypeIndex])
+                                     ? availableWeaponTypes[currentWeaponTypeIndex]
+                                     : "None";
+
+        // Find the count of missiles of the current type
+        int currentTypeCount = hardpoints.Count(hp => hp.missiletype == weaponTypeToDisplay);
+        Weapon.text = weaponTypeToDisplay + ": " + currentTypeCount;
     }
-   
+
+    // Helper function to check if a weapon type is a missile
+    private bool IsMissileType(string weaponType)
+    {
+        return weaponType == "Fox1" || weaponType == "Fox2" || weaponType == "Fox3";
+    }
+
 
 }

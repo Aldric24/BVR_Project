@@ -39,15 +39,15 @@ public class Fox2Script : Weapon
     [SerializeField] private bool isSearching = false;
     [SerializeField] private bool hasTarget = false;
     [SerializeField]bool launched= false;
+    public bool is_equipped=false;
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(AudioCallOut());
         weaponName = "Sidewinder AIM-9M";
         rb = GetComponent<Rigidbody2D>();
-        // Play the search sound immediately on Start
-        audioSource.clip = searchSound;
-        audioSource.loop = true; // Make sure the search sound loops
-        audioSource.Play();
+        isSearching = true;
+       
         Debug.Log("Target LAyer " + targetLayerMask);
     }
 
@@ -57,7 +57,8 @@ public class Fox2Script : Weapon
         FindHeatTarget();
         if (rb.simulated != false)
         {
-            if(launched)
+            
+            if (launched)
             {
                 guidance();
                 velocity = ((int)rb.velocity.magnitude);
@@ -74,6 +75,32 @@ public class Fox2Script : Weapon
                 CheckRaycastCollision(); // Might not need raycast with heat-seeking
             }
             
+        }
+    }
+    IEnumerator AudioCallOut()
+    {
+        while (true)
+        {
+            if (isSearching)
+            {
+                if (audioSource.clip != searchSound)
+                {
+                    audioSource.clip = searchSound;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                }
+            }
+            else
+            {
+                if (audioSource.clip != lockSound)
+                {
+                    audioSource.clip = lockSound;
+                    audioSource.loop = true;
+                    audioSource.Play();
+                }
+            }
+
+            yield return new WaitForSeconds(0.2f); // Slight delay between checks
         }
     }
     void BoostPhase()
@@ -114,11 +141,11 @@ public class Fox2Script : Weapon
         // Adjust velocity based on dynamic deceleration
         rb.velocity = transform.up * (rb.velocity.magnitude - decelerationRate * Time.fixedDeltaTime);
 
-        // Self-destruct Logic
-        //if (rb.velocity.magnitude < minVelocityThreshold)
-        //{
-        //  Destroy(gameObject);
-        //}
+        //Self - destruct Logic
+        if (rb.velocity.magnitude < minVelocityThreshold)
+        {
+            Destroy(gameObject);
+        }
     }
     void AlignWithVelocity()
     {
@@ -181,14 +208,7 @@ public class Fox2Script : Weapon
         FindHeatTarget(); // W
         if (heatTarget  != null)
         {
-            if (!hasTarget)
-            {
-                audioSource.Stop(); // Stop playing the search sound
-                audioSource.clip = lockSound;
-                audioSource.loop = false; // Don't loop the lock sound
-                audioSource.Play();
-                hasTarget = true;
-            }
+            
             // Calculate target velocity (assuming target has a Rigidbody2D component)
             Vector3 targetVelocity = heatTarget.GetComponent<Rigidbody2D>().velocity;
 
@@ -238,11 +258,15 @@ public class Fox2Script : Weapon
             if (potentialTarget != null)
             {
                 heatTarget = potentialTarget.transform;
+                isSearching = false;
                 hasTarget = true;
                 Debug.Log("Found target: " + heatTarget.gameObject.name + ", intensity: " + largestHeatIntensity);
             }
             else
             {
+                isSearching = true;
+                hasTarget = false;
+                heatTarget = null;
                 Debug.Log("No targets detected within radius");
             }
         }
@@ -257,7 +281,8 @@ public class Fox2Script : Weapon
     }
     internal void fire(WeaponsManager parent)
     {
-
+        rb.bodyType= RigidbodyType2D.Dynamic;
+        launched = true;
         if (parent != null)
         {
             FindHeatTarget();

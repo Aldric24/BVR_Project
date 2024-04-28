@@ -84,7 +84,7 @@ MonoBehaviour:
   isBoosting: 1
   missileParticleEffect: {fileID: 8115273924998084352}
   raycastDistance: 2
-  minVelocityThreshold: 1
+  minVelocityThreshold: 50
   baseDecelerationRate: 0.5
   turningDecelerationMultiplier: 2
   decelerationRate: 0.5
