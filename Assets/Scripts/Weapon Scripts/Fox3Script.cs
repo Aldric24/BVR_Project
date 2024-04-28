@@ -28,13 +28,12 @@ public class Fox3Script : Weapon
     Vector3 lastposition;
     [SerializeField] private int velocity;
     [SerializeField] private GameObject acquiredtarget;
-    WeaponsManager targetinginfo;
+  
     private Vector3 lastKnownTargetPosition;
     private Vector3 lastKnownTargetVelocity;
     private float timeOfLastLock;
     [SerializeField] float radarAngle = 30f;  // Half the angle of the radar cone
     [SerializeField] float radarRange = 20f;
-    
     [SerializeField]Collider2D radar;
     void Start()
     {
@@ -131,6 +130,7 @@ public class Fox3Script : Weapon
     }
     void OnTriggerEnter2D(Collider2D radar)
     {
+        Debug.Log("missile radar sees something");
         if (radar.gameObject.CompareTag("Adversary"))
         {
             acquiredtarget = radar.gameObject;
@@ -160,10 +160,12 @@ public class Fox3Script : Weapon
     }
     bool RadarSweep()
     {
-        radar.enabled = true;
         
-        //get collision info from the collider
-       
+        radar.enabled = true;
+
+       // get collision info from the collider
+
+
         //int numRays = 5; // Number of rays within the cone
         //float angleIncrement = radarAngle / numRays;
 
@@ -184,9 +186,10 @@ public class Fox3Script : Weapon
     }
     IEnumerator checkTargetinginfo(WeaponsManager info)
     {
-        while (true)
+        while (!radar.enabled)
         {
-            if (info.target == null)
+            Debug.Log("Checking for target");
+            if (info.target == null && acquiredtarget)
             {
                 target = null;
                 float timeSinceLastLock = Time.time - timeOfLastLock;
@@ -208,7 +211,7 @@ public class Fox3Script : Weapon
                 targetDirection = (estimatedPosition - transform.position).normalized;
                 RadarSweep();
             }
-
+            
             yield return null;
         }
         

@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 367358629928999320}
   offset: {x: 0.11, y: 0.14, z: -70}
+  moveDuration: 1.5
 --- !u!1 &2789426828368828520
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,9 +198,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d6c5ff4e821243aa749330c5566c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   hardpoint: {fileID: 5066196171763207490}
   MissileFired: 0
+  missile: {fileID: 0}
+  missiletype: 
 --- !u!1 &3093889240488262419
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,6 +354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 367358629928999320}
   offset: {x: -9.69, y: 11.79, z: -70}
+  moveDuration: 1.5
 --- !u!1 &4747928565487770259
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,6 +430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ad79562920ce64881c7a115bfaa4a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponName: 
+  type: 
   Ammo: 360
   cannonFireRate: 113.05
   cannonSpread: 5
@@ -587,6 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 367358629928999320}
   offset: {x: -5, y: 158, z: -70}
+  moveDuration: 1.5
 --- !u!1 &7032373634107265277
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,9 +700,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d6c5ff4e821243aa749330c5566c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   hardpoint: {fileID: 8198572942922701473}
   MissileFired: 0
+  missile: {fileID: 0}
+  missiletype: 
 --- !u!1 &7384542229479850523
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,9 +749,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d6c5ff4e821243aa749330c5566c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   hardpoint: {fileID: 8761920521964741245}
   MissileFired: 0
+  missile: {fileID: 0}
+  missiletype: 
 --- !u!1 &7449096059356460377
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,9 +860,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d6c5ff4e821243aa749330c5566c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   hardpoint: {fileID: 5272835272850025009}
   MissileFired: 0
+  missile: {fileID: 0}
+  missiletype: 
 --- !u!1 &8947464812578893289
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,11 +925,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 70
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1186,9 +1195,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d6c5ff4e821243aa749330c5566c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   hardpoint: {fileID: 2258240670381427941}
   MissileFired: 0
+  missile: {fileID: 0}
+  missiletype: 
 --- !u!1 &1032113862140740386 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a6ddd0746214f204fac5546800568b64, type: 3}
@@ -1338,6 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9d6c5ff4e821243aa749330c5566c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   hardpoint: {fileID: 7055982109444555023}
   MissileFired: 0
+  missile: {fileID: 0}
+  missiletype: 

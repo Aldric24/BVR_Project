@@ -47,14 +47,14 @@ public class HardPoint : MonoBehaviour
     public void EnableMissile()
     {
         if (missile.GetComponent<Weapon>().type == "Fox3")
-        {
-            
-
+        {   
+            missile.GetComponent<Fox3Script>().enabled = true;
         }
         else if (missile.GetComponent<Weapon>().type == "Fox1")
         {
-            
 
+           
+            
         }
         else if (missile.GetComponent<Weapon>().type == "Fox2")
         {

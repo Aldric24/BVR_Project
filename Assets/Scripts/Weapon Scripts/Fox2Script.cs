@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -237,7 +238,7 @@ public class Fox2Script : Weapon
     private void FindHeatTarget()
     {
         Collider2D[] detectedColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayerMask);
-
+        Debug.Log("Detected colliders: " + detectedColliders.Length);
         if (detectedColliders.Length > 0)
         {
             Debug.Log("Targets detected: " + detectedColliders[0].name);
@@ -261,6 +262,7 @@ public class Fox2Script : Weapon
                 isSearching = false;
                 hasTarget = true;
                 Debug.Log("Found target: " + heatTarget.gameObject.name + ", intensity: " + largestHeatIntensity);
+
             }
             else
             {
@@ -269,7 +271,16 @@ public class Fox2Script : Weapon
                 heatTarget = null;
                 Debug.Log("No targets detected within radius");
             }
+            // Clear after processing
         }
+        else
+        {
+            isSearching = true;
+            hasTarget = false;
+            heatTarget = null;
+            Debug.Log("No targets detected within radius");
+        }
+           
     }
     void OnDrawGizmos()
     {

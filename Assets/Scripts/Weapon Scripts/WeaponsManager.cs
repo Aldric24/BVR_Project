@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponsManager : MonoBehaviour
@@ -25,6 +26,13 @@ public class WeaponsManager : MonoBehaviour
 
     private int currentListIndex = 0; // Index of the currently equipped list
     private List<HardPoint> currentMissileList; // Reference to the active list
+    [SerializeField] private int flareCount;
+    [SerializeField] private float lastFlareDeployTime;
+    [SerializeField] private int cooldown;
+    [SerializeField] private int flaresPerDeployment;
+    [SerializeField] GameObject flarePrefab;
+    private Vector2 dispersion;
+
     void Start()
     {
         Tempmattach();
@@ -152,7 +160,20 @@ public class WeaponsManager : MonoBehaviour
             }
         }
     }
+    public void DeployFlares()
+    {
+        if (flareCount > 0 && Time.time > lastFlareDeployTime + cooldown)
+        {
+            for (int i = 0; i < flaresPerDeployment; i++)
+            {
+                Vector3 offset = Random.insideUnitCircle * dispersion;
+                GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
+            }
 
+            flareCount--;
+            lastFlareDeployTime = Time.time;
+        }
+    }
     private void UpdateWeaponUI()
     {
         if (availableWeaponTypes.Count == 0)  // Check for any weapons at all
