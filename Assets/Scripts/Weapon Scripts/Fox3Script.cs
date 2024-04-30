@@ -105,6 +105,7 @@ public class Fox3Script : Weapon
 
     void InertialPhase()
     {
+       
         AlignWithVelocity();
         // Determine Angular Velocity (how fast the missile is turning)
         float angularVelocityMagnitude = Mathf.Abs(rb.angularVelocity);
@@ -122,11 +123,11 @@ public class Fox3Script : Weapon
         // Adjust velocity based on dynamic deceleration
         rb.velocity = transform.up * (rb.velocity.magnitude - decelerationRate * Time.fixedDeltaTime);
 
-        // Self-destruct Logic
-        //if (rb.velocity.magnitude < minVelocityThreshold)
-        //{
-        //    Destroy(gameObject);
-        //}
+        //Self - destruct Logic
+        if (rb.velocity.magnitude < minVelocityThreshold)
+        {
+            Destroy(gameObject);
+        }
     }
     void OnTriggerEnter2D(Collider2D radar)
     {
@@ -136,8 +137,22 @@ public class Fox3Script : Weapon
             acquiredtarget = radar.gameObject;
             target = radar.transform;
         }
-        
+        else if (radar.gameObject.CompareTag("Chaff"))
+        {
+            if (ShouldGetConfused())
+            {
+                Debug.Log("radar confused for sometime");
+                acquiredtarget = radar.gameObject;
+                target = radar.transform;
+                // You might introduce a temporary confusion effect here
+            }
+        }
+    }
 
+    bool ShouldGetConfused()
+    {
+        float chanceOfConfusion = 0.3f; // 30% chance e.g.
+        return UnityEngine.Random.value < chanceOfConfusion;
     }
     void OnTriggerStay2D(Collider2D radar)
     {
@@ -186,6 +201,7 @@ public class Fox3Script : Weapon
     }
     IEnumerator checkTargetinginfo(WeaponsManager info)
     {
+
         while (!radar.enabled)
         {
             Debug.Log("Checking for target");

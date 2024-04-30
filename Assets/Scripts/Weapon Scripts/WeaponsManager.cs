@@ -31,6 +31,11 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private int cooldown;
     [SerializeField] private int flaresPerDeployment;
     [SerializeField] GameObject flarePrefab;
+    [SerializeField] private int ChaffCount;
+    [SerializeField] private float lastchaffdeploytime;
+    [SerializeField] private int ccooldown;
+    [SerializeField] private int chaffperdeployment;
+    [SerializeField] GameObject chaffprefab;
     private Vector2 dispersion;
 
     void Start()
@@ -161,6 +166,20 @@ public class WeaponsManager : MonoBehaviour
         }
     }
     public void DeployFlares()
+    {
+        if (flareCount > 0 && Time.time > lastFlareDeployTime + cooldown)
+        {
+            for (int i = 0; i < flaresPerDeployment; i++)
+            {
+                Vector3 offset = Random.insideUnitCircle * dispersion;
+                GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
+            }
+
+            flareCount--;
+            lastFlareDeployTime = Time.time;
+        }
+    }
+    public void DeployChaff()
     {
         if (flareCount > 0 && Time.time > lastFlareDeployTime + cooldown)
         {

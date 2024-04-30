@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PopUp : MonoBehaviour
 {
-   public Transform system;
+    public Transform system;
     [SerializeField] private GameObject popUp;
     // Update is called once per frame
     private void Start()

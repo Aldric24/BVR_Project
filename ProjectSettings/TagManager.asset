@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Adversary
   - Adversary Radar
+  - Chaff
   layers:
   - Default
   - TransparentFX

@@ -12,6 +12,7 @@ public class RWR : MonoBehaviour
     [SerializeField] private float rotationSpeed;
     private float radarDistance;
     [SerializeField] private GameObject popup;
+    [SerializeField] private GameObject Missile;
     [SerializeField] Dictionary<GameObject, float> lastPingedTimes = new Dictionary<GameObject, float>();
     [SerializeField] List<GameObject> RWRObjects = new List<GameObject>();
     [SerializeField] Dictionary<GameObject, PopUp> RWRpings = new Dictionary<GameObject, PopUp>();
@@ -28,14 +29,26 @@ public class RWR : MonoBehaviour
     {
         if (!RWRObjects.Contains(gameObject)) // Check for duplicates
         {
+            if(gameObject.name == "AIM120D")
+            {
+                RWRObjects.Add(gameObject);
+                lastPingedTimes[gameObject] = Time.time;
+                popup.GetComponent<PopUp>().system = system;
+                PopUp missile = Instantiate(Missile, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
 
-            RWRObjects.Add(gameObject);
-            lastPingedTimes[gameObject] = Time.time;
-            popup.GetComponent<PopUp>().system = system;
-            PopUp radarPing = Instantiate(popup, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
+                RWRpings[gameObject] = missile;// Record ping time
+            }
+            else
+            {
+                RWRObjects.Add(gameObject);
+                lastPingedTimes[gameObject] = Time.time;
+                popup.GetComponent<PopUp>().system = system;
+                PopUp radarPing = Instantiate(popup, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
 
-            RWRpings[gameObject] = radarPing;// Record ping time
+                RWRpings[gameObject] = radarPing;// Record ping time
+            }
         }
+            
         else
         {
             lastPingedTimes[gameObject] = Time.time;

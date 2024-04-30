@@ -128,6 +128,8 @@ public class NewControl: MonoBehaviour
         {
             rwr.Popup(collision.gameObject.transform.parent.gameObject);
         }
+        
+
     }
     
 }
