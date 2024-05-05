@@ -15,7 +15,7 @@ public class EnemyRadar : MonoBehaviour
     [SerializeField] private Sprite[] spriteExtremeA;
 
     public List<GameObject> RadarObjects;
-    private Dictionary<GameObject, float> lastPingedTimes;
+    public  Dictionary<GameObject, float> lastPingedTimes;
     public GameObject LockedTarget = null;
     private float position;
     private bool isAtLeftExtreme, isAtRightExtreme;
@@ -74,6 +74,7 @@ public class EnemyRadar : MonoBehaviour
 
 
                         RadarObjects.Remove(pair.Key);
+                        yield return new WaitForSeconds(3f);
                         lastPingedTimes.Remove(pair.Key);
 
                     }

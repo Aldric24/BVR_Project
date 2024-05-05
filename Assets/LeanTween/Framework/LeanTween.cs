@@ -692,7 +692,7 @@ public class LeanTween : MonoBehaviour {
     * @example LeanTween.move( gameObject, new Vector3(0f,1f,2f), 1f).setOnComplete( oldMethod ); <br /><br />
     * <div style="color:gray">// later I want decide I want to change onComplete method </div>
     * LTDescr[] descr = LeanTween.descriptions( gameObject );<br />
-    * if(descr.Length>0) <span style="color:gray">// make sure there is a valid description for this target</span><br />
+    * if(descr.Length>0) <span style="color:gray">// make sure there is a valid description for this heading</span><br />
     * &#160;&#160;descr[0].setOnComplete( newMethod );<span style="color:gray">// in this case we only ever expect there to be one tween on this object</span><br />
     */
     public static LTDescr[] descriptions(GameObject gameObject = null) {

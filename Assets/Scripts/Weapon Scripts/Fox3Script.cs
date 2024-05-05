@@ -11,7 +11,7 @@ public class Fox3Script : Weapon
     [SerializeField] private float thrustDuration;
     [SerializeField]private bool isBoosting;
     private float boostTimer = 0;
-    private Rigidbody2D rb;
+    [SerializeField]private Rigidbody2D rb;
     [SerializeField] private ParticleSystem missileParticleEffect;
     // Target Related
     [SerializeField]private Transform target; // Set externally or retrieved from the player
@@ -37,9 +37,14 @@ public class Fox3Script : Weapon
     [SerializeField]Collider2D radar;
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        //if (gameObject.transform.parent.tag=="Player")
+        //{
+        //    gameObject.tag = "PlayerMissile";
+        //}
         weaponName = "Amraam Aim120 -D";
         boostTimer = 0;
-        rb = GetComponent<Rigidbody2D>();
+        
     }
 
     void FixedUpdate()
@@ -69,14 +74,14 @@ public class Fox3Script : Weapon
     {
         if (target != null)
         {
-            // Calculate target velocity (assuming target has a Rigidbody2D component)
+            // Calculate heading velocity (assuming heading has a Rigidbody2D component)
             Vector3 targetVelocity = target.GetComponent<Rigidbody2D>().velocity;
 
-            // Use first-order intercept to predict target position
+            // Use first-order intercept to predict heading position
             float timeToIntercept = Vector3.Distance(transform.position, target.position) / maxSpeed;
             Vector3 predictedTargetPosition = target.position + (targetVelocity * timeToIntercept);
 
-            // Update target direction based on predicted position
+            // Update heading direction based on predicted position
             targetDirection = (predictedTargetPosition - transform.position).normalized;
         }
         else
@@ -177,27 +182,7 @@ public class Fox3Script : Weapon
     {
         
         radar.enabled = true;
-
-       // get collision info from the collider
-
-
-        //int numRays = 5; // Number of rays within the cone
-        //float angleIncrement = radarAngle / numRays;
-
-        //for (float angle = -radarAngle; angle <= radarAngle; angle += angleIncrement)
-        //{
-        //    Vector3 rayDir = Quaternion.Euler(0, 0, angle) * transform.up;
-        //    RaycastHit2D hit = Physics2D.Raycast(transform.position, rayDir, radarRange);
-
-        //    // Customize what qualifies as a "detected" target
-        //    if (CheckValidCollision(hit.collider) && hit.collider.CompareTag("Adversary"))
-        //    {
-        //        Debug.Log("missile radar sees something");
-        //        target = hit.transform; // Assign the detected object as the target
-        //        return true;
-        //    }
-        //}
-        return false; // No target detected
+        return false; // No heading detected
     }
     IEnumerator checkTargetinginfo(WeaponsManager info)
     {
@@ -219,9 +204,9 @@ public class Fox3Script : Weapon
                 lastKnownTargetPosition = target.position;
                 lastKnownTargetVelocity = target.GetComponent<Rigidbody2D>().velocity;
             }
-            else // info.target is null but we have past data
+            else // info.heading is null but we have past data
             {
-                // Estimate new target position based on previous velocity
+                // Estimate new heading position based on previous velocity
                 float timeSinceLastLock = Time.time - timeOfLastLock;
                 Vector3 estimatedPosition = lastKnownTargetPosition + (lastKnownTargetVelocity * timeSinceLastLock);
                 targetDirection = (estimatedPosition - transform.position).normalized;
@@ -240,7 +225,8 @@ public class Fox3Script : Weapon
     {
         if (collider == null) return false;
 
-        if (collider.gameObject.CompareTag("Player")) return false; // Ignore player collisions
+        if(gameObject.CompareTag("PlayerMissile") && collider.gameObject.CompareTag("Player")) return false; // Ignore player collisions
+        
 
         return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
     }

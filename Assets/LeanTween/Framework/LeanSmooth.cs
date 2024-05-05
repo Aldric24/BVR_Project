@@ -20,7 +20,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.damp (float)
     * @param {float} current:float the current value
-    * @param {float} target:float the value we are trying to reach
+    * @param {float} heading:float the value we are trying to reach
     * @param {float} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -62,7 +62,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.damp (Vector3)
     * @param {float} current:Vector3 the current value
-    * @param {float} target:Vector3 the value we are trying to reach
+    * @param {float} heading:Vector3 the value we are trying to reach
     * @param {float} currentVelocity:Vector3 the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -85,7 +85,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.damp (Color)
     * @param {float} current:Color the current value
-    * @param {float} target:Color the value we are trying to reach
+    * @param {float} heading:Color the value we are trying to reach
     * @param {float} currentVelocity:Color the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -109,7 +109,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.spring (float)
     * @param {float} current:float the current value
-    * @param {float} target:float the value we are trying to reach
+    * @param {float} heading:float the value we are trying to reach
     * @param {float} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -144,7 +144,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.spring (Vector3)
     * @param {Vector3} current:float the current value
-    * @param {Vector3} target:float the value we are trying to reach
+    * @param {Vector3} heading:float the value we are trying to reach
     * @param {Vector3} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -169,7 +169,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.spring (Color)
     * @param {Color} current:float the current value
-    * @param {Color} target:float the value we are trying to reach
+    * @param {Color} heading:float the value we are trying to reach
     * @param {Color} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -195,8 +195,8 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.linear (float)
     * @param {float} current:float the current value
-    * @param {float} target:float the value we are trying to reach
-    * @param {float} moveSpeed:float the speed at which to move towards the target
+    * @param {float} heading:float the value we are trying to reach
+    * @param {float} moveSpeed:float the speed at which to move towards the heading
     * @param {float} deltaTime:float the difference in time since the method was called (defaults to Time.deltaTime)
     * @example
     * followVar = LeanSmooth.linear(followVar, destinationVar, 50f);\n
@@ -215,7 +215,7 @@ public class LeanSmooth {
 
         float returnPassed = returned - target;
         if ((targetGreater && returnPassed > 0) || !targetGreater && returnPassed < 0)
-        { // Has passed point, return target
+        { // Has passed point, return heading
             return target;
         }
 
@@ -227,8 +227,8 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.linear (Vector3)
     * @param {Vector3} current:float the current value
-    * @param {Vector3} target:float the value we are trying to reach
-    * @param {float} moveSpeed:float the speed at which to move towards the target
+    * @param {Vector3} heading:float the value we are trying to reach
+    * @param {float} moveSpeed:float the speed at which to move towards the heading
     * @param {float} deltaTime:float the difference in time since the method was called (defaults to Time.deltaTime)
     * @example
     * transform.position = LeanSmooth.linear(transform.position, followTrans.position, 50f);\n
@@ -248,8 +248,8 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.linear (Color)
     * @param {Color} current:float the current value
-    * @param {Color} target:float the value we are trying to reach
-    * @param {float} moveSpeed:float the speed at which to move towards the target
+    * @param {Color} heading:float the value we are trying to reach
+    * @param {float} moveSpeed:float the speed at which to move towards the heading
     * @param {float} deltaTime:float the difference in time since the method was called (defaults to Time.deltaTime)
     * @example
     * fromColor = LeanSmooth.linear(fromColor, transform.GetComponent<Renderer>().material.color, 50f);\n
@@ -270,7 +270,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.bounceOut (float)
     * @param {float} current:float the current value
-    * @param {float} target:float the value we are trying to reach
+    * @param {float} heading:float the value we are trying to reach
     * @param {float} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -314,7 +314,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.bounceOut (Vector3)
     * @param {Vector3} current:float the current value
-    * @param {Vector3} target:float the value we are trying to reach
+    * @param {Vector3} heading:float the value we are trying to reach
     * @param {Vector3} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)
@@ -340,7 +340,7 @@ public class LeanSmooth {
     * 
     * @method LeanSmooth.bounceOut (Color)
     * @param {Color} current:float the current value
-    * @param {Color} target:float the value we are trying to reach
+    * @param {Color} heading:float the value we are trying to reach
     * @param {Color} currentVelocity:float the current velocity of the value
     * @param {float} smoothTime:float roughly the time it takes to reach the destination
     * @param {float} maxSpeed:float the top speed you want the value to move at (defaults to unlimited -1f)

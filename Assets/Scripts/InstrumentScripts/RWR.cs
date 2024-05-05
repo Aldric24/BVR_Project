@@ -44,7 +44,7 @@ public class RWR : MonoBehaviour
                 lastPingedTimes[gameObject] = Time.time;
                 popup.GetComponent<PopUp>().system = system;
                 PopUp radarPing = Instantiate(popup, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
-
+                radarPing.system = gameObject.transform;
                 RWRpings[gameObject] = radarPing;// Record ping time
             }
         }
@@ -52,6 +52,7 @@ public class RWR : MonoBehaviour
         else
         {
             lastPingedTimes[gameObject] = Time.time;
+            RWRpings[gameObject.gameObject].transform.position = gameObject.gameObject.transform.position;
 
         }
         

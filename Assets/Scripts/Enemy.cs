@@ -23,11 +23,11 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        // Determine target rotation
+        // Determine heading rotation
         Vector2 direction = currentWaypoint - (Vector2)transform.position;
         float targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // Smoothly rotate towards the target
+        // Smoothly rotate towards the heading
         float smoothedAngle = Mathf.LerpAngle(transform.eulerAngles.z, targetAngle, rotationSmoothness * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0, 0, targetAngle);
 

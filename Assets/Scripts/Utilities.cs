@@ -45,7 +45,7 @@ public static class Utilities {
 
 
 
-	//first-order intercept using absolute target position
+	//first-order intercept using absolute heading position
 	public static Vector3 FirstOrderIntercept(
 		Vector3 shooterPosition,
 		Vector3 shooterVelocity,
@@ -63,7 +63,7 @@ public static class Utilities {
 		return targetPosition + t * (targetRelativeVelocity);
 	}
 
-	//first-order intercept using relative target position
+	//first-order intercept using relative heading position
 	public static float FirstOrderInterceptTime(
 		float shotSpeed,
 		Vector3 targetRelativePosition,

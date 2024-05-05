@@ -33,7 +33,7 @@ public class Fox2Script : Weapon
     [SerializeField] private float detectionRadius = 10f;
     [SerializeField] private LayerMask targetLayerMask;
     [SerializeField] private LayerMask collisionMask;
-    [SerializeField] private Transform heatTarget;
+    [SerializeField] public Transform heatTarget;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip searchSound;
     [SerializeField] private AudioClip lockSound;
@@ -44,6 +44,10 @@ public class Fox2Script : Weapon
     // Start is called before the first frame update
     void Start()
     {
+        if (gameObject.transform.parent.tag == "Player")
+        {
+            gameObject.tag = "PlayerMissile";
+        }
         StartCoroutine(AudioCallOut());
         weaponName = "Sidewinder AIM-9M";
         rb = GetComponent<Rigidbody2D>();
@@ -210,14 +214,14 @@ public class Fox2Script : Weapon
         if (heatTarget  != null)
         {
             
-            // Calculate target velocity (assuming target has a Rigidbody2D component)
+            // Calculate heading velocity (assuming heading has a Rigidbody2D component)
             Vector3 targetVelocity = heatTarget.GetComponent<Rigidbody2D>().velocity;
 
-            // Use first-order intercept to predict target position
+            // Use first-order intercept to predict heading position
             float timeToIntercept = Vector3.Distance(transform.position, heatTarget.position) / maxSpeed;
             Vector3 predictedTargetPosition = heatTarget.position + (targetVelocity * timeToIntercept);
 
-            // Update target direction based on predicted position
+            // Update heading direction based on predicted position
             targetDirection = (predictedTargetPosition - transform.position).normalized;
         }
         else
@@ -278,7 +282,7 @@ public class Fox2Script : Weapon
             isSearching = true;
             hasTarget = false;
             heatTarget = null;
-            Debug.Log("No targets detected within radius");
+            //Debug.Log("No targets detected within radius");
         }
            
     }

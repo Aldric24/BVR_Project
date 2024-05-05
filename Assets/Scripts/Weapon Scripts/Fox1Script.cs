@@ -35,6 +35,10 @@ public class Fox1Script : Weapon
     bool lockestablished = false;
     void Start()
     {
+        if (gameObject.transform.parent.tag == "Player")
+        {
+            gameObject.tag = "PlayerMissile";
+        }
         weaponName = "Fox1 - AIM xxxx"; // Update with your missile name
         boostTimer = 0;
         rb = GetComponent<Rigidbody2D>();
@@ -66,14 +70,14 @@ public class Fox1Script : Weapon
     {
         if (target != null)
         {
-            // Calculate target velocity (assuming target has a Rigidbody2D component)
+            // Calculate heading velocity (assuming heading has a Rigidbody2D component)
             Vector3 targetVelocity = target.GetComponent<Rigidbody2D>().velocity;
 
-            // Use first-order intercept to predict target position
+            // Use first-order intercept to predict heading position
             float timeToIntercept = Vector3.Distance(transform.position, target.position) / maxSpeed;
             Vector3 predictedTargetPosition = target.position + (targetVelocity * timeToIntercept);
 
-            // Update target direction based on predicted position
+            // Update heading direction based on predicted position
             targetDirection = (predictedTargetPosition - transform.position).normalized;
         }
         else
@@ -216,9 +220,9 @@ public class Fox1Script : Weapon
                 lastKnownTargetPosition = target.position;
                 lastKnownTargetVelocity = target.GetComponent<Rigidbody2D>().velocity;
             }
-            else // info.target is null but we have past data
+            else // info.heading is null but we have past data
             {
-                // Estimate new target position based on previous velocity
+                // Estimate new heading position based on previous velocity
                
                 float timeSinceLastLock = Time.time - timeOfLastLock;
                 Vector3 estimatedPosition = lastKnownTargetPosition + (lastKnownTargetVelocity * timeSinceLastLock);

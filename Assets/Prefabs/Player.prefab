@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 2229668631547907164}
   m_Layer: 9
   m_Name: WeaponPos
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 2745699164285828300}
   m_Layer: 9
   m_Name: WeaponPos
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 1071174128817641458}
   m_Layer: 9
   m_Name: WeaponPos1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 1634500051380089984}
   m_Layer: 9
   m_Name: WeaponPos
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -437,7 +437,7 @@ GameObject:
   - component: {fileID: 8097631031074167320}
   m_Layer: 9
   m_Name: WeaponPos1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 2988367026656123839}
   m_Layer: 9
   m_Name: WeaponPos
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -996,8 +996,8 @@ Transform:
   m_GameObject: {fileID: 3888776406903563262}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.0006926294, y: 18227, z: 8993}
-  m_LocalScale: {x: 1.5483731, y: 1.4550878, z: 1.5483731}
+  m_LocalPosition: {x: 0, y: 18226.996, z: 8993.001}
+  m_LocalScale: {x: 1.5483727, y: 1.4550877, z: 1.548373}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7651457246171254629}
@@ -1298,8 +1298,8 @@ Transform:
   m_GameObject: {fileID: 5033268147776613870}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.006, y: 7, z: 1333.86}
-  m_LocalScale: {x: 48.87856, y: 45.93375, z: 48.878563}
+  m_LocalPosition: {x: 0, y: 7.0003214, z: 1333.86}
+  m_LocalScale: {x: 48.878555, y: 45.93375, z: 48.878563}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7651457246171254629}
@@ -1624,7 +1624,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6025910287681534330
 Transform:
   m_ObjectHideFlags: 0
@@ -1634,7 +1634,7 @@ Transform:
   m_GameObject: {fileID: 7619737213189208971}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 25.757088, z: 2211.01}
+  m_LocalPosition: {x: 0, y: 25.757088, z: 1016}
   m_LocalScale: {x: 37.32898, y: 37.32898, z: 37.32898}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1673,7 +1673,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1007.62
-  field of view: 2
+  field of view: 7
   orthographic: 0
   orthographic size: 1.2
   m_Depth: -1
@@ -2346,6 +2346,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 7017944672044586463}
+    - target: {fileID: 1007225667086183977, guid: 66f8b3315ed5d9b42af84c26de552ec7, type: 3}
+      propertyPath: waypointAreaRadius
+      value: 713.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3964594212722265507, guid: 66f8b3315ed5d9b42af84c26de552ec7, type: 3}
       propertyPath: m_Name
       value: Waypoint System
@@ -2653,17 +2657,17 @@ PrefabInstance:
       insertIndex: 12
       addedObject: {fileID: 400363494273477241}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
-      insertIndex: 25
-      addedObject: {fileID: 5949041113870553958}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 708593358266045447}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6025910287681534330}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3739791941560528626}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 708593358266045447}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: a6ddd0746214f204fac5546800568b64, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5949041113870553958}
     - targetCorrespondingSourceObject: {fileID: 2171604131019107374, guid: a6ddd0746214f204fac5546800568b64, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1071174128817641458}
@@ -2783,6 +2787,7 @@ MonoBehaviour:
   ccooldown: 0
   chaffperdeployment: 2
   chaffprefab: {fileID: 1804388919632007968, guid: 45b9b431a1617bf4ba6b8dc43655b20e, type: 3}
+  AIControl: 0
 --- !u!114 &4994398200148688922
 MonoBehaviour:
   m_ObjectHideFlags: 0

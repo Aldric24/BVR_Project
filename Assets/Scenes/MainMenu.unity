@@ -5037,7 +5037,7 @@ MonoBehaviour:
   - {fileID: 1863703330}
   availableWeapons:
   - {fileID: 8137380248985749374, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
-  - {fileID: 8386164632033934156, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  - {fileID: -4494711668873726863, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
 --- !u!1 &804344347
 GameObject:
   m_ObjectHideFlags: 0

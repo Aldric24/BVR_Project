@@ -10,6 +10,7 @@ public class WaypointManager : MonoBehaviour
     public GameObject player;
     private List<Waypoint> waypoints = new List<Waypoint>();
     private int currentWaypointIndex = 0;
+    public float minDistanceBetweenWaypoints = 5f; // Adjust as needed
 
     void Start()
     {
@@ -25,23 +26,48 @@ public class WaypointManager : MonoBehaviour
     {
         for (int i = 0; i < numberOfWaypoints; i++)
         {
-            Vector2 randomPosition = Random.insideUnitSphere * waypointAreaRadius;
-            randomPosition += new Vector2(player.transform.position.x, player.transform.position.y); // Offset based on WaypointManager's position
+            bool validWaypoint = false;
+            Vector2 randomPosition=new Vector2();
 
-            GameObject newWaypointObj = Instantiate(waypointPrefab, randomPosition, Quaternion.identity);
-            if(i==0)
+            while (!validWaypoint)
             {
-                newWaypointObj.GetComponent<BoxCollider2D>().enabled = true;   
+                randomPosition = Random.insideUnitSphere * waypointAreaRadius;
+                randomPosition += new Vector2(player.transform.position.x, player.transform.position.y);
+
+                validWaypoint = true; // Assume valid initially
+
+                // Check against existing waypoints
+                foreach (Waypoint existingWaypoint in waypoints)
+                {
+                    float distance = Vector2.Distance(randomPosition, existingWaypoint.transform.position);
+                    if (distance < minDistanceBetweenWaypoints)
+                    {
+                        validWaypoint = false; // Too close, mark as invalid
+                        break; // No need to check other waypoints
+                    }
+                }
             }
+            GameObject newWaypointObj = Instantiate(waypointPrefab, randomPosition, Quaternion.identity);
+            // Create the waypoint if we found a valid position
+            if (i == numberOfWaypoints - 1)
+            {
+
+                newWaypointObj.GetComponent<Waypoint>().isEnd = true;
+            }
+
+            if (i == 0)
+            {
+                newWaypointObj.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
             Waypoint waypoint = newWaypointObj.GetComponent<Waypoint>();
 
             // Setup Waypoint Properties
             waypoint.waypointManager = this;
-            waypoint.name = "Waypoint " + (i + 1); // Assign a sequence number
+            waypoint.name = "Waypoint " + (i + 1);
 
             waypoints.Add(waypoint);
         }
-
     }
 
     void SetupLineRenderer()
@@ -97,6 +123,7 @@ public class WaypointManager : MonoBehaviour
         {
             Debug.Log("All waypoints completed!");
             // ... your logic when all waypoints are reached
+            GameObject.Find("GameController").GetComponent<GameController>().GameOver(true);
             return;  // End the waypoint task
         }
 

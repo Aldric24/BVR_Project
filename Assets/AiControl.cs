@@ -15,7 +15,7 @@ public class AiControl : MonoBehaviour
     [SerializeField] int Currentspeed;
     // Target Tracking
     public Transform target;
-    private Vector3 targetDirection;
+    public Vector3 targetDirection;
 
     // State Management
     public  bool isBoosting = false;
@@ -31,13 +31,14 @@ public class AiControl : MonoBehaviour
 
     void FixedUpdate()
     {
+        
         Currentspeed= (int)rb.velocity.magnitude;
         UpdateTargetDirection();
         
         ManageThrust(targetSpeed);
     }
 
-    // Update target direction (from Fox3Script)
+    // Update heading direction (from Fox3Script)
     void UpdateTargetDirection()
     {
         if (target != null)

@@ -866,7 +866,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 200
+  radarDistance: 150
+  radarLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   spriteExtreme: {fileID: 0}
+  spriteExtremeA: []
+  RadarObjects: []
+  LockedTarget: {fileID: 0}
 --- !u!61 &219790760
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1181,7 +1188,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 200
+  radarDistance: 150
+  radarLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   spriteExtreme: {fileID: 0}
+  spriteExtremeA: []
+  RadarObjects: []
+  LockedTarget: {fileID: 0}
 --- !u!61 &276591784
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3514,6 +3528,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3026357247837534020, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7126187841871799158, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1327
@@ -4595,7 +4613,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 200
+  radarDistance: 150
+  radarLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   spriteExtreme: {fileID: 0}
+  spriteExtremeA: []
+  RadarObjects: []
+  LockedTarget: {fileID: 0}
 --- !u!61 &2107914245
 BoxCollider2D:
   m_ObjectHideFlags: 0
