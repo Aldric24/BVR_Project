@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c15c72c2db1f0a247b410eca5dd05c09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponName: 
+  weaponName: Aim-9 Sidewinder
   type: Fox2
   thrustForce: 5
   maxSpeed: 100
@@ -107,6 +107,7 @@ MonoBehaviour:
   isSearching: 0
   hasTarget: 0
   launched: 0
+  is_equipped: 0
 --- !u!82 &4769447519657249043
 AudioSource:
   m_ObjectHideFlags: 0

@@ -43,10 +43,10 @@ public class PauseMenuScript : MonoBehaviour
     {
         
 
-        
+       
         SceneManager.LoadScene("MainMenu");
-        
 
+        gameObject.SetActive(false);
 
     }
 }

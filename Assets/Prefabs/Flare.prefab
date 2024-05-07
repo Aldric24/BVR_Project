@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heatIntensity: 205.8
-  lifetime: 186.6
+  lifetime: 10
   maxHeatIntensity: 364.7
   movementSpeed: 2
   decayRate: 0.5

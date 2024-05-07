@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LV1.unity
     guid: 9370cc065b136904496d3c7ce8c38773
+  - enabled: 1
+    path: Assets/Scenes/FlightControls.unity
+    guid: 8b97662bd260bfe48b5f39530d38fccd
   m_configObjects: {}

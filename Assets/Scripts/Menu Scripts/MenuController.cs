@@ -18,7 +18,7 @@ public class MenuController : MonoBehaviour
     private void Start()
     {
        
-        ShowScreen(0);
+        //ShowScreen(0);
     }
 
     public void ShowScreen(int screenIndex)

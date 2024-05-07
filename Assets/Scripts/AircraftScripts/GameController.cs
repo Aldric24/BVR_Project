@@ -16,28 +16,43 @@ public class GameController : MonoBehaviour
     public GameObject Success;
     public GameObject lose;
     public Loadoutscreen Loadoutscreen;
-    private Dictionary<int, Weapon> loadout;
+    public Dictionary<int, Weapon> loadout;
     public GameObject panel;
     Timer GameTimer;
     private float timer = 0f;
     private bool timerRunning = false;
-    Dictionary<string, float> bestMissionTimes = new Dictionary<string, float>();
+    public Dictionary<string, float> bestMissionTimes = new Dictionary<string, float>();
     public string selectedmission;
+    [SerializeField]TextMeshProUGUI MissionTime;
+    [SerializeField]GameObject End;
+    [SerializeField] GameObject Pause;
+       
+    [SerializeField]TextMeshProUGUI BestMissionTime;
     void Awake()
     {
-        timerRunning = true;
-        StartCoroutine(TimerCoroutine());
+        Loadoutscreen = FindAnyObjectByType<Loadoutscreen>();
+        loadout = new Dictionary<int, Weapon>();
+
+        panel= GameObject.Find("Panel");
         DontDestroyOnLoad(gameObject);
     }
     
     void Start()
     {
         
-        loadout = Loadoutscreen.GetSelectedWeapons();
+        LoadBestTimes();
+        
+        
     }
+    
     public void confirmLoadout()
     {
-       loadout = Loadoutscreen.GetSelectedWeapons();
+        Debug.Log("Loadout SIZE " + loadout.Count); // Might be 0 initially
+        //Savedloadout = Loadoutscreen.GetSelectedWeapons(); // Get fresh data
+        //
+        //LoadMissionData();
+        Debug.Log("Updated Loadout SIZE " + loadout.Count);
+
     }
     public void SetPlayerLoadout(Dictionary<int, Weapon> loadout,GameObject playerobj)
     {
@@ -55,11 +70,12 @@ public class GameController : MonoBehaviour
     }
     public void StartGame()
     {
-        
-        
+
+        timerRunning = true;
+        StartCoroutine(TimerCoroutine());
         //wait for scene to load
         StartCoroutine(waitforsecondsandlOad());
-        
+        Pause.SetActive(true);
 
     }
     void GameEndScreen()
@@ -68,20 +84,24 @@ public class GameController : MonoBehaviour
     }
     public IEnumerator waitforsecondsandlOad()
     {
-        LeanTween.alphaCanvas(panel.GetComponent<CanvasGroup>(), 1, 2).setOnComplete(() => SceneManager.LoadScene("LV1"));
+        LeanTween.alphaCanvas(panel.GetComponent<CanvasGroup>(), 1, 2).setOnComplete(() => SceneManager.LoadScene(selectedmission));
         
         yield return new WaitForSeconds(2);
-        GameObject playerobj = Instantiate(player, new Vector3(1661, 219, 60), Quaternion.identity);
+        Debug.Log("Loadout SIZE " + loadout.Count);
+        Debug.Log("Scene Loaded");
+        GameObject playerobj = Instantiate(player, new Vector3(-7507, 525, 121), Quaternion.identity);
         SetPlayerLoadout(loadout, playerobj);
-       
         
+        Debug.Log("Player Loadout set");
+
     }
     public void GameOver(bool win)
     {
-       
+        Pause.SetActive(false);
         timerRunning = false;
         if (win)
         {
+            fadein(End);
             fadein(Success);
             FindAnyObjectByType<NewControl>().gameObject.transform.parent.gameObject.SetActive(false);
             Success.SetActive(true);
@@ -92,12 +112,12 @@ public class GameController : MonoBehaviour
             if (bestMissionTimes.ContainsKey(currentSceneName))
             {
                 float bestTime = bestMissionTimes[currentSceneName];
-                GameObject.Find("Time").GetComponent<TextMeshProUGUI>().text = "Time To Target: " + timer + " Seconds";
-                GameObject.Find("Best Mission Time:").GetComponent<TextMeshProUGUI>().text = "Best Time: " + bestTime +" Seconds";
+                MissionTime.text = "Mission Time: " + timer + " Seconds";
+                BestMissionTime.text = "Best Mission Time: " + bestTime +" Seconds";
             }
             else
             {
-                GameObject.Find("Time").GetComponent<TextMeshProUGUI>().text = "Time To Target: " + timer; // No best time saved yet 
+                GameObject.Find("MissionTime").GetComponent<TextMeshProUGUI>().text = "Mission Time: " + timer; // No best time saved yet 
             }
 
             Debug.Log("You Win");
@@ -109,7 +129,7 @@ public class GameController : MonoBehaviour
         }
         timerRunning = false;
 
-        StartCoroutine(transitiontoMainMenue());
+        
     }
     void UpdateBestTime()
     {
@@ -132,11 +152,27 @@ public class GameController : MonoBehaviour
             SaveBestTime(currentSceneName,timer);
         }
     }
+    public void Refly()
+    {
+      //reload the scene
+        fadeOut(End);
+        SceneManager.LoadScene("MainMenu");
+        MenuController menuController = FindAnyObjectByType<MenuController>();
+        menuController.ShowScreen(2);
+    }
+    public void mainmenu()
+    {
+        Debug.Log("Main Menu");
+        fadeOut(End);
+        StartCoroutine(transitiontoMainMenue());
+    }
     public IEnumerator transitiontoMainMenue()
     {
-        panel.GetComponent<Animator>().SetTrigger("FadeIn");
+        fadeOut(End);
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene("MainMenu");
+        MenuController menuController = FindAnyObjectByType<MenuController>();
+        menuController.ShowScreen(0);
     }
     IEnumerator TimerCoroutine()
     {
@@ -166,7 +202,7 @@ public class GameController : MonoBehaviour
         }
         return sb.ToString();
     }
-    void LoadBestTimes()
+    public void LoadBestTimes()
     {
         string savedData = PlayerPrefs.GetString("bestTimesData");
         if (!string.IsNullOrEmpty(savedData))

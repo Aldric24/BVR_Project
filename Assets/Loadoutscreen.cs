@@ -13,22 +13,23 @@ public class Loadoutscreen : MonoBehaviour
     public List<Weapon> availableWeapons; // Assuming you have a 'Weapon' class
     SortieScreen sortieScreen;
     private Dictionary<int, Weapon> selectedWeapons; // Store hardpoint-weapon pairings
-    Dictionary<string, Dictionary<int, Weapon>> missionLoadouts = new Dictionary<string, Dictionary<int, Weapon>>();
-
+    public Dictionary<string, Dictionary<int, Weapon>> missionLoadouts = new Dictionary<string, Dictionary<int, Weapon>>();
+    Dictionary<int, Weapon> Savedloadout = new Dictionary<int, Weapon>();
     void Start()
     {
         Debug.Log("Loadout screen started");
+        selectedWeapons = new Dictionary<int, Weapon>();
         //Weapon empty = new Weapon();
         //empty.weaponName = "Empty";
         //availableWeapons.Add(empty);    
-        selectedWeapons = new Dictionary<int, Weapon>();
         sortieScreen = FindObjectOfType<SortieScreen>();
         PopulateDropdowns();
         for (int i = 0; i < hardpointDropdowns.Count; i++)
         {
             OnHardpointDropdownChange(i);
         }
-        LoadLoadout(sortieScreen.SelectedMission.name, this);
+        FindAnyObjectByType<GameController>().loadout = selectedWeapons;
+        
     }
 
     void PopulateDropdowns()
@@ -39,6 +40,7 @@ public class Loadoutscreen : MonoBehaviour
             List<string> weaponNames = availableWeapons.ConvertAll(w => w.weaponName);
             hardpointDropdowns[i].AddOptions(weaponNames);
         }
+       
     }
     public void SetHardpointSelection(int hardpointIndex, Weapon weaponToSelect)
     {
@@ -66,7 +68,37 @@ public class Loadoutscreen : MonoBehaviour
         TMP_Dropdown dropdown = hardpointDropdowns[hardpointIndex];
         Weapon selectedWeapon = availableWeapons[dropdown.value];
         selectedWeapons[hardpointIndex] = selectedWeapon;
-        SaveLoadout(sortieScreen.SelectedMission.name, selectedWeapons);
+        FindAnyObjectByType<GameController>().loadout = selectedWeapons;
+        //Debug.Log("Dictionary size:" + selectedWeapons.Count);
+        //SaveLoadout(FindAnyObjectByType<GameController>().selectedmission, selectedWeapons);
+        
+
+
+    }
+    public void SaveLoadout()
+    {
+        // Save the selected weapons to the GameController
+        SaveLoadout(FindAnyObjectByType<GameController>().selectedmission, selectedWeapons);
+    }
+    public void Loaddata()
+    {
+        LoadMissionData(FindAnyObjectByType<GameController>().selectedmission);
+        // Get the appropriate saved dictionary (replace with how you select the mission)
+        //string missionName = FindAnyObjectByType<GameController>().selectedmission; // Replace with your mission selection logic
+        //if (!missionLoadouts.ContainsKey(missionName))
+        //{
+        //    Debug.LogError("Mission not found: " + missionName);
+        //    return;
+        //}
+
+        //Dictionary<int, Weapon> Savedloadout = missionLoadouts[missionName];
+
+        // Hardpoint Setting (Needs Adjustment)
+        for (int i = 0; i < hardpointDropdowns.Count; i++)
+        {
+            hardpointDropdowns[i].value = availableWeapons.FindIndex(w => w == Savedloadout[i]);
+        }
+        FindAnyObjectByType<GameController>().loadout = Savedloadout;
 
     }
     public void SaveLoadout(string missionName, Dictionary<int, Weapon> loadout)
@@ -74,9 +106,10 @@ public class Loadoutscreen : MonoBehaviour
         missionLoadouts[missionName] = new Dictionary<int, Weapon>(loadout); // Create a copy
         SaveMissionData(); // You'll need to implement this serialization part
     }
-    public Dictionary<int, Weapon> GetSelectedWeapons()
+    public Dictionary<int, Weapon> GetSelectedWeapons() // Change return type
     {
-        return selectedWeapons;
+        Debug.Log("Returning count "+ selectedWeapons.Count);
+        return selectedWeapons;  // Return the dictionary 
     }
     public void LoadLoadout(string missionName, Loadoutscreen loadoutScreen)
     {
@@ -96,42 +129,58 @@ public class Loadoutscreen : MonoBehaviour
         foreach (var kvp in missionLoadouts)
         {
             sb.Append(kvp.Key + ";"); // Mission Name
+            Debug.Log("Mission Name: " + kvp.Key);
+
             foreach (var weaponData in kvp.Value)
             {
-                sb.Append(weaponData.Key + "," + weaponData.Value.weaponName + ":"); // Hardpoint Index, Weapon Name
+                int weaponIndex = availableWeapons.FindIndex(w => w == weaponData.Value);
+                sb.Append(weaponData.Key + "," + weaponIndex + ":");
+                Debug.Log("Hardpoint: " + weaponData.Key + ", Weapon Index: " + weaponIndex);
             }
-            sb.Append("|"); // Delimiter between missions
+
+            sb.Append("|");
         }
 
+        Debug.Log("Final Save String: " + sb.ToString()); // See the complete string
         PlayerPrefs.SetString("missionLoadouts", sb.ToString());
         PlayerPrefs.Save();
     }
-
-    public void LoadMissionData()
+    public void LoadMissionData(string missionNameToLoad)
     {
         string savedData = PlayerPrefs.GetString("missionLoadouts");
         if (!string.IsNullOrEmpty(savedData))
         {
-            missionLoadouts.Clear();
+            Savedloadout.Clear();
             string[] missionsData = savedData.Split('|');
 
             foreach (string missionData in missionsData)
             {
+                Debug.Log("Mission Data Chunk: " + missionData); // Examine each mission's data
+
                 string[] parts = missionData.Split(';');
                 string missionName = parts[0];
-                Dictionary<int, Weapon> loadout = new Dictionary<int, Weapon>();
 
-                for (int i = 1; i < parts.Length; i++)
+                if (missionName == missionNameToLoad)
                 {
-                    string[] weaponParts = parts[i].Split(':');
-                    string[] indexAndName = weaponParts[0].Split(',');
-                    int hardpointIndex = int.Parse(indexAndName[0]);
-                    string weaponName = indexAndName[1];
-                    loadout[hardpointIndex] = availableWeapons.Find(w => w.weaponName == weaponName);
-                }
+                    for (int i = 1; i < parts.Length; i++)
+                    {
+                        string[] weaponParts = parts[i].Split(':');
+                        // Nested Loop!
+                        foreach (string weaponPart in weaponParts)
+                        {
+                            if(weaponPart == "") continue; // Skip empty entries
+                            string[] indexAndName = weaponPart.Split(',');
+                            int hardpointIndex = int.Parse(indexAndName[0]);
+                            int weaponIndex = int.Parse(indexAndName[1]);
 
-                missionLoadouts[missionName] = loadout;
+                            Debug.Log("Hardpoint: " + hardpointIndex + ", Weapon Index: " + weaponIndex);
+                            Savedloadout[hardpointIndex] = availableWeapons[weaponIndex];
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
+
 }

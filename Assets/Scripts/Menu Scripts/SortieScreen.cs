@@ -14,8 +14,11 @@ public class SortieScreen : MonoBehaviour
     [SerializeField] Transform targetPosition;
     public Vector3 oldpos;
     public GameObject loadout;
+    [SerializeField] TextMeshProUGUI bestmissionTime;
+    [SerializeField ]GameController gameController;
     void Start()
     {
+        
         foreach (Mission mission in missions)
         {
             GameObject missionButton = Instantiate(missionButtonPrefab, transform);
@@ -24,9 +27,24 @@ public class SortieScreen : MonoBehaviour
 
             
         }
+        loadout.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+        {
+
+            gameController.setmission(SelectedMission.name);
+        });
     }
     public void displaybriefing()
     {
+        Debug.Log(gameController.bestMissionTimes.Count);
+        if(gameController.bestMissionTimes.ContainsKey(SelectedMission.name))
+        {
+            bestmissionTime.text = "Best Time: " + gameController.bestMissionTimes[SelectedMission.name].ToString("F2") + "s";
+        }
+        else
+        {
+            bestmissionTime.text = "Best Time: 0.00s";
+        }
+       
         loadout.GetComponent<Button>().interactable = true;
         foreach (Transform t in transform)
         {
