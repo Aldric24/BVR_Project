@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class PauseMenuScript : MonoBehaviour
 {
     
-    [SerializeField] GameObject pausescreen; 
+    [SerializeField] GameObject pausescreen;
+    [SerializeField] GameObject Tutorial;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,21 +22,21 @@ public class PauseMenuScript : MonoBehaviour
     }
     public void pause()
     {
-        GameObject UI = GameObject.Find("Player");
-        if(UI!=null)
-        {
-            UI.GetComponentInChildren<Canvas>().gameObject.SetActive(false);
-        }
+        //GameObject UI = GameObject.Find("Player");
+        //if(UI!=null)
+        //{
+        //    UI.GetComponentInChildren<Canvas>().gameObject.SetActive(false);
+        //}
         Time.timeScale = 0;
         pausescreen.SetActive(true);
     }
     public void resume()
     {
-        GameObject UI = GameObject.Find("Player");
-        if (UI != null)
-        {
-            UI.GetComponentInChildren<Canvas>().gameObject.SetActive(true);
-        }
+        //GameObject UI = GameObject.Find("Player");
+        //if (UI != null)
+        //{
+        //    UI.GetComponentInChildren<Canvas>().gameObject.SetActive(true);
+        //}
         Time.timeScale = 1;
         pausescreen.SetActive(false);
     }
@@ -48,5 +49,11 @@ public class PauseMenuScript : MonoBehaviour
 
         gameObject.SetActive(false);
 
+    }
+    public void Info()
+    {
+        Tutorial.SetActive(true);
+        pausescreen.SetActive(false);
+        
     }
 }

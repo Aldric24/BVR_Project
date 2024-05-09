@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8227878983025289610}
   m_Layer: 11
   m_Name: Aim9
-  m_TagString: Untagged
+  m_TagString: Missile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8594003265886539387}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c15c72c2db1f0a247b410eca5dd05c09, type: 3}
   m_Name: 
@@ -82,6 +82,7 @@ MonoBehaviour:
   maxSpeed: 100
   thrustDuration: 5
   isBoosting: 1
+  rb: {fileID: 1256877743103282309}
   missileParticleEffect: {fileID: 8115273924998084352}
   raycastDistance: 2
   minVelocityThreshold: 50
@@ -117,7 +118,7 @@ AudioSource:
   m_GameObject: {fileID: 8594003265886539387}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 7548198313813597645, guid: 75fc7c246ce563943a21efe3967255cc, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

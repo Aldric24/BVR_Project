@@ -18,16 +18,24 @@ public class NewControl: MonoBehaviour
     public float speedKnots;
     private const float KNOTS_TO_MS_CONVERSION = 5.4444f;
     [SerializeField] private float rotationSensitivity;
+    public HeatSource HeatSource;
+    
+    [SerializeField] private float heatBuildUpRate = 0.1f; // Per second
+    [SerializeField] private float heatCoolDownRate = 0.05f; // Per second
+    [SerializeField] private float minHeatIntensity = 0.2f;
+    [SerializeField] private float maxHeatIntensity = 0.8f;
+    public int velocity;
     void Start()
     {
         throttleSlider = FindAnyObjectByType<Slider>();
-        throttleSlider.value = 0;
+        throttleSlider.value = 0.5f;
         //rb = GetComponent<Rigidbody2D>();
         Input.gyro.enabled = true;
     }
 
     void FixedUpdate()
     {
+        RegulateHeatIntensity();
         HandleRotation();
         ApplySteeringForce(); // Replace ApplyThrust
         LimitMaxSpeed();
@@ -111,6 +119,7 @@ public class NewControl: MonoBehaviour
     }
     void LimitMaxSpeed()
     {
+        velocity = (int)rb.velocity.magnitude;
         // Calculate current speed in meters per second
         float speedMS = rb.velocity.magnitude;
         speedText.text = "Speed: " + speedKnots.ToString("F1") + " Knots";
@@ -131,5 +140,34 @@ public class NewControl: MonoBehaviour
         
 
     }
-    
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+        if (collision.gameObject.CompareTag("Adversary Radar"))
+        {
+            rwr.Popup(collision.gameObject.transform.parent.gameObject);
+        }
+
+
+    }
+
+
+    void RegulateHeatIntensity()
+    {
+        // Increase heat based on thrust
+        if (throttleSlider.value > 0)
+        {
+            HeatSource.heatIntensity += heatBuildUpRate * Time.fixedDeltaTime;
+        }
+        else
+        {
+            HeatSource.heatIntensity -= heatCoolDownRate * Time.fixedDeltaTime;
+        }
+
+        // Clamp heat intensity within the desired range
+        HeatSource.heatIntensity = Mathf.Clamp(HeatSource.heatIntensity, minHeatIntensity, maxHeatIntensity);
+
+      
+    }
+
 }

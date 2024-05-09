@@ -39,7 +39,7 @@ public class Fox1Script : Weapon
         {
             gameObject.tag = "PlayerMissile";
         }
-        weaponName = "Fox1 - AIM xxxx"; // Update with your missile name
+        weaponName = "Fox1 - AIM 7"; // Update with your missile name
         boostTimer = 0;
         rb = GetComponent<Rigidbody2D>();
     }
@@ -240,14 +240,14 @@ public class Fox1Script : Weapon
     }
     internal void fire(WeaponsManager parent)
     {
-        
+        rb.bodyType = RigidbodyType2D.Dynamic;
         if (parent != null)
         {
             lockestablished = true;
             StartCoroutine(checkTargetinginfo(parent));
         }
         transform.parent = null;
-        gameObject.GetComponent<Rigidbody2D>().simulated = true;
+        
 
     }
 }

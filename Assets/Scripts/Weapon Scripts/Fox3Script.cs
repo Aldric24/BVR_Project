@@ -9,12 +9,12 @@ public class Fox3Script : Weapon
     [SerializeField] private float thrustForce;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float thrustDuration;
-    [SerializeField]private bool isBoosting;
+    [SerializeField] private bool isBoosting;
     private float boostTimer = 0;
-    [SerializeField]private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private ParticleSystem missileParticleEffect;
     // Target Related
-    [SerializeField]private Transform target; // Set externally or retrieved from the player
+    [SerializeField] private Transform target; // Set externally or retrieved from the player
     private Vector3 targetDirection;
     [SerializeField] private float raycastDistance = 2f; // Adjust as needed
     [SerializeField] private LayerMask collisionMask;
@@ -28,32 +28,34 @@ public class Fox3Script : Weapon
     Vector3 lastposition;
     [SerializeField] private int velocity;
     [SerializeField] private GameObject acquiredtarget;
-  
+
     private Vector3 lastKnownTargetPosition;
     private Vector3 lastKnownTargetVelocity;
     private float timeOfLastLock;
     [SerializeField] float radarAngle = 30f;  // Half the angle of the radar cone
     [SerializeField] float radarRange = 20f;
-    [SerializeField]Collider2D radar;
+    [SerializeField] Collider2D radar;
     void Start()
     {
+        missileParticleEffect.Stop();
         rb = GetComponent<Rigidbody2D>();
-        //if (gameObject.transform.parent.tag=="Player")
-        //{
-        //    gameObject.tag = "PlayerMissile";
-        //}
+        rb.isKinematic = true;
+        if (gameObject.transform.parent != null && gameObject.transform.parent.tag == "Player")
+        {
+            gameObject.tag = "PlayerMissile";
+        }
         weaponName = "Amraam Aim120 -D";
         boostTimer = 0;
-        
+
     }
 
     void FixedUpdate()
     {
-        
 
-        if (rb.simulated!=false)
+
+        if (rb.simulated != false)
         {
-            velocity=((int)rb.velocity.magnitude);
+            velocity = ((int)rb.velocity.magnitude);
             guidance();
             UpdateParticleEffect();
 
@@ -68,7 +70,7 @@ public class Fox3Script : Weapon
             CheckRaycastCollision();
 
         }
-        
+
     }
     private void guidance()
     {
@@ -110,7 +112,7 @@ public class Fox3Script : Weapon
 
     void InertialPhase()
     {
-       
+
         AlignWithVelocity();
         // Determine Angular Velocity (how fast the missile is turning)
         float angularVelocityMagnitude = Mathf.Abs(rb.angularVelocity);
@@ -142,7 +144,7 @@ public class Fox3Script : Weapon
             acquiredtarget = radar.gameObject;
             target = radar.transform;
         }
-        else if (radar.gameObject.CompareTag("Chaff"))
+        else if (radar.gameObject.CompareTag("Player"))
         {
             if (ShouldGetConfused())
             {
@@ -161,7 +163,7 @@ public class Fox3Script : Weapon
     }
     void OnTriggerStay2D(Collider2D radar)
     {
-        if (radar.gameObject.CompareTag("Adversary"))
+        if (radar.gameObject.CompareTag("Adversary")|| radar.gameObject.CompareTag("Player"))
         {
             acquiredtarget = radar.gameObject;
             target = radar.transform;
@@ -172,7 +174,7 @@ public class Fox3Script : Weapon
     void OnTriggerExit2D(Collider2D radar)
     {
 
-        if (radar.gameObject.CompareTag("Adversary"))
+        if (radar.gameObject.CompareTag("Adversary")|| radar.gameObject.CompareTag("Player"))
         {
             target = null;
         }
@@ -298,6 +300,7 @@ public class Fox3Script : Weapon
 
     internal void fire(WeaponsManager parent)
     {
+        rb.bodyType = RigidbodyType2D.Dynamic;
         if(parent!=null)
         {
             StartCoroutine(checkTargetinginfo(parent));

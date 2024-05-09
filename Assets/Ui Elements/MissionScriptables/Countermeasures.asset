@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a9b47e5dbb485459545f06aa07d647, type: 3}
+  m_Name: Countermeasures
+  m_EditorClassIdentifier: 
+  missionImage: {fileID: 21300000, guid: d37f94bce3ae2a74986a03999501739e, type: 3}
+  missionName: Countermeasures
+  missionDescription: "Mission Title:  Evasive Maneuvers and Countermeasures\n\nPre-flight
+    Briefing \n(Instructor): \"Pilot, today's all about survival.  You'll be mastering
+    defensive maneuvers and countermeasures to shake off incoming threats.  Let's
+    cover the essentials:\n\nJinking:  Hard, unpredictable changes in direction to
+    disrupt a missile's tracking solution.  Practice aggressive maneuvers while maintaining
+    control.\n\nNotching:  Flying perpendicular to a hostile radar's beam to break
+    missile locks.  Timing and positioning are critical.\n\nFlares:  Heat-seeking
+    missile decoys. Deploy strategically, considering your aircraft's heat signature
+    and potential counter-countermeasures.\n\nChaff:  Radar-confusing countermeasures. 
+    Use chaff to create false targets and complicate enemy tracking.\n\nMission Area:
+    The simulation throws a mix of missile types your way.  Expect both radar-guided
+    and heat-seeking threats.\n\nObjectives:\n\nJinking Prowess:  Execute effective
+    jinking patterns against incoming missiles.\n\nNotching Technique:  Master the
+    timing and execution of notching maneuvers.\n\nCountermeasure Deployment:  Learn
+    the optimal use of flares and chaff based on threat type and situation."
+  recommendedLoadout: A/A

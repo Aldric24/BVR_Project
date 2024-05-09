@@ -19,6 +19,10 @@ public class CameraOFFset : MonoBehaviour
 
     void Update()
     {
+        if(target == null && GetComponent<Camera>().enabled==false)
+        {
+            GetComponent<Camera>().enabled = true;
+        }
         if (!foundPlayer)
         {
             FindPlayer();
@@ -52,7 +56,11 @@ public class CameraOFFset : MonoBehaviour
 
     void FollowPlayer()
     {
-        Vector3 desiredPosition = target.position + offset;
-        transform.position = desiredPosition; // Continuously update position
+        if(target != null)
+        {
+            Vector3 desiredPosition = target.position + offset;
+            transform.position = desiredPosition; // Continuously update position
+        }
+        
     }
 }

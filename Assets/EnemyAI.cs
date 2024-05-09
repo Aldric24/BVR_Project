@@ -112,24 +112,25 @@ public class EnemyAI : MonoBehaviour
                 {
                     target = obj;
                     heading = target.transform;
-                    currentState = AIState.Pursue;
                     lastKnownTargetPosition = target.transform.position; // Update last position
                     return;
                 }
             }
         }
-        //else // No targets in radar objects
-        //{
-        //    if (lastKnownTargetPosition != Vector3.zero)
-        //    {
-        //        currentState = AIState.Investigate;
-        //    }
-        //    else
-        //    {
-        //        currentState = AIState.Search;
-        //    }
-        //}
-        AssessRWRAndRadarThreat();
+        else // No targets in radar objects
+        {
+            target = null;
+        }
+            //    if (lastKnownTargetPosition != Vector3.zero)
+            //    {
+            //        currentState = AIState.Investigate;
+            //    }
+            //    else
+            //    {
+            //        currentState = AIState.Search;
+            //    }
+            //}
+            AssessRWRAndRadarThreat();
     }
 
     void HandlePursue()

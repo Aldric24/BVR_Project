@@ -16,47 +16,55 @@ public class RWR : MonoBehaviour
     [SerializeField] Dictionary<GameObject, float> lastPingedTimes = new Dictionary<GameObject, float>();
     [SerializeField] List<GameObject> RWRObjects = new List<GameObject>();
     [SerializeField] Dictionary<GameObject, PopUp> RWRpings = new Dictionary<GameObject, PopUp>();
+
+    [SerializeField] private AudioSource missileWarningSource;
+    [SerializeField] private AudioSource radarPingSource;
     private void Awake()
     {
         StartCoroutine(CheckForStaleRWRObjects());
     }
     private void Update()
     {
-        transform.position = system.position;
-        transform.rotation = system.rotation;
-    }
-    internal void Popup(GameObject gameObject)
-    {
-        if (!RWRObjects.Contains(gameObject)) // Check for duplicates
+        if(system != null)
         {
-            if(gameObject.name == "AIM120D")
+            transform.position = system.position;
+            transform.rotation = system.rotation;
+        }
+       
+    }
+    internal void Popup(GameObject Popup)
+    {
+        if (!RWRObjects.Contains(Popup)) // Check for duplicates
+        {
+            if(Popup.tag == "Missile")
             {
-                RWRObjects.Add(gameObject);
-                lastPingedTimes[gameObject] = Time.time;
+                RWRObjects.Add(Popup);
+                lastPingedTimes[Popup] = Time.time;
                 popup.GetComponent<PopUp>().system = system;
-                PopUp missile = Instantiate(Missile, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
-
-                RWRpings[gameObject] = missile;// Record ping time
+                PopUp missile = Instantiate(Missile, Popup.transform.position, Quaternion.identity).GetComponent<PopUp>();
+                missile.system = gameObject.transform;
+                RWRpings[Popup] = missile;// Record ping time
+                StartCoroutine(PlayMissileWarningSound());
             }
             else
             {
-                RWRObjects.Add(gameObject);
-                lastPingedTimes[gameObject] = Time.time;
-                popup.GetComponent<PopUp>().system = system;
-                PopUp radarPing = Instantiate(popup, gameObject.transform.position, Quaternion.identity).GetComponent<PopUp>();
+                RWRObjects.Add(Popup);
+                lastPingedTimes[Popup] = Time.time;
+                PopUp radarPing = Instantiate(popup, Popup.transform.position, Quaternion.identity).GetComponent<PopUp>();
                 radarPing.system = gameObject.transform;
-                RWRpings[gameObject] = radarPing;// Record ping time
+                radarPing.gameObject.transform.parent = gameObject.transform.parent;
+                RWRpings[Popup] = radarPing;// Record ping time
             }
         }
             
         else
         {
-            lastPingedTimes[gameObject] = Time.time;
-            RWRpings[gameObject.gameObject].transform.position = gameObject.gameObject.transform.position;
+            lastPingedTimes[Popup] = Time.time;
+            RWRpings[Popup].transform.position = Popup.transform.position;
 
         }
         
-        //Instantiate(popup, gameObject.transform.position, Quaternion.identity);
+        //Instantiate(popup, Popup.transform.position, Quaternion.identity);
     }
     private IEnumerator CheckForStaleRWRObjects()
     {
@@ -87,6 +95,30 @@ public class RWR : MonoBehaviour
             yield return new WaitForSeconds(1f); // Check every second
         }
     }
-    
+    private IEnumerator PlayMissileWarningSound()
+    {
+        while (true)
+        {
+            if (RWRObjects.Any(obj => obj.tag == "Missile"))
+            {
+                if(!missileWarningSource.isPlaying )
+                {
+                    missileWarningSource.Play();
+                }
+                if (!radarPingSource.isPlaying)
+                {
+                    radarPingSource.Play();
+                }
+                yield return new WaitForSeconds(1f); // Adjust the alert interval as needed
+            }
+            else
+            {
+                // Stop the alert when no missiles are detected
+                missileWarningSource.Stop();
+                radarPingSource.Stop();
+                yield break; // Exit the coroutine
+            }
+        }
+    }
 
 }

@@ -24,7 +24,7 @@ public class RadarRotation : MonoBehaviour
         }
         else
         {
-            Debug.Log("System is null");
+            //Debug.Log("System is null");
         }
 
         

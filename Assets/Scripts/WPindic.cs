@@ -9,8 +9,12 @@ public class WPindic : MonoBehaviour
 
     private void Update()
     {
-        transform.position = system.position;
-        transform.rotation = system.rotation;
+       if(system != null)
+        {
+            transform.position = system.position;
+            transform.rotation = system.rotation;
+        }
+       
 
     }
 }

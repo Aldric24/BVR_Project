@@ -6,7 +6,8 @@ public class SwitchCam : MonoBehaviour
 {
     public List<Camera> cameras; // List to store your cameras
     private int currentCameraIndex = 0; // Index of the currently active camera
-
+    Camera main;
+    bool cameraadded=false;
     void Start()
     {
         if (cameras == null || cameras.Count == 0)
@@ -18,7 +19,19 @@ public class SwitchCam : MonoBehaviour
         // Set the first camera as active by default
         cameras[currentCameraIndex].enabled = true;
     }
-
+    private void Update()
+    {
+        if(!cameraadded)
+        {
+            main = GameObject.Find("Main Camera").GetComponent<Camera>();
+            if (main!=null)
+            {
+                cameras.Add(main);
+                cameraadded = true;
+            }
+        }
+        
+    }
     public void SwitchCamera()
     {
         // Disable the currently active camera
@@ -30,4 +43,5 @@ public class SwitchCam : MonoBehaviour
         // Enable the new active camera
         cameras[currentCameraIndex].enabled = true;
     }   
+
 }

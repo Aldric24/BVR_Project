@@ -10,7 +10,7 @@ public class Chaff : MonoBehaviour
     private float startTime;
     void Start()
     {
-        
+        startTime = Time.time;
     }
 
     // Update is called once per frame

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4a9b47e5dbb485459545f06aa07d647, type: 3}
-  m_Name: Training
+  m_Name: FlightControls
   m_EditorClassIdentifier: 
   missionImage: {fileID: 21300000, guid: 44c560c7e1b775540b6544536324ff86, type: 3}
   missionName: FlightControls

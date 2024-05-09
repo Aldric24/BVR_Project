@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a9b47e5dbb485459545f06aa07d647, type: 3}
+  m_Name: Weapons
+  m_EditorClassIdentifier: 
+  missionImage: {fileID: 21300000, guid: d31aa3d02a058a940ab76d3425e1ac9d, type: 3}
+  missionName: Weapons
+  missionDescription: "Mission Title:  Weapons Proficiency Test\n\nPre-flight Briefing
+    \n(Instructor): \"Pilot, today's focus is weapons employment.  We'll be testing
+    your proficiency with your full arsenal. Here's the breakdown:\n\nGuns: Short-range
+    dogfighting necessities.  Practice lead targeting and burst control.\n\nFox 1s
+    (Semi-Active Radar Guided):  Maintain target lock after launch for these radar-guided
+    missiles.\n\nFox 2s (Infrared): Engage targets with heat signatures.  Be mindful
+    of countermeasures.\n\nFox 3s (Active Radar Guided): 'Fire and forget' missiles
+    for long-range engagements.  Prioritize target identification.\n\nMission Area:
+    The range is set up with targets simulating various combat scenarios. Expect
+    both aerial and ground threats."
+  recommendedLoadout: A/A

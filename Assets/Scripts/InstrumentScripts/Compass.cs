@@ -15,6 +15,10 @@ public class Compass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<TMPro.TextMeshProUGUI>().text = player.eulerAngles.z.ToString("F0") + "°";
+        if (player != null) 
+        {
+            GetComponent<TMPro.TextMeshProUGUI>().text = player.eulerAngles.z.ToString("F0") + "°";
+        }
+        
     }
 }

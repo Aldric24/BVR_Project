@@ -38,7 +38,7 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] GameObject chaffprefab;
     private Vector2 dispersion;
     [SerializeField] private bool AIControl;
-
+    [SerializeField]bool isAIMissiletruck=false;
     void Start()
     {
         if(AIControl)
@@ -46,7 +46,7 @@ public class WeaponsManager : MonoBehaviour
             Tempmattach();
         }
         
-
+        //Tempmattach();
             
         //SwitchMissile();
         missilecount = hardpoints.Count;
@@ -55,17 +55,21 @@ public class WeaponsManager : MonoBehaviour
     {
 
 
-        //Update UI
-        if (availableWeaponTypes.Count > 0 && AIControl==false)
+        if(isAIMissiletruck==false)
         {
-            // Get the currently selected weapon type (if any)
-            string weaponTypeToDisplay = currentWeaponTypeIndex < availableWeaponTypes.Count
-                                            ? availableWeaponTypes[currentWeaponTypeIndex]
-                                            : "None";
-            Weapon.text = weaponTypeToDisplay == "Cannon" ? "Gun" : weaponTypeToDisplay + ": " + missilecount;
-        }
+            if (availableWeaponTypes.Count > 0 && AIControl == false)
+            {
+                // Get the currently selected weapon type (if any)
+                string weaponTypeToDisplay = currentWeaponTypeIndex < availableWeaponTypes.Count
+                                                ? availableWeaponTypes[currentWeaponTypeIndex]
+                                                : "None";
+                Weapon.text = weaponTypeToDisplay + ": " + missilecount;
+            }
 
-        target = S.LocekdTarget;
+            target = S.LocekdTarget;
+        }
+        
+       
     }
     public void Tempmattach()
     {
@@ -96,11 +100,11 @@ public class WeaponsManager : MonoBehaviour
             currentWeaponTypeIndex = (currentWeaponTypeIndex + 1) % missileTypes.Count;
             currentMissileType = missileTypes[currentWeaponTypeIndex];
         } while (hardpoints.Count(hp => hp.missiletype == currentMissileType) == 0);
-
+        DisableAllMissileScripts();
         currentMissileIndex = FindNextAvailableOfType(currentMissileType);
         
 
-        DisableAllMissileScripts();
+        
         if (AIControl == false)
         {
             UpdateWeaponUI();
@@ -178,7 +182,7 @@ public class WeaponsManager : MonoBehaviour
     }
     public void DeployFlares()
     {
-        if (flareCount > 0 && Time.time > lastFlareDeployTime + cooldown)
+        if (flareCount > 0 && Time.time > lastFlareDeployTime + cooldown)   
         {
             for (int i = 0; i < flaresPerDeployment; i++)
             {
@@ -192,16 +196,16 @@ public class WeaponsManager : MonoBehaviour
     }
     public void DeployChaff()
     {
-        if (flareCount > 0 && Time.time > lastFlareDeployTime + cooldown)
+        if (ChaffCount > 0 && Time.time > lastchaffdeploytime + cooldown)
         {
-            for (int i = 0; i < flaresPerDeployment; i++)
+            for (int i = 0; i < chaffperdeployment; i++)
             {
-                Vector3 offset = Random.insideUnitCircle * dispersion;
-                GameObject flare = Instantiate(chaffprefab, transform.position + offset, transform.rotation);
+                Vector3 ofset = Random.insideUnitCircle * dispersion;
+                GameObject chaff = Instantiate(chaffprefab, transform.position + ofset, transform.rotation);
             }
 
-            flareCount--;
-            lastFlareDeployTime = Time.time;
+            ChaffCount--;
+            lastchaffdeploytime = Time.time;
         }
     }
     private void UpdateWeaponUI()

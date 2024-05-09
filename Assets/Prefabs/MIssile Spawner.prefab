@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8333520443990780041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7088416978134753166}
+  - component: {fileID: 5086129752906050219}
+  m_Layer: 0
+  m_Name: MIssile Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7088416978134753166
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333520443990780041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2885, y: 1021, z: 60}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5086129752906050219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8333520443990780041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6d728a8f52c385428bfb6966fcc5e7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardpoints: []
+  equippedCannon: {fileID: 0}
+  currentWeaponIndex: 0
+  target: {fileID: 0}
+  S: {fileID: 0}
+  Weapon: {fileID: 0}
+  availableWeaponTypes: []
+  currentMissileType: 
+  flareCount: 0
+  lastFlareDeployTime: 0
+  cooldown: 0
+  flaresPerDeployment: 0
+  flarePrefab: {fileID: 0}
+  ChaffCount: 0
+  lastchaffdeploytime: 0
+  ccooldown: 0
+  chaffperdeployment: 0
+  chaffprefab: {fileID: 0}
+  AIControl: 0
+  isAIMissiletruck: 1
+  playerTarget: {fileID: 0}
+  missilePrefabs:
+  - {fileID: 1507734180269956560, guid: a6f5c71442e557447b6c25b2ce81ba83, type: 3}
+  - {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  - {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+  missileSpawnPoint: {fileID: 7088416978134753166}
+  detectionRadius: 310.56
+  firingCooldown: 2
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 2560

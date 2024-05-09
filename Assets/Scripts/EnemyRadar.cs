@@ -34,7 +34,7 @@ public class EnemyRadar : MonoBehaviour
     {
         while (true)  // Run indefinitely
         {
-            position = Mathf.PingPong(Time.time * rotationSpeed, 300f) - 150f;
+            position = Mathf.PingPong(Time.time * rotationSpeed, 100f) - 50f;
 
 
             transform.localPosition = new Vector3(position, 0, 0);

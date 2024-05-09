@@ -219,6 +219,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d47d00046b8c4164d9022276a7e94156, type: 3}
+      propertyPath: m_TagString
+      value: Missile
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -256,7 +260,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7615198544311990732}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f03dabe52d330bb46982373f255a98fd, type: 3}
   m_Name: 
@@ -267,6 +271,7 @@ MonoBehaviour:
   maxSpeed: 100
   thrustDuration: 3.45
   isBoosting: 1
+  rb: {fileID: 3026357247837534020}
   missileParticleEffect: {fileID: 797892825701264389}
   target: {fileID: 0}
   raycastDistance: 32.66
@@ -336,8 +341,8 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7615198544311990732}
-  m_BodyType: 0
-  m_Simulated: 0
+  m_BodyType: 1
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1

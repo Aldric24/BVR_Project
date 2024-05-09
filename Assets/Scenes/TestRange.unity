@@ -784,7 +784,7 @@ Transform:
   m_GameObject: {fileID: 179766500}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1168, y: 561, z: 823}
+  m_LocalPosition: {x: 1327.9, y: 835.5, z: 823}
   m_LocalScale: {x: 131.57672, y: 131.57672, z: 131.57672}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3011,6 +3011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausescreen: {fileID: 96494950}
+  Tutorial: {fileID: 0}
 --- !u!114 &1057518641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3123,11 +3124,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 367358629928999320, guid: 251cf231443f5194abeef7b675234a96, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 116
+      value: -385.9
       objectReference: {fileID: 0}
     - target: {fileID: 367358629928999320, guid: 251cf231443f5194abeef7b675234a96, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 520
+      value: 170.3
       objectReference: {fileID: 0}
     - target: {fileID: 367358629928999320, guid: 251cf231443f5194abeef7b675234a96, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3425,7 +3426,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106793852}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59748192b396f12449ad629bfe098fb1, type: 3}
   m_Name: 
@@ -3529,6 +3530,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3026357247837534020, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3026357247837534020, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
       propertyPath: m_Simulated
       value: 1
       objectReference: {fileID: 0}
@@ -3575,6 +3580,10 @@ PrefabInstance:
     - target: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
       propertyPath: m_Name
       value: AIM120D
+      objectReference: {fileID: 0}
+    - target: {fileID: 8137380248985749374, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8734255833229504585, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
       propertyPath: m_Enabled
@@ -3806,6 +3815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pausescreen: {fileID: 0}
+  Tutorial: {fileID: 0}
 --- !u!114 &1726284427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4535,6 +4545,42 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 636477150722104769, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: availableWeaponTypes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 636477150722104769, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: availableWeaponTypes.Array.data[0]
+      value: Fox1
+      objectReference: {fileID: 0}
+    - target: {fileID: 636477150722104769, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: availableWeaponTypes.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 961902099686358667, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 320.3896
+      objectReference: {fileID: 0}
+    - target: {fileID: 961902099686358667, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 98.0049
+      objectReference: {fileID: 0}
+    - target: {fileID: 961902099686358667, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1137
+      objectReference: {fileID: 0}
+    - target: {fileID: 961902099686358667, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 977888758984701766, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1812023419424965068, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
     - target: {fileID: 2423732180567971061, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -4547,6 +4593,22 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2871577451937173387, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 1507734180269956560, guid: a6f5c71442e557447b6c25b2ce81ba83, type: 3}
+    - target: {fileID: 4013374647406700229, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+    - target: {fileID: 4688688928467950194, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+    - target: {fileID: 6464866285456076076, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 1507734180269956560, guid: a6f5c71442e557447b6c25b2ce81ba83, type: 3}
     - target: {fileID: 7395685773094058290, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -4559,6 +4621,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9043582222755659645, guid: eae74fc9b85c1f44088c2990f53e7d8a, type: 3}
+      propertyPath: missile
+      value: 
+      objectReference: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

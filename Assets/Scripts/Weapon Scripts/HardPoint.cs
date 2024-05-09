@@ -53,8 +53,8 @@ public class HardPoint : MonoBehaviour
         else if (missile.GetComponent<Weapon>().type == "Fox1")
         {
 
-           
-            
+            missile.GetComponent<Fox1Script>().enabled = true;
+
         }
         else if (missile.GetComponent<Weapon>().type == "Fox2")
         {

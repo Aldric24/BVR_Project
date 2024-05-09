@@ -12,7 +12,7 @@ public class Fox2Script : Weapon
     [SerializeField] private float thrustDuration;
     [SerializeField] private bool isBoosting;
     private float boostTimer = 0;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     [SerializeField] private ParticleSystem missileParticleEffect;
     // Target Related// Set externally or retrieved from the player
     private Vector3 targetDirection;
@@ -50,7 +50,7 @@ public class Fox2Script : Weapon
         }
         StartCoroutine(AudioCallOut());
         weaponName = "Sidewinder AIM-9M";
-        rb = GetComponent<Rigidbody2D>();
+       
         isSearching = true;
        
         Debug.Log("Target LAyer " + targetLayerMask);
@@ -167,9 +167,16 @@ public class Fox2Script : Weapon
     {
         if (collider == null) return false;
 
-        if (collider.gameObject.CompareTag("Player")) return false; // Ignore player collisions
+        if (gameObject.tag == "PlayerMissile" && collider.gameObject.tag == "Player")
+        {
+            return false;
+        }
+        else {
 
-        return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
+            return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
+        }
+
+        
     }
     bool CheckRaycastCollision()
     {
@@ -242,10 +249,10 @@ public class Fox2Script : Weapon
     private void FindHeatTarget()
     {
         Collider2D[] detectedColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius, targetLayerMask);
-        Debug.Log("Detected colliders: " + detectedColliders.Length);
+        //Debug.Log("Detected colliders: " + detectedColliders.Length);
         if (detectedColliders.Length > 0)
         {
-            Debug.Log("Targets detected: " + detectedColliders[0].name);
+            //Debug.Log("Targets detected: " + detectedColliders[0].name);
 
             HeatSource potentialTarget = null;
             float largestHeatIntensity = 0f;
@@ -253,19 +260,23 @@ public class Fox2Script : Weapon
             foreach (Collider2D collider in detectedColliders)
             {
                 HeatSource heatSource = collider.gameObject.GetComponent<HeatSource>();
-                if (heatSource != null && heatSource.heatIntensity > largestHeatIntensity)
+                if(gameObject.tag == "PlayerMissile" && collider.gameObject.tag=="Player")
+                {
+                    Debug.Log("Player Detected");
+                }
+                else if(heatSource != null && heatSource.heatIntensity > largestHeatIntensity)
                 {
                     potentialTarget = heatSource;
                     largestHeatIntensity = heatSource.heatIntensity;
                 }
             }
 
-            if (potentialTarget != null)
+            if (potentialTarget != null )
             {
                 heatTarget = potentialTarget.transform;
                 isSearching = false;
                 hasTarget = true;
-                Debug.Log("Found target: " + heatTarget.gameObject.name + ", intensity: " + largestHeatIntensity);
+                //Debug.Log("Found target: " + heatTarget.gameObject.name + ", intensity: " + largestHeatIntensity);
 
             }
             else

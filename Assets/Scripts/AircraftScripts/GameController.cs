@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,23 +19,27 @@ public class GameController : MonoBehaviour
     public Loadoutscreen Loadoutscreen;
     public Dictionary<int, Weapon> loadout;
     public GameObject panel;
-    Timer GameTimer;
+    System.Timers.Timer GameTimer;
     private float timer = 0f;
     private bool timerRunning = false;
     public Dictionary<string, float> bestMissionTimes = new Dictionary<string, float>();
     public string selectedmission;
     [SerializeField]TextMeshProUGUI MissionTime;
     [SerializeField]GameObject End;
-    [SerializeField] GameObject Pause;
        
     [SerializeField]TextMeshProUGUI BestMissionTime;
+    [SerializeField]bool gameover = false;
+    [SerializeField]bool ingame = false;
     void Awake()
     {
         Loadoutscreen = FindAnyObjectByType<Loadoutscreen>();
         loadout = new Dictionary<int, Weapon>();
 
         panel= GameObject.Find("Panel");
+       
         DontDestroyOnLoad(gameObject);
+        
+       
     }
     
     void Start()
@@ -44,7 +49,11 @@ public class GameController : MonoBehaviour
         
         
     }
-    
+    private void FixedUpdate()
+    {
+        if (ingame) { checkPlayeralive(); }
+       
+    }
     public void confirmLoadout()
     {
         Debug.Log("Loadout SIZE " + loadout.Count); // Might be 0 initially
@@ -70,13 +79,21 @@ public class GameController : MonoBehaviour
     }
     public void StartGame()
     {
-
+        
         timerRunning = true;
         StartCoroutine(TimerCoroutine());
         //wait for scene to load
         StartCoroutine(waitforsecondsandlOad());
-        Pause.SetActive(true);
+        
 
+    }
+    void checkPlayeralive()
+    {         
+        if (FindAnyObjectByType<NewControl>() == null && !gameover)
+        {
+            GameOver(false);
+            gameover = true;
+        }
     }
     void GameEndScreen()
     {
@@ -91,13 +108,13 @@ public class GameController : MonoBehaviour
         Debug.Log("Scene Loaded");
         GameObject playerobj = Instantiate(player, new Vector3(-7507, 525, 121), Quaternion.identity);
         SetPlayerLoadout(loadout, playerobj);
-        
+        ingame = true;
         Debug.Log("Player Loadout set");
 
     }
     public void GameOver(bool win)
     {
-        Pause.SetActive(false);
+        GetComponentInChildren<CanvasGroup>().blocksRaycasts=true;
         timerRunning = false;
         if (win)
         {
@@ -125,9 +142,14 @@ public class GameController : MonoBehaviour
         }
         else
         {
-            Debug.Log("You Lose");
+            timerRunning = false;
+            fadein(End);
+            fadein(lose);
+            lose.SetActive(true);
+
+           
         }
-        timerRunning = false;
+       
 
         
     }
@@ -155,15 +177,14 @@ public class GameController : MonoBehaviour
     public void Refly()
     {
       //reload the scene
-        fadeOut(End);
-        SceneManager.LoadScene("MainMenu");
+        
+        StartCoroutine(transitiontoMainMenue());
         MenuController menuController = FindAnyObjectByType<MenuController>();
-        menuController.ShowScreen(2);
+        
     }
     public void mainmenu()
     {
         Debug.Log("Main Menu");
-        fadeOut(End);
         StartCoroutine(transitiontoMainMenue());
     }
     public IEnumerator transitiontoMainMenue()
@@ -172,7 +193,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene("MainMenu");
         MenuController menuController = FindAnyObjectByType<MenuController>();
-        menuController.ShowScreen(0);
+       
     }
     IEnumerator TimerCoroutine()
     {

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8812542499268813313}
   m_Layer: 9
   m_Name: Chaff
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,7 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a451fc3c9ed89cf40bfed78754a22c9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 5
-  maxHeatIntensity: 0
+  lifetime: 10
   movementSpeed: 2
   decayRate: 0.5
