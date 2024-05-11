@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour
     [SerializeField]bool gameover = false;
     public bool ingame = false;
     [SerializeField] bool Win = false;
+    int showscreen;
     void Awake()
     {
         Loadoutscreen = FindAnyObjectByType<Loadoutscreen>();
@@ -168,10 +169,11 @@ public class GameController : MonoBehaviour
         LoadBestTimes(); // Load the saved data
 
         string currentSceneName = SceneManager.GetActiveScene().name;
-        Debug.Log("Current Scene: " + currentSceneName + " time: " +timer);
+        Debug.Log("Current Scene: " + currentSceneName + " time: " + timer);
         if (bestMissionTimes.ContainsKey(currentSceneName))
         {
-            if (timer < bestMissionTimes[currentSceneName])
+            Debug.Log("Save contains Best Time: " + bestMissionTimes[currentSceneName]);
+            if (timer < bestMissionTimes[currentSceneName] || bestMissionTimes[currentSceneName]==0)
             {
                 bestMissionTimes[currentSceneName] = timer;
                 SaveBestTime(currentSceneName,timer);
@@ -179,6 +181,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Save does not contain Best Time: " + currentSceneName);
             // Scene name not found, save the time
             bestMissionTimes[currentSceneName] = timer;
             SaveBestTime(currentSceneName,timer);
@@ -186,15 +189,18 @@ public class GameController : MonoBehaviour
     }
     public void Refly()
     {
-      //reload the scene
+        //reload the scene
 
-        SceneManager.UnloadSceneAsync(selectedmission);
-        
+
+        showscreen = 2;
         fadeOut(End);
-        StartGame();
+        StartCoroutine(transitiontoMainMenue());
+        
+        //StartGame();
     }
     public void mainmenu()
     {
+        showscreen = 0;
         Debug.Log("Main Menu");
         StartCoroutine(transitiontoMainMenue());
     }
@@ -204,9 +210,10 @@ public class GameController : MonoBehaviour
         fadeOut(End);
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene("MainMenu");
-        yield return new WaitForSeconds(2);
+        
+        yield return new WaitForSeconds(0.5f);
         panel = GameObject.Find("Panel");
-
+        FindAnyObjectByType<MenuController>().GetComponent<MenuController>().ShowScreen(showscreen);
     }
     IEnumerator TimerCoroutine()
     {

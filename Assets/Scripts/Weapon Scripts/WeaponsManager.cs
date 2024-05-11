@@ -76,6 +76,7 @@ public class WeaponsManager : MonoBehaviour
         //availableWeaponTypes.Clear();
         foreach (HardPoint hardpoint in hardpoints)
         {
+           
             hardpoint.AttachMissile(hardpoint.missile);
             
         }
@@ -93,6 +94,11 @@ public class WeaponsManager : MonoBehaviour
 
     public void SwitchMissile() // Renamed for clarity
     {
+        if (hardpoints.Count(hp => !string.IsNullOrEmpty(hp.missiletype)) == 0)
+        {
+            Debug.LogWarning("No missiles available in hardpoints. Cannot switch.");
+            return;
+        }
         List<string> missileTypes = new List<string> { "Fox1", "Fox2", "Fox3" }; // Only missile types
 
         do

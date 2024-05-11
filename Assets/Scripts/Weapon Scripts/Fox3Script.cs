@@ -35,15 +35,13 @@ public class Fox3Script : Weapon
     [SerializeField] float radarAngle = 30f;  // Half the angle of the radar cone
     [SerializeField] float radarRange = 20f;
     [SerializeField] Collider2D radar;
+    
     void Start()
     {
         missileParticleEffect.Stop();
         rb = GetComponent<Rigidbody2D>();
         rb.isKinematic = true;
-        if (gameObject.transform.parent != null && gameObject.transform.parent.tag == "Player")
-        {
-            gameObject.tag = "PlayerMissile";
-        }
+       
         weaponName = "Amraam Aim120 -D";
         boostTimer = 0;
 
@@ -53,7 +51,7 @@ public class Fox3Script : Weapon
     {
 
 
-        if (rb.simulated != false)
+        if (rb.simulated != false )
         {
             velocity = ((int)rb.velocity.magnitude);
             guidance();
@@ -227,8 +225,9 @@ public class Fox3Script : Weapon
     {
         if (collider == null) return false;
 
-        if(gameObject.CompareTag("PlayerMissile") && collider.gameObject.CompareTag("Player")) return false; // Ignore player collisions
-        
+        if(gameObject.CompareTag("PlayerMissile") && collider.gameObject.CompareTag("Player")) return false;
+        if (gameObject.CompareTag("AdversaryMissile") && collider.gameObject.CompareTag("Adversary")) return false;// Ignore player collisions
+
 
         return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
     }
@@ -309,4 +308,5 @@ public class Fox3Script : Weapon
         gameObject.GetComponent<Rigidbody2D>().simulated=true;
        
     }
+
 }

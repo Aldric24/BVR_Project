@@ -16,18 +16,19 @@ public class EnemyAI : MonoBehaviour
     public PatrolWaypoint currentWaypoint;
     public float waypointReachedDistance = 5f;
     public AiControl aircraftControl;
-    [SerializeField]int AircraftSpeed;
+    [SerializeField] int AircraftSpeed;
     public EnemyRadar radar;
     public float lockOnRange = 50f;
     [SerializeField] Collider2D AircraftCollider;
     private Vector3 lastKnownPlayerPosition;
-    private Dictionary<GameObject, ThreatAssessment> threatList = new Dictionary<GameObject, ThreatAssessment>();
+    private Dictionary<GameObject, int> threatList = new Dictionary<GameObject, int>();
     private const float threatTimeout = 4.0f;
-    [SerializeField]private Vector3 lastKnownTargetPosition;
+    [SerializeField] private Vector3 lastKnownTargetPosition;
     [SerializeField] string SelectedWeapon;
-    [SerializeField]private AiWeaponsManager weaponsManager;
+    [SerializeField] private AiWeaponsManager weaponsManager;
     [SerializeField] bool playerSeesAI;
     public List<GameObject> tempTargets = new List<GameObject>(); // Add this to your class
+    public List<GameObject> evadeTargets = new List<GameObject>(); // Add this to your class
     [SerializeField] private float flareIntervalMissile = 1.5f; // Seconds between flares when under missile threat
     [SerializeField] private float chaffIntervalMissile = 1.5f;
     [SerializeField] private float flareIntervalNormal = 3.0f;  // Seconds between flares during regular evasion
@@ -37,14 +38,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private GameObject flarePrefab;
     [SerializeField] bool missileinbound = false;
     [SerializeField] private GameObject chaffPrefab;
-    private class ThreatAssessment
-    {
-        public float lastDetectionTime;
-        public float threatLevel; // You'll determine how to calculate this
-    }
+   
     void Start()
     {
-        SelectedWeapon= weaponsManager.currentMissileType;
+        SelectedWeapon = weaponsManager.currentMissileType;
         aircraftControl = GetComponent<AiControl>();
         SelectNewPatrolWaypoint();
         StartCoroutine(RemoveStaleThreats());
@@ -53,12 +50,12 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
 
-        
+
         switch (currentState)
         {
             case AIState.Search:
                 HandleSearch();
-                
+
                 break;
             case AIState.Pursue:
                 HandlePursue();
@@ -76,13 +73,13 @@ public class EnemyAI : MonoBehaviour
         }
         ScanForPlayerTarget();
     }
-    
+
     void HandleSearch()
     {
         Debug.Log("AI State: Search");
         AircraftSpeed = 40;
         aircraftControl.targetSpeed = AircraftSpeed;
-        aircraftControl.target = currentWaypoint.transform; 
+        aircraftControl.target = currentWaypoint.transform;
         if (heading != null)
         {
             Debug.Log("Heading acquired during search, switching to Pursue state");
@@ -90,13 +87,13 @@ public class EnemyAI : MonoBehaviour
             return;
         }
         aircraftControl.ManageThrust(AircraftSpeed);
-       
+
         if (Vector2.Distance(transform.position, currentWaypoint.transform.position) < waypointReachedDistance)
         {
             SelectNewPatrolWaypoint();
         }
     }
-   
+
     void ScanForPlayerTarget()
     {
         // 1. Check for Player in RadarObjects
@@ -105,12 +102,18 @@ public class EnemyAI : MonoBehaviour
             //Debug.Log("radar objects "+ radar.RadarObjects.Count);
             foreach (GameObject obj in radar.RadarObjects)
             {
+                if (obj == null)
+                {
+                    Debug.LogWarning("Null object detected in radarObjects. Removing it.");
+                    radar.RadarObjects.Remove(obj); // Remove the null reference
+                    continue;  // Skip to the next object
+                }
+
                 if (obj.CompareTag("Player"))
                 {
-                    
                     target = obj;
                     heading = target.transform;
-                    lastKnownTargetPosition = target.transform.position; // Update last position
+                    lastKnownTargetPosition = target.transform.position;
                     return;
                 }
             }
@@ -119,21 +122,21 @@ public class EnemyAI : MonoBehaviour
         {
             target = null;
         }
-          
-        AssessRWRAndRadarThreat();
+        AssessThreats();
+        //AssessRWRAndRadarThreat();
     }
 
     void HandlePursue()
     {
         Debug.Log("AI State: Pursue");
 
-        if (target == null && threatList.Count<1 ) // Ensure that the target still exists
+        if (target == null && threatList.Count < 1) // Ensure that the target still exists
         {
             if (lastKnownTargetPosition != Vector3.zero)
             {
                 Debug.Log("Lost target but have last known position. Switching to Investigate state.");
                 currentState = AIState.Investigate;
-                
+
             }
             else
                 Debug.Log("Lost target and no last known position. Switching to Search state.");
@@ -147,14 +150,18 @@ public class EnemyAI : MonoBehaviour
         aircraftControl.ManageThrust(AircraftSpeed);
 
         // 2. Attempt Lock-on
-        float distanceToTarget = Vector2.Distance(transform.position, heading.position);
-        
- 
-        if (distanceToTarget <= lockOnRange)
+        if (heading != null)
         {
-            radar.LockedTarget = heading.gameObject;
-            currentState = AIState.Attack;
+            float distanceToTarget = Vector2.Distance(transform.position, heading.position);
+
+
+            if (distanceToTarget <= lockOnRange)
+            {
+                radar.LockedTarget = heading.gameObject;
+                currentState = AIState.Attack;
+            }
         }
+
     }
     private void OnDrawGizmos()
     {
@@ -166,10 +173,10 @@ public class EnemyAI : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       
-        if(collision.tag!="PlayerMissile" && collision.tag!="Player")
+
+        if (collision.tag != "PlayerMissile" && collision.tag != "Player")
         {
-           
+
             return;
         }
         else
@@ -177,74 +184,81 @@ public class EnemyAI : MonoBehaviour
             Debug.Log("AI RWR Collision detected");
             OnRWRAlert(collision.gameObject);
         }
-       
+
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+        if (collision.tag != "PlayerMissile" && collision.tag != "Player")
+        {
+
+            return;
+        }
+        else
+        {
+            Debug.Log("AI RWR Collision detected");
+            OnRWRAlert(collision.gameObject);
+        }
+
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        
+        if (collision.tag != "PlayerMissile" && collision.tag != "Player")
+        {
+
+            return;
+        }
+        else
+        {
+            Debug.Log("missile radar doesnt see the ai");
+          
+        }
     }
     public void OnRWRAlert(GameObject detectedBy)
     {
         if (!threatList.ContainsKey(detectedBy))
         {
-            threatList.Add(detectedBy, new ThreatAssessment());
+            Debug.Log("Detected by" + detectedBy.name);
+            threatList.Add(detectedBy, (int)Time.time);
         }
 
         // Update threat assessment
-        threatList[detectedBy].lastDetectionTime = Time.time;
-        UpdateThreatLevel(detectedBy);
     }
-    private void UpdateThreatLevel(GameObject threatObject)
-    {
-        ThreatAssessment threatData = threatList[threatObject];
 
-        // Logic to calculate threatLevel:
-        if (threatObject.CompareTag("PlayerMissile"))
-        {
-            
-            threatData.threatLevel = 1.0f; // Highest priority
-        }
-        else if (threatObject.CompareTag("Player"))
-        {
-            threatData.threatLevel = 0.7f;
-            target = threatObject;
-        }
-        else
-        {
-            threatData.threatLevel = 0.3f; // Lower priority
-        }
-
-        // You can add more factors here (distance, AI state, etc.)
-    }
     private void AssessRWRAndRadarThreat()
     {
-        if(threatList.Count<1 )
+        if (threatList.Count < 1 && radar.RadarObjects.Count<1)
         {
             if (lastKnownTargetPosition != Vector3.zero)
             {
                 currentState = AIState.Investigate;
             }
-            
+
             return;
         }
-       
+        
         // Check if player is both in radar list and detected by RWR
         foreach (var pair in threatList)
         {
-            if (pair.Key.CompareTag("Player") )
+            if (pair.Key.CompareTag("Player"))
             {
                 playerSeesAI = true;
-                
+
                 break; // Found a match, no need to continue iteration
             }
-            else if(pair.Key.CompareTag("PlayerMissile"))
+            else if (pair.Key.CompareTag("PlayerMissile"))
             {
                 missileinbound = true;
                 break;
             }
-            else if(radar.RadarObjects.Contains(pair.Key))
+            else if (radar.RadarObjects.Contains(pair.Key))
             {
                 playerSeesAI = false;
             }
-            
-        }
 
+        }
+        
         ReactToThreatScenario(playerSeesAI);
     }
     private IEnumerator RemoveStaleThreats()
@@ -252,34 +266,34 @@ public class EnemyAI : MonoBehaviour
         while (true)
         {
             List<GameObject> keysToRemove = new List<GameObject>();
-            if(threatList.Count > 0)
+            if (threatList.Count > 0)
             {
                 foreach (var pair in threatList)
                 {
-                    if (Time.time - pair.Value.lastDetectionTime > threatTimeout)
+                    if (Time.time - pair.Value > threatTimeout)
                     {
                         keysToRemove.Add(pair.Key);
                     }
                 }
             }
-            
+
 
             // Remove outside of iteration loop to avoid modifying while iterating 
-            if(keysToRemove.Count > 0)
+            if (keysToRemove.Count > 0)
             {
                 foreach (GameObject key in keysToRemove)
                 {
                     threatList.Remove(key);
                 }
             }
-            
+
 
             yield return new WaitForSeconds(1.0f); // Check for stale threats every second
         }
     }
     private void ReactToThreatScenario(bool playerSeesAI)
     {
-        if (playerSeesAI)
+        if (playerSeesAI || missileinbound)
         {
             // Mutual Detection: React defensively and prepare to counterattack
             currentState = AIState.Evade;
@@ -293,48 +307,103 @@ public class EnemyAI : MonoBehaviour
         }
         // ... handle other scenarios as needed...
     }
-    private void AssessThreats() // Call this periodically, maybe inside Update()
+    private void AssessThreats()
     {
-        GameObject highestThreat = null;
-        float highestThreatLevel = 0.0f;
-
-        foreach (var pair in threatList)
+        // Check for missile threats first
+        foreach (var threat in threatList.Keys)
         {
-            if (pair.Value.threatLevel > highestThreatLevel)
+            if (threat != null && threat.CompareTag("PlayerMissile"))
             {
-                highestThreat = pair.Key;
-                highestThreatLevel = pair.Value.threatLevel;
+                Debug.Log("Missile threat detected! Switching to Evade state.");
+                currentState = AIState.Evade;
+                missileinbound = true;
+                return; // Exit if missile threat is found
+            }
+            if (threat != null && threat.CompareTag("Player"))
+            {
+                Debug.Log("Missile threat detected! Switching to Evade state.");
+                currentState = AIState.Evade;
+                missileinbound = false;
+                return; // Exit if missile threat is found
             }
         }
 
-        // React to the highest threat (if any)
-        if (highestThreat != null)
+        // No missile threats, check for player threat
+        if (target!=null && threatList.ContainsKey(target) )
         {
-           // RespondToThreat(highestThreat);
+            playerSeesAI = true;
+            Debug.Log("Player threat detected! Switching to Pursue or Attack state.");
+
+            // Determine appropriate action based on distance or other factors
+            float distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+            if (distanceToTarget <= lockOnRange)
+            {
+                currentState = AIState.Attack;
+            }
+            else
+            {
+                currentState = AIState.Pursue;
+            }
+
+            return; // Exit if player threat is found
         }
+
+       return;
     }
     void HandleAttack()
     {
         Debug.Log("AI State: Attack");
 
-        StartCoroutine(tempafterAttacK());
+        if (target == null) // Safety check if target is lost during attack
+        {
+            Debug.Log("Target lost during attack. Switching to Search state.");
+            weaponsManager.target = null;
+            currentState = AIState.Investigate;
+            return;
+        }
+        float distanceToTarget = 0;
+        if (target!=null)
+        {
+             distanceToTarget = Vector2.Distance(transform.position, target.transform.position);
+        }
 
-        //// Fine-tune Attack Positioning (optional)
-        //// ... Add logic to maneuver for optimal attack position 
 
-        //// Check if able to fire
-        //if (CanFire())
-        //{
-        //    FireMissile();
-        //    currentState = AIState.Evade;
-        //}
+        // Choose missile based on distance
+        string selectedMissileType = SelectMissileBasedOnRange(distanceToTarget);
+        weaponsManager.SwitchToMissileType(selectedMissileType);
+
+        // Fire missile (replace with your actual firing logic)
+        if (weaponsManager)
+        {
+            weaponsManager.selectedHardpoint.EnableMissile();
+            weaponsManager.selectedHardpoint.Fire(weaponsManager);
+            Debug.Log("Firing " + selectedMissileType + " at target.");
+            currentState = AIState.Evade;
+        }
     }
-    IEnumerator tempafterAttacK()
+
+    private string SelectMissileBasedOnRange(float distance)
     {
-        yield return new WaitForSeconds(5);
-        Debug.Log("Delay after attack complete. Switching to Evade state.");
-        currentState = AIState.Evade;
+        // Replace these values with your actual missile types and range thresholds
+        if (distance <= 200f)
+        {
+            return "Fox2";
+        }
+        else if (distance <= 500f)
+        {
+            return "Fox1";
+        }
+        else
+        {
+            return "Fox3";
+        }
     }
+    //IEnumerator tempafterAttacK()
+    //{
+    //    yield return new WaitForSeconds(5);
+    //    Debug.Log("Delay after attack complete. Switching to Evade state.");
+    //    currentState = AIState.Evade;
+    //}
     void HandleInvestigate()
     {
         Debug.Log("AI State: Investigate");
@@ -407,13 +476,14 @@ public class EnemyAI : MonoBehaviour
     void HandleEvade()
     {
         Debug.Log("AI State: Evade");
-        if (!playerSeesAI && !radar.RadarObjects.Contains(target))
-        {
-            Debug.Log("No longer under threat, switching to Search state.");
-            currentState = AIState.Search;
-            target = null;
-            heading = null;
-        }
+        //if (!playerSeesAI && !radar.RadarObjects.Contains(target))
+        //{
+        //    Debug.Log("No longer under threat, switching to Search state.");
+        //    currentState = AIState.Investigate;
+        //    target = null;
+        //    heading = null;
+        //    weaponsManager.target = null;
+        //}
         // Evade Type
         bool isEvadingMissile = missileinbound;
 
@@ -425,37 +495,24 @@ public class EnemyAI : MonoBehaviour
             EvasiveManeuverAgainstMissile();
             DeployCountermeasures(isEvadingMissile);
         }
-        else
+        else if (target != null && threatList.ContainsKey(target))
         {
             Debug.Log("Evading player - executing player evasion maneuvers");
             // Evade player (after attack)
             EvasiveManeuverAwayFromPlayer();
             DeployCountermeasures(isEvadingMissile);
         }
+        
     }
     private void DeployCountermeasures(bool isEvadingMissile)
     {
         if (isEvadingMissile)
         {
-            // More frequent countermeasures
-            if (Time.time > nextFlareCountermeasureTime)
-            {
-                weaponsManager.DeployFlares();
-                nextFlareCountermeasureTime = Time.time + flareIntervalMissile;
-            }
-            if (Time.time > nextChaffCountermeasureTime)
-            {
-                weaponsManager.DeployChaff();
-                nextChaffCountermeasureTime = Time.time + chaffIntervalMissile;
-            }
-        }
-        else
-        {
-            // More frequent countermeasures
+
             if (Time.time > nextFlareCountermeasureTime)
             {
                 Debug.Log("Deploying flares");
-                Vector3 offset = Random.insideUnitCircle ;
+                Vector3 offset = Random.insideUnitCircle;
                 GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
                 nextFlareCountermeasureTime = Time.time + flareIntervalMissile;
             }
@@ -467,17 +524,99 @@ public class EnemyAI : MonoBehaviour
                 nextChaffCountermeasureTime = Time.time + chaffIntervalMissile;
             }
         }
+        else
+        {
+            // More frequent countermeasures
+            if (Time.time > nextFlareCountermeasureTime)
+            {
+                Debug.Log("Deploying flares");
+                Vector3 offset = Random.insideUnitCircle ;
+                GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
+                nextFlareCountermeasureTime = Time.time + flareIntervalNormal;
+            }
+            if (Time.time > nextChaffCountermeasureTime)
+            {
+                Debug.Log("Deploying chaff");
+                Vector3 offset = Random.insideUnitCircle;
+                GameObject flare = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
+                nextChaffCountermeasureTime = Time.time + chaffIntervalNormal;
+            }
+        }
     }
+    
     // Evasive Maneuvers
     private void EvasiveManeuverAgainstMissile()
     {
-        // TODO: Implement missile evasion logic (e.g., notching, flares, etc.)
-        Debug.Log("evading missile");
-        missileinbound = false;
+        AircraftSpeed = 80;
+        Debug.Log("Evading missile");
+        Vector3 newEvadePoint=new Vector3();
+        if (GetMissileThreat()!=null)
+        {
+            Vector3 directionAwayFromMissile = (transform.position - GetMissileThreat().transform.position).normalized;
+             newEvadePoint = transform.position + directionAwayFromMissile * 1000f; // Example, adjust as needed
+        }
+        // Continuously change evade target
+
+
+        // Destroy any existing "MissileEvadeTarget"
+       if(GameObject.FindGameObjectWithTag("MissileEvadeTarget")==null)
+       {
+            GameObject tempEvadeTarget = new GameObject("MissileEvadeTarget");
+            tempEvadeTarget.transform.position = newEvadePoint;
+            tempEvadeTarget.tag = "MissileEvadeTarget";
+            aircraftControl.target = tempEvadeTarget.transform;
+       }
+       
+
+        
+        
+
+       
+
+        // More frequent countermeasures
+        if (Time.time > nextFlareCountermeasureTime)
+        {
+            weaponsManager.DeployFlares();
+            nextFlareCountermeasureTime = Time.time + flareIntervalMissile * 0.5f; // More frequent
+        }
+
+        if (Time.time > nextChaffCountermeasureTime)
+        {
+            weaponsManager.DeployChaff();
+            nextChaffCountermeasureTime = Time.time + chaffIntervalMissile * 0.5f; // More frequent
+        }
+
+        // Check if arrived at evade position OR missile is no longer a threat
+        if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("MissileEvadeTarget").transform.position) < 20f)
+        {
+            Debug.Log("Evade maneuver complete (reached position or missile no longer a threat)");
+
+            // Cleanup and reset
+            lastKnownTargetPosition = Vector3.zero;
+            currentState = AIState.Investigate; // Go to Investigate since we don't have a target anymore
+            heading = null;
+            target = null;
+            missileinbound = false;
+
+            Destroy(GameObject.FindGameObjectWithTag("MissileEvadeTarget")); // Destroy the temporary evade target
+        }
     }
+    private GameObject GetMissileThreat()
+    {
+        foreach (var pair in threatList)
+        {
+            if (pair.Key != null && pair.Key.CompareTag("PlayerMissile"))
+            {
+                return pair.Key;
+            }
+        }
+        return null;
+    }
+
 
     private void EvasiveManeuverAwayFromPlayer()
     {
+        AircraftSpeed = 75;
         if (target == null)
         {
             Debug.LogWarning("Target became null during evasion. Falling back to waypoint.");
@@ -504,7 +643,7 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.Log("Arrived at evade position");
             lastKnownTargetPosition = Vector3.zero; // Reset 
-            currentState = AIState.Search;
+            currentState = AIState.Investigate;
             heading = null; // Reset heading
             target = null; // Reset target
 
@@ -540,6 +679,19 @@ public class EnemyAI : MonoBehaviour
         }
 
         return farthestWaypoint;
+    }
+    private void CleanUpOldEvadeTargets()
+    {
+        for (int i = 0; i < evadeTargets.Count; i++)
+        {
+            // Destroy if null or if the name doesn't match the expected format
+            if (evadeTargets[i] == null || !evadeTargets[i].name.Equals("Temp Target"))
+            {
+                Destroy(evadeTargets[i]);
+                evadeTargets.RemoveAt(i);
+                i--; // Decrement index since the list has shortened
+            }
+        }
     }
     void SelectNewPatrolWaypoint()
     {

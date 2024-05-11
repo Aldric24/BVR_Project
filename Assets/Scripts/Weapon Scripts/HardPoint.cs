@@ -19,6 +19,14 @@ public class HardPoint : MonoBehaviour
     {
         missile = Instantiate(Missile, hardpoint.position, hardpoint.rotation);
         missile.transform.parent = hardpoint;
+        if (gameObject.tag == "Player")
+        {
+            missile.gameObject.tag = "PlayerMissile";
+        }
+        else if (gameObject.tag == "Adversary")
+        {
+            missile.gameObject.tag = "AdversaryMissile";
+        }
     }
    
     public void Fire(WeaponsManager wp)

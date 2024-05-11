@@ -171,6 +171,7 @@ public class Fox2Script : Weapon
         {
             return false;
         }
+        if (gameObject.CompareTag("Adversary") && collider.gameObject.CompareTag("Adversary")) return false;// Ignore player collisions
         else {
 
             return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
@@ -262,7 +263,11 @@ public class Fox2Script : Weapon
                 HeatSource heatSource = collider.gameObject.GetComponent<HeatSource>();
                 if(gameObject.tag == "PlayerMissile" && collider.gameObject.tag=="Player")
                 {
-                    Debug.Log("Player Detected");
+                    //Debug.Log("Player Detected");
+                } 
+                if(gameObject.tag == "AdversaryMissile" && collider.gameObject.tag=="Adversary  ")
+                {
+                    //Debug.Log("Player Detected");
                 }
                 else if(heatSource != null && heatSource.heatIntensity > largestHeatIntensity)
                 {
@@ -284,7 +289,7 @@ public class Fox2Script : Weapon
                 isSearching = true;
                 hasTarget = false;
                 heatTarget = null;
-                Debug.Log("No targets detected within radius");
+                //Debug.Log("No targets detected within radius");
             }
             // Clear after processing
         }

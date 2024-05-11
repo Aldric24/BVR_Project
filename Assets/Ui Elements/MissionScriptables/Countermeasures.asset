@@ -25,8 +25,8 @@ MonoBehaviour:
     and potential counter-countermeasures.\n\nChaff:  Radar-confusing countermeasures. 
     Use chaff to create false targets and complicate enemy tracking.\n\nMission Area:
     The simulation throws a mix of missile types your way.  Expect both radar-guided
-    and heat-seeking threats.\n\nObjectives:\n\nJinking Prowess:  Execute effective
-    jinking patterns against incoming missiles.\n\nNotching Technique:  Master the
-    timing and execution of notching maneuvers.\n\nCountermeasure Deployment:  Learn
+    and heat-seeking threats.\n\nObjectives:\n-Jinking Prowess:  Execute effective
+    jinking patterns against incoming missiles.\n-Notching Technique:  Master the
+    timing and execution of notching maneuvers.\n-Countermeasure Deployment:  Learn
     the optimal use of flares and chaff based on threat type and situation."
   recommendedLoadout: A/A

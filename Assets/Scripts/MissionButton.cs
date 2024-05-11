@@ -19,7 +19,10 @@ public class MissionButton : MonoBehaviour
         _missionName = mission.missionName;
         _missionDescription = mission.missionDescription;
     }
-
+    private void FixedUpdate()
+    {
+        savepos=transform.position;
+    }
     // Start is called before the first frame update
     void Start()
     {

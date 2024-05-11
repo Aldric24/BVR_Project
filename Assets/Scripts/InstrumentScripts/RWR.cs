@@ -129,7 +129,7 @@ public class RWR : MonoBehaviour
     {
         while (true)
         {
-            if (RWRObjects.Any(obj => obj.tag == "Missile"))
+            if (RWRObjects.Any(obj => obj.tag == "AdversaryMissile"))
             {
                 if(!missileWarningSource.isPlaying )
                 {

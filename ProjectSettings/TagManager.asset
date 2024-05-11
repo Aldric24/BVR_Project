@@ -10,6 +10,8 @@ TagManager:
   - PlayerMissile
   - Missile
   - Evade Target
+  - AdversaryMissile
+  - MissileEvadeTarget
   layers:
   - Default
   - TransparentFX
