@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,11 +125,19 @@ public class SweepRotation : MonoBehaviour
         {
             if (CursorTarget)
             {
-                Vector3 objectDirection = CursorTarget.transform.position - transform.parent.position;
-                float angleToTarget = Mathf.Atan2(objectDirection.y, objectDirection.x) * Mathf.Rad2Deg;
-                float relativeAngle = angleToTarget - playerRotation;  // Ensure playerRotation is in degrees
-                RangeText.GetComponent<Text>().text = "Range: " + Vector3.Distance(transform.parent.position, CursorTarget.transform.position).ToString("F2") + "m";
-                Bearing.GetComponent<Text>().text = "Bearing: " + (relativeAngle.ToString("F2"));
+                Vector2 objectDirection2D = CursorTarget.transform.position - transform.parent.position;
+
+                // Calculate azimuth angle (Z direction) using Vector2.SignedAngle, now relative to the player's forward direction
+                float azimuthAngle = Vector2.SignedAngle(transform.parent.up, objectDirection2D)+playerRotation; // Use transform.parent.up as the reference direction in 2D
+
+                // Display the azimuth angle with a sign (+/-) to indicate left/right
+                Bearing.GetComponent<Text>().text = "Bearing: " + (azimuthAngle > 0 ? "-" : "+") + Math.Abs(azimuthAngle).ToString("F2") + "°"; // Add '+' if positive
+            
+                //Vector3 objectDirection = CursorTarget.transform.position - transform.parent.position;
+                //float angleToTarget = Mathf.Atan2(objectDirection.y, objectDirection.x) * Mathf.Rad2Deg;
+                //float relativeAngle = angleToTarget - playerRotation;  // Ensure playerRotation is in degrees
+                 RangeText.GetComponent<Text>().text = "Range: " + Vector3.Distance(transform.parent.position, CursorTarget.transform.position).ToString("F2") + "m";
+                //Bearing.GetComponent<Text>().text = "Bearing: " + (relativeAngle.ToString("F2"));
             }
             else
             {

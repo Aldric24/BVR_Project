@@ -80,26 +80,45 @@ public class Loadoutscreen : MonoBehaviour
         // Save the selected weapons to the GameController
         SaveLoadout(FindAnyObjectByType<GameController>().selectedmission, selectedWeapons);
     }
-    public void Loaddata()
+    public void LoadData()
     {
         LoadMissionData(FindAnyObjectByType<GameController>().selectedmission);
-        // Get the appropriate saved dictionary (replace with how you select the mission)
-        //string missionName = FindAnyObjectByType<GameController>().selectedmission; // Replace with your mission selection logic
-        //if (!missionLoadouts.ContainsKey(missionName))
-        //{
-        //    Debug.LogError("Mission not found: " + missionName);
-        //    return;
-        //}
+        string missionName = FindAnyObjectByType<GameController>().selectedmission; // Replace with your mission selection logic
 
-        //Dictionary<int, Weapon> Savedloadout = missionLoadouts[missionName];
+        // Check if the mission exists in your dictionary
+        if (!missionLoadouts.ContainsKey(missionName))
+        {
+            Debug.LogError("Mission not found: " + missionName);
+            return; // Exit the function if the mission is missing
+        }
+
+        // Get the saved loadout dictionary
+        Dictionary<int, Weapon> savedLoadout = missionLoadouts[missionName];
+
+        // Check if the saved loadout is null
+        if (savedLoadout == null)
+        {
+            Debug.LogError("Saved loadout data is null for mission: " + missionName);
+            return; // Exit the function if the loadout is null
+        }
 
         // Hardpoint Setting (Needs Adjustment)
         for (int i = 0; i < hardpointDropdowns.Count; i++)
         {
-            hardpointDropdowns[i].value = availableWeapons.FindIndex(w => w == Savedloadout[i]);
+            // Additional check: Make sure the savedLoadout has data for this hardpoint
+            if (savedLoadout.ContainsKey(i))
+            {
+                hardpointDropdowns[i].value = availableWeapons.FindIndex(w => w == savedLoadout[i]);
+            }
+            else
+            {
+                Debug.LogWarning($"No saved loadout data found for hardpoint index {i} in mission {missionName}.");
+                // You might want to handle this case by setting a default weapon or doing nothing.
+            }
         }
-        FindAnyObjectByType<GameController>().loadout = Savedloadout;
 
+        // Finally, assign the loadout to the GameController
+        FindAnyObjectByType<GameController>().loadout = savedLoadout;
     }
     public void SaveLoadout(string missionName, Dictionary<int, Weapon> loadout)
     {
