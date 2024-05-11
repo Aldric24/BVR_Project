@@ -37,7 +37,7 @@ public class RWR : MonoBehaviour
     {
         if (!RWRObjects.Contains(Popup)) // Check for duplicates
         {
-            if(Popup.tag == "Missile")
+            if(Popup.tag == "AdversaryMissile")
             {
                 RWRObjects.Add(Popup);
                 lastPingedTimes[Popup] = Time.time;

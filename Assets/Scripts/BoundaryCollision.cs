@@ -15,7 +15,7 @@ public class BoundaryCollision : MonoBehaviour
         player= GameObject.FindWithTag("Player");
         if(player!=null)
         {
-            playerRigidbody = player.GetComponentInChildren<Rigidbody2D>();
+            playerRigidbody = player.GetComponent<Rigidbody2D>();
         }
         
     }

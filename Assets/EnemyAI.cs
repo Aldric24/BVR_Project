@@ -121,6 +121,7 @@ public class EnemyAI : MonoBehaviour
         else // No targets in radar objects
         {
             target = null;
+            weaponsManager.target = null;
         }
         AssessThreats();
         //AssessRWRAndRadarThreat();
@@ -442,7 +443,7 @@ public class EnemyAI : MonoBehaviour
             currentState = AIState.Search;
             heading = null; // Reset heading
             target = null; // Reset target
-
+            weaponsManager.target = null;
             // Destroy the temporary target object
             if (aircraftControl.target != null && aircraftControl.target.gameObject != null)
                 Destroy(aircraftControl.target.gameObject);
@@ -596,6 +597,7 @@ public class EnemyAI : MonoBehaviour
             currentState = AIState.Investigate; // Go to Investigate since we don't have a target anymore
             heading = null;
             target = null;
+            weaponsManager.target = null;
             missileinbound = false;
 
             Destroy(GameObject.FindGameObjectWithTag("MissileEvadeTarget")); // Destroy the temporary evade target
@@ -628,25 +630,25 @@ public class EnemyAI : MonoBehaviour
         Vector3 farthestEvadePoint = transform.position + directionAwayFromPlayer * 1000;
 
         // Set up temporary target for movement
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Evade Target");
-        if (gameObjects.Count() > 2)
+        
+        if (GameObject.FindGameObjectWithTag("Evade Target")==null)
         {
-            Destroy(GameObject.Find("Evade Target"));
+            GameObject tempEvadeTarget = new GameObject("Evade Target");
+            tempEvadeTarget.tag = "Evade Target";
+            tempEvadeTarget.transform.position = farthestEvadePoint;
+            aircraftControl.target = tempEvadeTarget.transform;
         }
-        GameObject tempEvadeTarget = new GameObject("Evade Target");
-        tempEvadeTarget.tag = "Evade Target";
-        tempEvadeTarget.transform.position = farthestEvadePoint;
-        aircraftControl.target = tempEvadeTarget.transform;
+        
 
         // Logic to destroy tempEvadeTarget (with null checks)
-        if (Vector2.Distance(transform.position, tempEvadeTarget.transform.position) < 20f)
+        if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("Evade Target").transform.position) < 20f)
         {
             Debug.Log("Arrived at evade position");
             lastKnownTargetPosition = Vector3.zero; // Reset 
             currentState = AIState.Investigate;
             heading = null; // Reset heading
             target = null; // Reset target
-
+            weaponsManager.target = null;
             // Destroy the temporary target object (with null checks)
             if (aircraftControl.target != null && aircraftControl.target.gameObject != null)
             {

@@ -265,7 +265,7 @@ public class Fox2Script : Weapon
                 {
                     //Debug.Log("Player Detected");
                 } 
-                if(gameObject.tag == "AdversaryMissile" && collider.gameObject.tag=="Adversary  ")
+                if(gameObject.tag == "AdversaryMissile" && collider.gameObject.tag=="Adversary")
                 {
                     //Debug.Log("Player Detected");
                 }
