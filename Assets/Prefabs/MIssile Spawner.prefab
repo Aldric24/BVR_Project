@@ -71,7 +71,7 @@ MonoBehaviour:
   - {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missileSpawnPoint: {fileID: 7088416978134753166}
   detectionRadius: 310.56
-  firingCooldown: 2
+  firingCooldown: 10.41
   playerLayer:
     serializedVersion: 2
     m_Bits: 2560

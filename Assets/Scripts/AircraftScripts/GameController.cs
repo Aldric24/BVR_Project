@@ -29,15 +29,21 @@ public class GameController : MonoBehaviour
        
     [SerializeField]TextMeshProUGUI BestMissionTime;
     [SerializeField]bool gameover = false;
-    [SerializeField]bool ingame = false;
+    public bool ingame = false;
+    [SerializeField] bool Win = false;
     void Awake()
     {
         Loadoutscreen = FindAnyObjectByType<Loadoutscreen>();
         loadout = new Dictionary<int, Weapon>();
 
-        panel= GameObject.Find("Panel");
-       
+        panel = GameObject.Find("Panel");
         DontDestroyOnLoad(gameObject);
+        GameObject[] gameControllers = GameObject.FindGameObjectsWithTag("GameController"); // Or whatever tag you use
+        if (gameControllers.Length > 1)
+        {
+            Destroy(gameObject);  // Destroy this instance if another already exists
+        }
+        
         
        
     }
@@ -46,7 +52,7 @@ public class GameController : MonoBehaviour
     {
         
         LoadBestTimes();
-        
+       
         
     }
     private void FixedUpdate()
@@ -89,7 +95,7 @@ public class GameController : MonoBehaviour
     }
     void checkPlayeralive()
     {         
-        if (FindAnyObjectByType<NewControl>() == null && !gameover)
+        if (FindAnyObjectByType<NewControl>() == null && ingame && gameover!=true )
         {
             GameOver(false);
             gameover = true;
@@ -114,10 +120,12 @@ public class GameController : MonoBehaviour
     }
     public void GameOver(bool win)
     {
+        ingame = false;
         GetComponentInChildren<CanvasGroup>().blocksRaycasts=true;
         timerRunning = false;
         if (win)
         {
+            Win = true;
             fadein(End);
             fadein(Success);
             FindAnyObjectByType<NewControl>().gameObject.transform.parent.gameObject.SetActive(false);
@@ -135,6 +143,8 @@ public class GameController : MonoBehaviour
             else
             {
                 GameObject.Find("MissionTime").GetComponent<TextMeshProUGUI>().text = "Mission Time: " + timer; // No best time saved yet 
+                
+
             }
 
             Debug.Log("You Win");
@@ -158,7 +168,7 @@ public class GameController : MonoBehaviour
         LoadBestTimes(); // Load the saved data
 
         string currentSceneName = SceneManager.GetActiveScene().name;
-
+        Debug.Log("Current Scene: " + currentSceneName + " time: " +timer);
         if (bestMissionTimes.ContainsKey(currentSceneName))
         {
             if (timer < bestMissionTimes[currentSceneName])
@@ -177,10 +187,11 @@ public class GameController : MonoBehaviour
     public void Refly()
     {
       //reload the scene
+
+        SceneManager.UnloadSceneAsync(selectedmission);
         
-        StartCoroutine(transitiontoMainMenue());
-        MenuController menuController = FindAnyObjectByType<MenuController>();
-        
+        fadeOut(End);
+        StartGame();
     }
     public void mainmenu()
     {
@@ -189,11 +200,13 @@ public class GameController : MonoBehaviour
     }
     public IEnumerator transitiontoMainMenue()
     {
+        Time.timeScale = 1;
         fadeOut(End);
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene("MainMenu");
-        MenuController menuController = FindAnyObjectByType<MenuController>();
-       
+        yield return new WaitForSeconds(2);
+        panel = GameObject.Find("Panel");
+
     }
     IEnumerator TimerCoroutine()
     {
@@ -229,6 +242,7 @@ public class GameController : MonoBehaviour
         if (!string.IsNullOrEmpty(savedData))
         {
             bestMissionTimes = DeserializeBestTimes(savedData);
+           
         }
     }
     void fadein(GameObject mission)
@@ -254,6 +268,7 @@ public class GameController : MonoBehaviour
             if (parts.Length == 2)
             {
                 result[parts[0]] = float.Parse(parts[1]);
+                Debug.Log("Loaded Best Time: " + parts[0] + " - " + parts[1]);
             }
         }
         return result;

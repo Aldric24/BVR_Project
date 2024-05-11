@@ -18,7 +18,7 @@ public class SortieScreen : MonoBehaviour
     [SerializeField ]GameController gameController;
     void Start()
     {
-        
+        gameController = FindObjectOfType<GameController>();
         foreach (Mission mission in missions)
         {
             GameObject missionButton = Instantiate(missionButtonPrefab, transform);

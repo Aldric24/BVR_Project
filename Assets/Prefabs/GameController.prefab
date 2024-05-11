@@ -784,7 +784,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &4375458408281599682
 GameObject:
@@ -1134,6 +1134,8 @@ MonoBehaviour:
   MissionTime: {fileID: 3437119421703575170}
   End: {fileID: 962924493468512922}
   BestMissionTime: {fileID: 4605558129687812504}
+  gameover: 0
+  ingame: 0
 --- !u!1 &5979888343114289982
 GameObject:
   m_ObjectHideFlags: 0

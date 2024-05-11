@@ -9,10 +9,11 @@ public class PauseMenuScript : MonoBehaviour
     
     [SerializeField] GameObject pausescreen;
     [SerializeField] GameObject Tutorial;
+    GameController gameController;
     // Start is called before the first frame update
     void Start()
     {
-        
+       gameController= FindAnyObjectByType<GameController>();
     }
 
     // Update is called once per frame
@@ -42,10 +43,10 @@ public class PauseMenuScript : MonoBehaviour
     }
     public void loadMainMenu()
     {
-        
+        gameController.ingame = false;
 
-       
-        SceneManager.LoadScene("MainMenu");
+
+        gameController.mainmenu();
 
         gameObject.SetActive(false);
 

@@ -9,6 +9,7 @@ TagManager:
   - Chaff
   - PlayerMissile
   - Missile
+  - Evade Target
   layers:
   - Default
   - TransparentFX

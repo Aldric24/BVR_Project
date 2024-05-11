@@ -22,6 +22,7 @@ public class RWR : MonoBehaviour
     private void Awake()
     {
         StartCoroutine(CheckForStaleRWRObjects());
+        StartCoroutine(CheckforENemyLock());
     }
     private void Update()
     {
@@ -94,6 +95,35 @@ public class RWR : MonoBehaviour
             }
             yield return new WaitForSeconds(1f); // Check every second
         }
+    }
+    IEnumerator CheckforENemyLock()
+    {
+        foreach (var pair in lastPingedTimes.ToList()) // Use ToList to avoid modifying while iterating
+        {
+
+            if(pair.Key!=null)
+            {
+                
+                //// Remove objects not detected in a full cycle 
+                if (pair.Key.GetComponentInParent<EnemyAI>() != null && pair.Key.GetComponentInParent<EnemyAI>().target == gameObject.transform.parent) // Adjust threshold as needed
+                {
+                    Debug.Log("Enemy Locked");
+                    // Remove associated ping
+                    if (RWRpings.ContainsKey(pair.Key))
+                    {
+
+                        RWRpings[pair.Key].GetComponentInChildren<SpriteRenderer>().gameObject.SetActive(true); // Destroy the ping
+                    }
+                    RWRObjects.Remove(pair.Key);
+                    lastPingedTimes.Remove(pair.Key);
+
+
+                }
+            }
+
+
+        }
+        yield return new WaitForSeconds(1f); // Check every second
     }
     private IEnumerator PlayMissileWarningSound()
     {

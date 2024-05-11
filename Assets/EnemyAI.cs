@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +26,17 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]private Vector3 lastKnownTargetPosition;
     [SerializeField] string SelectedWeapon;
     [SerializeField]private AiWeaponsManager weaponsManager;
+    [SerializeField] bool playerSeesAI;
+    public List<GameObject> tempTargets = new List<GameObject>(); // Add this to your class
+    [SerializeField] private float flareIntervalMissile = 1.5f; // Seconds between flares when under missile threat
+    [SerializeField] private float chaffIntervalMissile = 1.5f;
+    [SerializeField] private float flareIntervalNormal = 3.0f;  // Seconds between flares during regular evasion
+    [SerializeField] private float chaffIntervalNormal = 3.0f;
+    [SerializeField] private float nextFlareCountermeasureTime = 0f;
+    [SerializeField] private float nextChaffCountermeasureTime = 0f;
+    [SerializeField] private GameObject flarePrefab;
+    [SerializeField] bool missileinbound = false;
+    [SerializeField] private GameObject chaffPrefab;
     private class ThreatAssessment
     {
         public float lastDetectionTime;
@@ -67,12 +79,13 @@ public class EnemyAI : MonoBehaviour
     
     void HandleSearch()
     {
+        Debug.Log("AI State: Search");
         AircraftSpeed = 40;
         aircraftControl.targetSpeed = AircraftSpeed;
         aircraftControl.target = currentWaypoint.transform; 
         if (heading != null)
         {
-            Debug.Log("Heading is not null");
+            Debug.Log("Heading acquired during search, switching to Pursue state");
             currentState = AIState.Pursue;
             return;
         }
@@ -83,23 +96,7 @@ public class EnemyAI : MonoBehaviour
             SelectNewPatrolWaypoint();
         }
     }
-    //void HandleRotation()
-    //{
-    //    if (heading == null)
-    //    {
-    //        return; // Do nothing if there's no heading
-    //    }
-
-    //    float rotationAngle = CalculateAngleTowards(heading.position);
-    //    //aircraftControl.HandleRotation(rotationAngle);
-    //    Debug.Log("HandleRotation called with angle: " + rotationAngle);
-
-    //    // Add gizmos here for visualization
-    //    Debug.DrawRay(transform.position, transform.forward * 10, Color.red, 0.5f);
-    //    Vector3 targetDirection = Quaternion.Euler(0, 0, rotationAngle) * Vector3.forward;
-    //    Debug.DrawRay(transform.position, targetDirection * 5, Color.green, 0.5f);
-    //}
-
+   
     void ScanForPlayerTarget()
     {
         // 1. Check for Player in RadarObjects
@@ -110,6 +107,7 @@ public class EnemyAI : MonoBehaviour
             {
                 if (obj.CompareTag("Player"))
                 {
+                    
                     target = obj;
                     heading = target.transform;
                     lastKnownTargetPosition = target.transform.position; // Update last position
@@ -121,28 +119,24 @@ public class EnemyAI : MonoBehaviour
         {
             target = null;
         }
-            //    if (lastKnownTargetPosition != Vector3.zero)
-            //    {
-            //        currentState = AIState.Investigate;
-            //    }
-            //    else
-            //    {
-            //        currentState = AIState.Search;
-            //    }
-            //}
-            AssessRWRAndRadarThreat();
+          
+        AssessRWRAndRadarThreat();
     }
 
     void HandlePursue()
     {
-       
-        if (target == null) // Ensure that the target still exists
+        Debug.Log("AI State: Pursue");
+
+        if (target == null && threatList.Count<1 ) // Ensure that the target still exists
         {
             if (lastKnownTargetPosition != Vector3.zero)
             {
+                Debug.Log("Lost target but have last known position. Switching to Investigate state.");
                 currentState = AIState.Investigate;
+                
             }
             else
+                Debug.Log("Lost target and no last known position. Switching to Search state.");
             {
                 currentState = AIState.Search;
             }
@@ -172,7 +166,18 @@ public class EnemyAI : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       OnRWRAlert(collision.gameObject);
+       
+        if(collision.tag!="PlayerMissile" && collision.tag!="Player")
+        {
+           
+            return;
+        }
+        else
+        {
+            Debug.Log("AI RWR Collision detected");
+            OnRWRAlert(collision.gameObject);
+        }
+       
     }
     public void OnRWRAlert(GameObject detectedBy)
     {
@@ -192,11 +197,13 @@ public class EnemyAI : MonoBehaviour
         // Logic to calculate threatLevel:
         if (threatObject.CompareTag("PlayerMissile"))
         {
+            
             threatData.threatLevel = 1.0f; // Highest priority
         }
         else if (threatObject.CompareTag("Player"))
         {
             threatData.threatLevel = 0.7f;
+            target = threatObject;
         }
         else
         {
@@ -207,16 +214,35 @@ public class EnemyAI : MonoBehaviour
     }
     private void AssessRWRAndRadarThreat()
     {
-        bool playerSeesAI = false;
-
+        if(threatList.Count<1 )
+        {
+            if (lastKnownTargetPosition != Vector3.zero)
+            {
+                currentState = AIState.Investigate;
+            }
+            
+            return;
+        }
+       
         // Check if player is both in radar list and detected by RWR
         foreach (var pair in threatList)
         {
-            if (pair.Key.CompareTag("Player") && radar.RadarObjects.Contains(pair.Key))
+            if (pair.Key.CompareTag("Player") )
             {
                 playerSeesAI = true;
+                
                 break; // Found a match, no need to continue iteration
             }
+            else if(pair.Key.CompareTag("PlayerMissile"))
+            {
+                missileinbound = true;
+                break;
+            }
+            else if(radar.RadarObjects.Contains(pair.Key))
+            {
+                playerSeesAI = false;
+            }
+            
         }
 
         ReactToThreatScenario(playerSeesAI);
@@ -257,12 +283,13 @@ public class EnemyAI : MonoBehaviour
         {
             // Mutual Detection: React defensively and prepare to counterattack
             currentState = AIState.Evade;
+            
             // ... Add immediate counterattack logic ...
         }
-        else if (radar.RadarObjects.Count > 0)
+        else 
         {
             // Player in radar but not RWR: Upper hand situation
-            currentState = AIState.Pursue;
+            currentState= AIState.Pursue;
         }
         // ... handle other scenarios as needed...
     }
@@ -288,13 +315,8 @@ public class EnemyAI : MonoBehaviour
     }
     void HandleAttack()
     {
-        Debug.Log("Attacking target");
-        if (target == null) // Ensure that the target still exists
-        {
-            currentState = AIState.Search;
-            heading = null; // Reset heading
-            return;
-        }
+        Debug.Log("AI State: Attack");
+
         StartCoroutine(tempafterAttacK());
 
         //// Fine-tune Attack Positioning (optional)
@@ -310,11 +332,19 @@ public class EnemyAI : MonoBehaviour
     IEnumerator tempafterAttacK()
     {
         yield return new WaitForSeconds(5);
+        Debug.Log("Delay after attack complete. Switching to Evade state.");
         currentState = AIState.Evade;
     }
     void HandleInvestigate()
     {
+        Debug.Log("AI State: Investigate");
         AircraftSpeed = 50;
+
+        // Manage temp target list
+        CleanUpOldTempTargets();
+
+        // Create a new temporary GameObject
+       
 
         // Check if we have a temporary target from previous investigation
         if (aircraftControl.target != null && aircraftControl.target.name == "Temp Target")
@@ -330,12 +360,15 @@ public class EnemyAI : MonoBehaviour
             heading = tempTargetObject.transform;
             aircraftControl.target = heading;
             aircraftControl.ManageThrust(AircraftSpeed);
+
+            // Add to the list
+            tempTargets.Add(tempTargetObject);
         }
 
         // Check if arrived at the investigation point
         if (Vector2.Distance(transform.position, lastKnownTargetPosition) < 20f) // Adjust threshold 
         {
-            Debug.Log("Arrived at last known target position");
+            Debug.Log("Arrived at last known target position - Investigation complete.");
             lastKnownTargetPosition = Vector3.zero; // Reset 
             currentState = AIState.Search;
             heading = null; // Reset heading
@@ -347,8 +380,9 @@ public class EnemyAI : MonoBehaviour
         }
         if (radar.RadarObjects.Contains(target))
         {
-
-            // Player detected again! Switch to pursue, discard temp target
+            Debug.Log("Player detected during investigation! Switching to Pursue state");
+       
+            // Player detected again! Switch to pursu   e, discard temp target
             currentState = AIState.Pursue;
             heading = target.transform;
 
@@ -357,48 +391,155 @@ public class EnemyAI : MonoBehaviour
                 Destroy(aircraftControl.target.gameObject);
         }
     }
-
+    private void CleanUpOldTempTargets()
+    {
+        for (int i = 0; i < tempTargets.Count; i++)
+        {
+            // Destroy if null or if the name doesn't match the expected format
+            if (tempTargets[i] == null || !tempTargets[i].name.Equals("Temp Target"))
+            {
+                Destroy(tempTargets[i]);
+                tempTargets.RemoveAt(i);
+                i--; // Decrement index since the list has shortened
+            }
+        }
+    }
     void HandleEvade()
     {
+        Debug.Log("AI State: Evade");
+        if (!playerSeesAI && !radar.RadarObjects.Contains(target))
+        {
+            Debug.Log("No longer under threat, switching to Search state.");
+            currentState = AIState.Search;
+            target = null;
+            heading = null;
+        }
         // Evade Type
-        bool isEvadingMissile = threatList.Any(pair => pair.Key.CompareTag("PlayerMissile"));
+        bool isEvadingMissile = missileinbound;
 
         if (isEvadingMissile)
         {
+            Debug.Log("Evading missile - executing missile evasion maneuvers");
+            // ... 
             // Placeholder for missile evasion logic
             EvasiveManeuverAgainstMissile();
+            DeployCountermeasures(isEvadingMissile);
         }
         else
         {
+            Debug.Log("Evading player - executing player evasion maneuvers");
             // Evade player (after attack)
             EvasiveManeuverAwayFromPlayer();
+            DeployCountermeasures(isEvadingMissile);
         }
     }
-
+    private void DeployCountermeasures(bool isEvadingMissile)
+    {
+        if (isEvadingMissile)
+        {
+            // More frequent countermeasures
+            if (Time.time > nextFlareCountermeasureTime)
+            {
+                weaponsManager.DeployFlares();
+                nextFlareCountermeasureTime = Time.time + flareIntervalMissile;
+            }
+            if (Time.time > nextChaffCountermeasureTime)
+            {
+                weaponsManager.DeployChaff();
+                nextChaffCountermeasureTime = Time.time + chaffIntervalMissile;
+            }
+        }
+        else
+        {
+            // More frequent countermeasures
+            if (Time.time > nextFlareCountermeasureTime)
+            {
+                Debug.Log("Deploying flares");
+                Vector3 offset = Random.insideUnitCircle ;
+                GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
+                nextFlareCountermeasureTime = Time.time + flareIntervalMissile;
+            }
+            if (Time.time > nextChaffCountermeasureTime)
+            {
+                Debug.Log("Deploying chaff");
+                Vector3 offset = Random.insideUnitCircle;
+                GameObject flare = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
+                nextChaffCountermeasureTime = Time.time + chaffIntervalMissile;
+            }
+        }
+    }
     // Evasive Maneuvers
     private void EvasiveManeuverAgainstMissile()
     {
         // TODO: Implement missile evasion logic (e.g., notching, flares, etc.)
+        Debug.Log("evading missile");
+        missileinbound = false;
     }
 
     private void EvasiveManeuverAwayFromPlayer()
     {
-        if (target == null) // Ensure we have a target
+        if (target == null)
         {
-            currentState = AIState.Search;
+            Debug.LogWarning("Target became null during evasion. Falling back to waypoint.");
+            aircraftControl.target = GetFarthestWaypoint()?.transform; // Get waypoint if possible
             return;
         }
 
         Vector3 directionAwayFromPlayer = (transform.position - target.transform.position).normalized;
-        Vector3 farthestEvadePoint = transform.position + directionAwayFromPlayer * 100f; // Example, adjust distance
+        Vector3 farthestEvadePoint = transform.position + directionAwayFromPlayer * 1000;
 
         // Set up temporary target for movement
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Evade Target");
+        if (gameObjects.Count() > 2)
+        {
+            Destroy(GameObject.Find("Evade Target"));
+        }
         GameObject tempEvadeTarget = new GameObject("Evade Target");
+        tempEvadeTarget.tag = "Evade Target";
         tempEvadeTarget.transform.position = farthestEvadePoint;
         aircraftControl.target = tempEvadeTarget.transform;
 
-        // Add logic to destroy the tempEvadeTarget when appropriate 
+        // Logic to destroy tempEvadeTarget (with null checks)
+        if (Vector2.Distance(transform.position, tempEvadeTarget.transform.position) < 20f)
+        {
+            Debug.Log("Arrived at evade position");
+            lastKnownTargetPosition = Vector3.zero; // Reset 
+            currentState = AIState.Search;
+            heading = null; // Reset heading
+            target = null; // Reset target
 
+            // Destroy the temporary target object (with null checks)
+            if (aircraftControl.target != null && aircraftControl.target.gameObject != null)
+            {
+                Destroy(aircraftControl.target.gameObject);
+            }
+        }
+    }
+
+    // Helper function to get the farthest waypoint
+    private PatrolWaypoint GetFarthestWaypoint()
+    {
+        PatrolWaypoint[] waypoints = FindObjectsOfType<PatrolWaypoint>();
+        if (waypoints.Length == 0)
+        {
+            Debug.LogError("No waypoints found!");
+            return null;
+        }
+
+        PatrolWaypoint farthestWaypoint = waypoints[0];
+        float farthestDistance = 0f;
+
+        foreach (PatrolWaypoint waypoint in waypoints)
+        {
+            float distance = Vector2.Distance(transform.position, waypoint.transform.position);
+            if (distance > farthestDistance)
+            {
+                farthestDistance = distance;
+                farthestWaypoint = waypoint;
+            }
+        }
+
+        return farthestWaypoint;
     }
     void SelectNewPatrolWaypoint()
     {

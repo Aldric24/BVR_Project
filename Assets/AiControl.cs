@@ -93,14 +93,5 @@ public class AiControl : MonoBehaviour
         rb.velocity = Vector2.MoveTowards(rb.velocity, transform.up * velocity, thrustForce * Time.fixedDeltaTime);
         
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-
-        if (collision.gameObject.CompareTag("Adversary Radar"))
-        {
-            rwr.Popup(collision.gameObject.transform.parent.gameObject);
-        }
-
-
-    }
+   
 }

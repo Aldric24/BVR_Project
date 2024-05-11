@@ -85,4 +85,12 @@ public class MenuController : MonoBehaviour
             SetMenuVolume();
         }
     }
+    public void StartGame()
+    {
+        FindAnyObjectByType<GameController>().StartGame();
+    }
+    public void confirmLoadout()
+    {
+        FindAnyObjectByType<GameController>().confirmLoadout();
+    }
 }

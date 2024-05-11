@@ -159,6 +159,7 @@ MonoBehaviour:
   maxSpeed: 100
   thrustDuration: 3.25
   isBoosting: 1
+  rb: {fileID: 7890634624987627645}
   missileParticleEffect: {fileID: 2364870669123742851}
   target: {fileID: 0}
   raycastDistance: 2

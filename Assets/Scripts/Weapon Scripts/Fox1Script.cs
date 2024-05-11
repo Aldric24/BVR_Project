@@ -10,7 +10,7 @@ public class Fox1Script : Weapon
     [SerializeField] private float thrustDuration;
     [SerializeField] private bool isBoosting;
     private float boostTimer = 0;
-    private Rigidbody2D rb;
+    [SerializeField]private Rigidbody2D rb;
     [SerializeField] private ParticleSystem missileParticleEffect;
 
     // Target Related
@@ -41,7 +41,8 @@ public class Fox1Script : Weapon
         }
         weaponName = "Fox1 - AIM 7"; // Update with your missile name
         boostTimer = 0;
-        rb = GetComponent<Rigidbody2D>();
+        
+        
     }
 
     void FixedUpdate()
