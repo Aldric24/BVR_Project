@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,12 +26,15 @@ public class NewControl: MonoBehaviour
     [SerializeField] private float minHeatIntensity = 0.2f;
     [SerializeField] private float maxHeatIntensity = 0.8f;
     public int velocity;
+    [SerializeField] GameObject Ab1;
+    [SerializeField] GameObject Ab2;
     void Start()
     {
         throttleSlider = FindAnyObjectByType<Slider>();
         throttleSlider.value = 0.5f;
         //rb = GetComponent<Rigidbody2D>();
         Input.gyro.enabled = true;
+        StartCoroutine(Ab());
     }
 
     void FixedUpdate()
@@ -150,7 +154,22 @@ public class NewControl: MonoBehaviour
 
 
     }
-
+    IEnumerator Ab()
+    {
+        while (true)
+        {
+            if (throttleSlider.value == throttleSlider.maxValue)
+            {
+                Ab1.SetActive(true);
+                Ab2.SetActive(true);
+            }
+            else
+            {
+                Ab1.SetActive(false);
+                Ab2.SetActive(false);
+            }
+        }
+    }
 
     void RegulateHeatIntensity()
     {
