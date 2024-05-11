@@ -93,4 +93,9 @@ public class MenuController : MonoBehaviour
     {
         FindAnyObjectByType<GameController>().confirmLoadout();
     }
+    public void OnExit()
+    {                   
+        Application.Quit();
+      
+    }
 }
