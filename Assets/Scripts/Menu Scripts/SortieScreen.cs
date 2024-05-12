@@ -62,6 +62,7 @@ public class SortieScreen : MonoBehaviour
     }
     void MovetoBrifing(GameObject mission)
     { 
+        mission.GetComponent<Button>().interactable = false;
         LeanTween.move(mission, targetPosition, 1.5f).setEase(LeanTweenType.easeInOutSine);
         LeanTween.scale(mission, new Vector3(1.2f, 1.2f, 1.2f), 1.5f).setEase(LeanTweenType.easeInOutSine);
     }
@@ -70,6 +71,7 @@ public class SortieScreen : MonoBehaviour
         if(SelectedMission!=null)
         {
             LeanTween.move(mission, oldpos, 1.5f).setEase(LeanTweenType.easeInOutSine).setOnComplete(() => gameObject.GetComponent<LayoutGroup>().enabled = true );
+            mission.GetComponent<Button>().interactable = true; 
             LeanTween.scale(mission, new Vector3(1f, 1f, 1f), 1.5f).setEase(LeanTweenType.easeInOutSine);
         }
       

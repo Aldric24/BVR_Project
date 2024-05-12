@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 9140072386905819385}
   MissileFired: 0
-  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+  missile: {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
   missiletype: 
 --- !u!1 &2706624862473377378
 GameObject:
@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 8128210119138772042}
   MissileFired: 0
-  missile: {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missiletype: 
 --- !u!1 &2915109963053459646
 GameObject:
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 7695947561511090059}
   MissileFired: 0
-  missile: {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missiletype: 
 --- !u!1 &3489030863562170168
 GameObject:
@@ -263,6 +263,8 @@ MonoBehaviour:
   player: {fileID: 6166371881423084121}
   fireButton: {fileID: 0}
   cannonequipped: 1
+  ammoText: {fileID: 0}
+  gun: {fileID: 0}
 --- !u!1 &3902005903204740333
 GameObject:
   m_ObjectHideFlags: 0
@@ -621,7 +623,6 @@ GameObject:
   - component: {fileID: 8967073673457544688}
   - component: {fileID: 8400779264824442228}
   - component: {fileID: 8712508552463786474}
-  - component: {fileID: 4928202554047697849}
   - component: {fileID: 2067543913647853714}
   - component: {fileID: 6537470680942573358}
   - component: {fileID: 546328631227364503}
@@ -670,7 +671,7 @@ MonoBehaviour:
   aircraftControl: {fileID: 8712508552463786474}
   AircraftSpeed: 0
   radar: {fileID: 7549182249794207719}
-  lockOnRange: 991
+  lockOnRange: 600
   AircraftCollider: {fileID: 546328631227364503}
   lastKnownTargetPosition: {x: 0, y: 0, z: 0}
   SelectedWeapon: 
@@ -709,20 +710,6 @@ MonoBehaviour:
   target: {fileID: 0}
   targetDirection: {x: 0, y: 0, z: 0}
   isBoosting: 1
---- !u!114 &4928202554047697849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6166371881423084121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a634ddf757ae8bd4d91f6d48be7cf53f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 261.78
-  point: {x: 0, y: 0, z: 0}
 --- !u!114 &2067543913647853714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -761,6 +748,8 @@ MonoBehaviour:
   chaffprefab: {fileID: 1804388919632007968, guid: 45b9b431a1617bf4ba6b8dc43655b20e, type: 3}
   AIControl: 1
   isAIMissiletruck: 0
+  FlareCount: {fileID: 0}
+  ChaffCountText: {fileID: 0}
   selectedHardpoint: {fileID: 0}
 --- !u!50 &6537470680942573358
 Rigidbody2D:
@@ -1065,7 +1054,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 564399804526911463}
   MissileFired: 0
-  missile: {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missiletype: 
 --- !u!1 &7406957080162823886
 GameObject:
@@ -1145,7 +1134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 5942755647807685825}
   MissileFired: 0
-  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
+  missile: {fileID: 1507734180269956560, guid: a6f5c71442e557447b6c25b2ce81ba83, type: 3}
   missiletype: 
 --- !u!1 &8502048444993930604
 GameObject:
@@ -1194,7 +1183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 3625321650600340891}
   MissileFired: 0
-  missile: {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missiletype: 
 --- !u!1001 &6622838400327844464
 PrefabInstance:

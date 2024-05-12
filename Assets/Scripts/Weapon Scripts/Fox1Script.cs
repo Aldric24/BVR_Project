@@ -162,7 +162,8 @@ public class Fox1Script : Weapon
     {
         if (collider == null) return false;
 
-        if (collider.gameObject.CompareTag("Player")) return false; // Ignore player collisions
+        if (collider.gameObject.CompareTag("Player")) return false;
+        if (gameObject.CompareTag("AdversaryMissile") && collider.gameObject.CompareTag("Adversary")) return false;// Ignore player collisions// Ignore player collisions
 
         return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
     }

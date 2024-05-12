@@ -32,6 +32,8 @@ public class SweepRotation : MonoBehaviour
     public  GameObject LocekdTarget= null;
     [SerializeField] private GameObject CursorTarget;
     private int targetIndex = 0;
+    [SerializeField]AudioClip radarSound;
+    [SerializeField]AudioSource audioSource;
     private void Awake()
     {
         spriteRenderer = spriteExtreme.GetComponent<SpriteRenderer>();
@@ -102,7 +104,7 @@ public class SweepRotation : MonoBehaviour
             RadarObjects.Add(collision.gameObject);
             lastPingedTimes[collision.gameObject] = Time.time;
             RadarPing radarPing = Instantiate(pfRadarPing, collision.gameObject.transform.position, Quaternion.identity).GetComponent<RadarPing>();
-            
+            audioSource.PlayOneShot(radarSound);
             radarPing.gameObject.transform.parent = gameObject.transform.parent;
             radarPings[collision.gameObject] = radarPing;// Record ping time
         }

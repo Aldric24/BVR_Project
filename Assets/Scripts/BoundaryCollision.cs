@@ -12,17 +12,15 @@ public class BoundaryCollision : MonoBehaviour
     }
     private void Update()
     {
-        player= GameObject.FindWithTag("Player");
-        if(player!=null)
-        {
-            playerRigidbody = player.GetComponent<Rigidbody2D>();
-        }
+       
         
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            player = FindAnyObjectByType<NewControl>().gameObject;
+            playerRigidbody = player.GetComponent<Rigidbody2D>();
             Vector2 currentVelocity = playerRigidbody.velocity;
             playerRigidbody.velocity = new Vector2(-currentVelocity.x, -currentVelocity.y);
             playerRigidbody.transform.Rotate(0, 0, 180, Space.Self);

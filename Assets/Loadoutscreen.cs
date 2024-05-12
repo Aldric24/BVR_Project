@@ -29,7 +29,7 @@ public class Loadoutscreen : MonoBehaviour
             OnHardpointDropdownChange(i);
         }
         FindAnyObjectByType<GameController>().loadout = selectedWeapons;
-        
+        LoadMissionData();
     }
 
     void PopulateDropdowns()
@@ -63,12 +63,19 @@ public class Loadoutscreen : MonoBehaviour
             Debug.LogWarning("Invalid hardpoint index provided.");
         }
     }
-    public void OnHardpointDropdownChange(int hardpointIndex)
+    void attachweapons(int hardpointIndex)
     {
         TMP_Dropdown dropdown = hardpointDropdowns[hardpointIndex];
         Weapon selectedWeapon = availableWeapons[dropdown.value];
         selectedWeapons[hardpointIndex] = selectedWeapon;
-        FindAnyObjectByType<GameController>().loadout = selectedWeapons;
+    }
+    public void OnHardpointDropdownChange(int hardpointIndex)
+    {
+        attachweapons(hardpointIndex);
+        //TMP_Dropdown dropdown = hardpointDropdowns[hardpointIndex];
+        //Weapon selectedWeapon = availableWeapons[dropdown.value];
+        //selectedWeapons[hardpointIndex] = selectedWeapon;
+        //FindAnyObjectByType<GameController>().loadout = selectedWeapons;
         //Debug.Log("Dictionary size:" + selectedWeapons.Count);
         //SaveLoadout(FindAnyObjectByType<GameController>().selectedmission, selectedWeapons);
         
@@ -86,29 +93,29 @@ public class Loadoutscreen : MonoBehaviour
         string missionName = FindAnyObjectByType<GameController>().selectedmission; // Replace with your mission selection logic
 
         // Check if the mission exists in your dictionary
-        if (!missionLoadouts.ContainsKey(missionName))
-        {
-            Debug.LogError("Mission not found: " + missionName);
-            return; // Exit the function if the mission is missing
-        }
+        //if (!missionLoadouts.ContainsKey(missionName))
+        //{
+        //    Debug.LogError("Mission not found: " + missionName);
+        //    return; // Exit the function if the mission is missing
+        //}
 
-        // Get the saved loadout dictionary
-        Dictionary<int, Weapon> savedLoadout = missionLoadouts[missionName];
+        //// Get the saved loadout dictionary
+        //Dictionary<int, Weapon> savedLoadout = missionLoadouts[missionName];
 
-        // Check if the saved loadout is null
-        if (savedLoadout == null)
-        {
-            Debug.LogError("Saved loadout data is null for mission: " + missionName);
-            return; // Exit the function if the loadout is null
-        }
+        //// Check if the saved loadout is null
+        //if (savedLoadout == null)
+        //{
+        //    Debug.LogError("Saved loadout data is null for mission: " + missionName);
+        //    return; // Exit the function if the loadout is null
+        //}
 
         // Hardpoint Setting (Needs Adjustment)
         for (int i = 0; i < hardpointDropdowns.Count; i++)
         {
             // Additional check: Make sure the savedLoadout has data for this hardpoint
-            if (savedLoadout.ContainsKey(i))
+            if (Savedloadout.ContainsKey(i))
             {
-                hardpointDropdowns[i].value = availableWeapons.FindIndex(w => w == savedLoadout[i]);
+                hardpointDropdowns[i].value = availableWeapons.FindIndex(w => w == Savedloadout[i]);
             }
             else
             {
@@ -118,7 +125,7 @@ public class Loadoutscreen : MonoBehaviour
         }
 
         // Finally, assign the loadout to the GameController
-        FindAnyObjectByType<GameController>().loadout = savedLoadout;
+        FindAnyObjectByType<GameController>().loadout = Savedloadout;
     }
     public void SaveLoadout(string missionName, Dictionary<int, Weapon> loadout)
     {
@@ -143,6 +150,7 @@ public class Loadoutscreen : MonoBehaviour
     }
     public void SaveMissionData()
     {
+        
         StringBuilder sb = new StringBuilder();
 
         foreach (var kvp in missionLoadouts)
@@ -166,7 +174,9 @@ public class Loadoutscreen : MonoBehaviour
     }
     public void LoadMissionData(string missionNameToLoad)
     {
+        
         string savedData = PlayerPrefs.GetString("missionLoadouts");
+        Debug.Log("Loading mission data for: " + savedData);
         if (!string.IsNullOrEmpty(savedData))
         {
             Savedloadout.Clear();
@@ -201,5 +211,50 @@ public class Loadoutscreen : MonoBehaviour
             }
         }
     }
+    public void LoadMissionData()
+    {
+        string savedData = PlayerPrefs.GetString("missionLoadouts");
+
+        if (!string.IsNullOrEmpty(savedData))
+        {
+            string[] missionsData = savedData.Split('|');
+
+            foreach (string missionData in missionsData)
+            {
+                string[] parts = missionData.Split(';');
+                string missionName = parts[0];
+
+                if (!missionLoadouts.ContainsKey(missionName)) // Only if mission isn't already loaded
+                {
+                    missionLoadouts[missionName] = new Dictionary<int, Weapon>();
+                }
+
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    string[] weaponParts = parts[i].Split(':');
+
+                    // Nested loop to handle multiple weapons per mission
+                    foreach (string weaponPart in weaponParts)
+                    {
+                        if (string.IsNullOrEmpty(weaponPart)) continue;
+                        string[] indexAndName = weaponPart.Split(',');
+                        int hardpointIndex = int.Parse(indexAndName[0]);
+                        int weaponIndex = int.Parse(indexAndName[1]);
+                        missionLoadouts[missionName][hardpointIndex] = availableWeapons[weaponIndex];
+                    }
+                }
+            }
+        }
+
+        // Load UI from the missionLoadouts if the mission is currently selected
+        if (missionLoadouts.ContainsKey(FindAnyObjectByType<GameController>().selectedmission))
+        {
+            Savedloadout = missionLoadouts[FindAnyObjectByType<GameController>().selectedmission];
+        }
+
+        // Call LoadData() here to update the UI with the loaded mission's weapons
+        LoadData();
+    }
+
 
 }

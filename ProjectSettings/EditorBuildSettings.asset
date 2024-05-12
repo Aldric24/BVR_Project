@@ -15,12 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Instruments.unity
     guid: 16a8b08f2d7101248899111b76870339
   - enabled: 1
-    path: Assets/Scenes/Combat.unity
-    guid: 1f54e511103ad604eb8d50cf42d743ec
-  - enabled: 1
     path: Assets/Scenes/Countermeasures.unity
     guid: f2d44e96fe6d6f1488885d4250f624b8
   - enabled: 1
     path: Assets/Scenes/Weapons.unity
     guid: c7ae8589bcfa1eb478af8a15650bd4a2
+  - enabled: 1
+    path: Assets/Scenes/CombatAirPatrol.unity
+    guid: 1f54e511103ad604eb8d50cf42d743ec
   m_configObjects: {}

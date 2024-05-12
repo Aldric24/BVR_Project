@@ -19,6 +19,8 @@ public class RWR : MonoBehaviour
 
     [SerializeField] private AudioSource missileWarningSource;
     [SerializeField] private AudioSource radarPingSource;
+    [SerializeField] AudioClip radarSound;
+    [SerializeField] AudioSource audioSource;
     private void Awake()
     {
         StartCoroutine(CheckForStaleRWRObjects());
@@ -53,6 +55,7 @@ public class RWR : MonoBehaviour
                 lastPingedTimes[Popup] = Time.time;
                 PopUp radarPing = Instantiate(popup, Popup.transform.position, Quaternion.identity).GetComponent<PopUp>();
                 radarPing.system = gameObject.transform;
+                audioSource.PlayOneShot(radarSound);
                 radarPing.gameObject.transform.parent = gameObject.transform.parent;
                 RWRpings[Popup] = radarPing;// Record ping time
             }

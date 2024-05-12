@@ -27,6 +27,7 @@ public class HardPoint : MonoBehaviour
         {
             missile.gameObject.tag = "AdversaryMissile";
         }
+        
     }
    
     public void Fire(WeaponsManager wp)
@@ -47,7 +48,6 @@ public class HardPoint : MonoBehaviour
         {
             MissileFired = true;
             missile.GetComponent<Fox2Script>().fire(wp);
-
         }
 
 

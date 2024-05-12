@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Schema;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,9 +18,12 @@ public class Cannon : Weapon
     [SerializeField] GameObject player;
     [SerializeField] Button fireButton;
     public bool cannonequipped = false;
+    [SerializeField] TextMeshProUGUI ammoText;
+    [SerializeField] AudioSource gun;
     // Start is called before the first frame update
     void Start() // Or Awake()
     {
+        ammoText.text = Ammo.ToString();
         weaponName = "Cannon";
         type  = "Cannon";
     }
@@ -42,7 +46,7 @@ public class Cannon : Weapon
         {
             fire(); // Fire a single shot
             Ammo--; // Decrement ammo count
-
+            ammoText.text = Ammo.ToString();
             yield return new WaitForSeconds(1f / cannonFireRate); // Wait based on fire rate     
         }
     }

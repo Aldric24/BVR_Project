@@ -140,8 +140,8 @@ public class EnemyAI : MonoBehaviour
 
             }
             else
-                Debug.Log("Lost target and no last known position. Switching to Search state.");
             {
+                Debug.Log("Lost target and no last known position. Switching to Search state.");
                 currentState = AIState.Search;
             }
             return;
@@ -197,6 +197,7 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
+            lastKnownTargetPosition = collision.transform.position;
             Debug.Log("AI RWR Collision detected");
             OnRWRAlert(collision.gameObject);
         }
@@ -322,8 +323,9 @@ public class EnemyAI : MonoBehaviour
             }
             if (threat != null && threat.CompareTag("Player"))
             {
-                Debug.Log("Missile threat detected! Switching to Evade state.");
+                Debug.Log("Player threat detected! Switching to Evade state.");
                 currentState = AIState.Evade;
+                playerSeesAI = true;
                 missileinbound = false;
                 return; // Exit if missile threat is found
             }
@@ -477,33 +479,52 @@ public class EnemyAI : MonoBehaviour
     void HandleEvade()
     {
         Debug.Log("AI State: Evade");
-        //if (!playerSeesAI && !radar.RadarObjects.Contains(target))
-        //{
-        //    Debug.Log("No longer under threat, switching to Search state.");
-        //    currentState = AIState.Investigate;
-        //    target = null;
-        //    heading = null;
-        //    weaponsManager.target = null;
-        //}
-        // Evade Type
+       
+        //Evade Type
         bool isEvadingMissile = missileinbound;
 
         if (isEvadingMissile)
         {
-            Debug.Log("Evading missile - executing missile evasion maneuvers");
+            Debug.Log("Evading contact - executing missile evasion maneuvers");
             // ... 
             // Placeholder for missile evasion logic
             EvasiveManeuverAgainstMissile();
             DeployCountermeasures(isEvadingMissile);
         }
-        else if (target != null && threatList.ContainsKey(target))
+        else if (target != null && threatList.ContainsKey(target) ||playerSeesAI==true)
         {
             Debug.Log("Evading player - executing player evasion maneuvers");
             // Evade player (after attack)
             EvasiveManeuverAwayFromPlayer();
             DeployCountermeasures(isEvadingMissile);
         }
-        
+        else
+        {
+            Debug.Log("No immediate threat - falling back to waypoint");
+
+            if (currentWaypoint != null)
+            {
+                // Move towards the current waypoint
+                heading = currentWaypoint.transform;
+                aircraftControl.target = heading;
+
+                // Once reached the waypoint, switch to investigate
+                if (Vector2.Distance(transform.position, currentWaypoint.transform.position) <= waypointReachedDistance)
+                {
+                    Debug.Log("Waypoint reached, switching to Investigate");
+                    currentState = AIState.Investigate;
+                    target = null;
+                    heading = null;
+                    weaponsManager.target = null;
+                }
+            }
+            else
+            {
+                // Handle the case where there are no waypoints available
+                Debug.LogWarning("No waypoint found - investigate state may not be triggered.");
+            }
+        }
+           
     }
     private void DeployCountermeasures(bool isEvadingMissile)
     {
@@ -516,13 +537,15 @@ public class EnemyAI : MonoBehaviour
                 Vector3 offset = Random.insideUnitCircle;
                 GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
                 nextFlareCountermeasureTime = Time.time + flareIntervalMissile;
+                flare.gameObject.tag = gameObject.tag;
             }
             if (Time.time > nextChaffCountermeasureTime)
             {
                 Debug.Log("Deploying chaff");
                 Vector3 offset = Random.insideUnitCircle;
-                GameObject flare = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
+                GameObject chaff = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
                 nextChaffCountermeasureTime = Time.time + chaffIntervalMissile;
+                chaff.gameObject.tag = gameObject.tag;
             }
         }
         else
@@ -534,13 +557,15 @@ public class EnemyAI : MonoBehaviour
                 Vector3 offset = Random.insideUnitCircle ;
                 GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
                 nextFlareCountermeasureTime = Time.time + flareIntervalNormal;
+                flare.gameObject.tag = gameObject.tag;
             }
             if (Time.time > nextChaffCountermeasureTime)
             {
                 Debug.Log("Deploying chaff");
                 Vector3 offset = Random.insideUnitCircle;
-                GameObject flare = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
+                GameObject chaff = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
                 nextChaffCountermeasureTime = Time.time + chaffIntervalNormal;
+                chaff.gameObject.tag = gameObject.tag;
             }
         }
     }
@@ -568,24 +593,6 @@ public class EnemyAI : MonoBehaviour
             aircraftControl.target = tempEvadeTarget.transform;
        }
        
-
-        
-        
-
-       
-
-        // More frequent countermeasures
-        if (Time.time > nextFlareCountermeasureTime)
-        {
-            weaponsManager.DeployFlares();
-            nextFlareCountermeasureTime = Time.time + flareIntervalMissile * 0.5f; // More frequent
-        }
-
-        if (Time.time > nextChaffCountermeasureTime)
-        {
-            weaponsManager.DeployChaff();
-            nextChaffCountermeasureTime = Time.time + chaffIntervalMissile * 0.5f; // More frequent
-        }
 
         // Check if arrived at evade position OR missile is no longer a threat
         if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("MissileEvadeTarget").transform.position) < 20f)

@@ -41,6 +41,7 @@ public class Fox2Script : Weapon
     [SerializeField] private bool hasTarget = false;
     [SerializeField]bool launched= false;
     public bool is_equipped=false;
+    public bool mute=true;
     // Start is called before the first frame update
     void Start()
     {
@@ -84,7 +85,7 @@ public class Fox2Script : Weapon
     }
     IEnumerator AudioCallOut()
     {
-        while (true)
+        while (mute)
         {
             if (isSearching)
             {
@@ -171,7 +172,7 @@ public class Fox2Script : Weapon
         {
             return false;
         }
-        if (gameObject.CompareTag("Adversary") && collider.gameObject.CompareTag("Adversary")) return false;// Ignore player collisions
+        if (gameObject.CompareTag("AdversaryMissile") && collider.gameObject.CompareTag("Adversary")) return false;// Ignore player collisions
         else {
 
             return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));

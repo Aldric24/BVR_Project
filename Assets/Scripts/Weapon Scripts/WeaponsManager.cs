@@ -13,7 +13,7 @@ public class WeaponsManager : MonoBehaviour
     // Currently equipped cannon object (if applicable)
     public Cannon equippedCannon;
     // Index for the currently selected weapon (0-based)
-    [SerializeField]private int currentWeaponIndex = 0;
+    [SerializeField] private int currentWeaponIndex = 0;
     public GameObject target;
     [SerializeField] private SweepRotation S;
     [SerializeField] TextMeshProUGUI Weapon;
@@ -38,24 +38,38 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] GameObject chaffprefab;
     private Vector2 dispersion;
     [SerializeField] private bool AIControl;
-    [SerializeField]bool isAIMissiletruck=false;
+    [SerializeField] bool isAIMissiletruck = false;
+    [SerializeField] TMPro.TextMeshProUGUI FlareCount;
+    [SerializeField] TMPro.TextMeshProUGUI ChaffCountText;
     void Start()
     {
-        if(AIControl)
+        FlareCount.text = flareCount.ToString();
+        ChaffCountText.text = ChaffCount.ToString();
+        if (AIControl)
         {
             Tempmattach();
         }
-        
+
         //Tempmattach();
-            
+        foreach (HardPoint hardPoint in hardpoints)
+        {
+            if (hardPoint.missile != null)
+            {
+                missilecount++;
+                if (!availableWeaponTypes.Contains(hardPoint.missiletype))
+                {
+                    availableWeaponTypes.Add(hardPoint.missiletype);
+                }
+            }
+        }
         //SwitchMissile();
-        missilecount = hardpoints.Count;
+
     }
     void FixedUpdate()
     {
 
 
-        if(isAIMissiletruck==false)
+        if (isAIMissiletruck == false)
         {
             if (availableWeaponTypes.Count > 0 && AIControl == false)
             {
@@ -68,17 +82,18 @@ public class WeaponsManager : MonoBehaviour
 
             target = S.LocekdTarget;
         }
-        
-       
+
+
     }
     public void Tempmattach()
     {
         //availableWeaponTypes.Clear();
         foreach (HardPoint hardpoint in hardpoints)
         {
-           
+
             hardpoint.AttachMissile(hardpoint.missile);
-            
+           
+
         }
     }
 
@@ -94,9 +109,9 @@ public class WeaponsManager : MonoBehaviour
 
     public void SwitchMissile() // Renamed for clarity
     {
-        if (hardpoints.Count(hp => !string.IsNullOrEmpty(hp.missiletype)) == 0)
+        if (hardpoints.Count(hp => !string.IsNullOrEmpty(hp.missiletype) && hp.MissileFired) == 0)
         {
-            Debug.LogWarning("No missiles available in hardpoints. Cannot switch.");
+            FindAnyObjectByType<HUD_Text>().Notif("No missiles available in hardpoints. Cannot switch.");
             return;
         }
         List<string> missileTypes = new List<string> { "Fox1", "Fox2", "Fox3" }; // Only missile types
@@ -135,13 +150,18 @@ public class WeaponsManager : MonoBehaviour
         if (nextIndex != -1)
         {
             hardpoints[nextIndex].Fire(this);
+            if (hardpoints[nextIndex].MissileFired==true)
+            {
+                missilecount--;
+            }
             currentMissileIndex = FindNextAvailableOfType(currentMissileType);
-            missilecount--; // Assuming you still want this
+             // Assuming you still want this
         }
         else
         {
-            Debug.LogWarning($"No more {currentMissileType} missiles available!");
+            FindAnyObjectByType<HUD_Text>().Notif($"No more {currentMissileType} missiles available!");
         }
+        
     }
 
     private int FindNextAvailableOfType(string type)
@@ -194,9 +214,11 @@ public class WeaponsManager : MonoBehaviour
             {
                 Vector3 offset = Random.insideUnitCircle * dispersion;
                 GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
+                flare.gameObject.tag = gameObject.tag;
             }
 
             flareCount--;
+            FlareCount.text = flareCount.ToString();
             lastFlareDeployTime = Time.time;
         }
     }
@@ -208,9 +230,11 @@ public class WeaponsManager : MonoBehaviour
             {
                 Vector3 ofset = Random.insideUnitCircle * dispersion;
                 GameObject chaff = Instantiate(chaffprefab, transform.position + ofset, transform.rotation);
+                chaff.gameObject.tag=gameObject.tag;
             }
 
             ChaffCount--;
+            ChaffCountText.text = ChaffCount.ToString();
             lastchaffdeploytime = Time.time;
         }
     }

@@ -6913,8 +6913,8 @@ MonoBehaviour:
   - {fileID: 2064581702}
   - {fileID: 202116404}
   - {fileID: 1290190926}
-  - {fileID: 726088717}
   - {fileID: 1789346911}
+  - {fileID: 726088717}
   - {fileID: 1863703330}
   availableWeapons:
   - {fileID: 8137380248985749374, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
@@ -9809,8 +9809,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.3141, y: -80.99324}
-  m_SizeDelta: {x: 1992.9231, y: 900.6743}
+  m_AnchoredPosition: {x: 325, y: -80.99324}
+  m_SizeDelta: {x: 2638.0115, y: 900.6743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122130775
 MonoBehaviour:
@@ -9830,6 +9830,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56595b53b097bf64a947880e38efb3cf, type: 2}
   - {fileID: 11400000, guid: 053ae620188262742bf2d86ea4e8baa4, type: 2}
   - {fileID: 11400000, guid: 482ca208d2b62404d9bad9d5983932df, type: 2}
+  - {fileID: 11400000, guid: 8df65c3bfdd017943a089af54d9c14e1, type: 2}
   missionButtonPrefab: {fileID: 1476437340450850160, guid: 6e441afa66439e24789b8777ad7c855f, type: 3}
   SelectedMission: {fileID: 0}
   brifingpanel: {fileID: 1840962604}
@@ -9881,7 +9882,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: -235
     m_Right: 0
     m_Top: 0
     m_Bottom: 0

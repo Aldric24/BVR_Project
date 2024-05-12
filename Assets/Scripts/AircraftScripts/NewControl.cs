@@ -34,11 +34,12 @@ public class NewControl: MonoBehaviour
         throttleSlider.value = 0.5f;
         //rb = GetComponent<Rigidbody2D>();
         Input.gyro.enabled = true;
-        StartCoroutine(Ab());
+        
     }
 
     void FixedUpdate()
     {
+        Ab();
         RegulateHeatIntensity();
         HandleRotation();
         ApplySteeringForce(); // Replace ApplyThrust
@@ -154,22 +155,25 @@ public class NewControl: MonoBehaviour
 
 
     }
-    IEnumerator Ab()
-    {
-        while (true)
+   void Ab()
+   {
+
+        
+        if (throttleSlider.value == throttleSlider.maxValue)
         {
-            if (throttleSlider.value == throttleSlider.maxValue)
-            {
-                Ab1.SetActive(true);
-                Ab2.SetActive(true);
-            }
-            else
-            {
-                Ab1.SetActive(false);
-                Ab2.SetActive(false);
-            }
+            Ab1.SetActive(true);
+            Ab2.SetActive(true);
+                
         }
-    }
+        else
+        {
+            Ab1.SetActive(false);
+            Ab2.SetActive(false);
+                
+        }
+           
+        
+   }
 
     void RegulateHeatIntensity()
     {
