@@ -13,12 +13,13 @@ public class HardPoint : MonoBehaviour
 
     private void Start()
     {
-        missiletype = missile.GetComponent<Weapon>().type;
+       
     }
     public void AttachMissile(GameObject Missile)
     {
         missile = Instantiate(Missile, hardpoint.position, hardpoint.rotation);
         missile.transform.parent = hardpoint;
+        missiletype = missile.GetComponent<Weapon>().type;
         if (gameObject.tag == "Player")
         {
             missile.gameObject.tag = "PlayerMissile";

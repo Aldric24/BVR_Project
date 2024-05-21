@@ -32,11 +32,13 @@ public class GameController : MonoBehaviour
     public bool ingame = false;
     [SerializeField] bool Win = false;
     int showscreen;
+    [SerializeField] TextMeshProUGUI stall;
+    bool warning = false;
     void Awake()
     {
         Loadoutscreen = FindAnyObjectByType<Loadoutscreen>();
         loadout = new Dictionary<int, Weapon>();
-
+       
         panel = GameObject.Find("Panel");
         DontDestroyOnLoad(gameObject);
         GameObject[] gameControllers = GameObject.FindGameObjectsWithTag("GameController"); // Or whatever tag you use
@@ -44,9 +46,6 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);  // Destroy this instance if another already exists
         }
-        
-        
-       
     }
     
     void Start()
@@ -58,7 +57,12 @@ public class GameController : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (ingame) { checkPlayeralive(); }
+        if (ingame) {
+           
+            checkPlayeralive();
+            
+        
+        }
        
     }
     public void confirmLoadout()
@@ -76,8 +80,9 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < playerobj.GetComponentInChildren<WeaponsManager>().hardpoints.Count; i++)
         {
             GameObject missile = loadout[i].gameObject;
-            playerobj.GetComponentInChildren<WeaponsManager>().hardpoints[i].AttachMissile(missile);
+            playerobj.GetComponent<WeaponsManager>().hardpoints[i].AttachMissile(missile);
         }
+
         
     }
     public void setmission(string mission)
@@ -86,26 +91,55 @@ public class GameController : MonoBehaviour
     }
     public void StartGame()
     {
-        
         timerRunning = true;
+        StartCoroutine(stallwarning());
         StartCoroutine(TimerCoroutine());
         //wait for scene to load
         StartCoroutine(waitforsecondsandlOad());
-        
-
+      
     }
     void checkPlayeralive()
     {         
-        if (FindAnyObjectByType<NewControl>() == null && ingame && gameover!=true )
+        if (FindAnyObjectByType<NewControl>().gameObject.activeSelf==false && ingame && gameover!=true )
         {
             GameOver(false);
             gameover = true;
         }
+        //else
+        //    checkstall(player);
     }
-    void GameEndScreen()
+    void checkstall(GameObject player)
     {
+      
+        if(player != null && ingame && gameover != true)
+        {
+            
+            Debug.Log("PLayer Velocity: " + player.GetComponent<Rigidbody2D>().velocity.magnitude);
+            if(player.GetComponent<Rigidbody2D>().velocity.magnitude<30)
+            {
+                warning = true;
+            }
+            if(player.GetComponent<Rigidbody2D>().velocity.magnitude < 10)
+            {
+                  GameOver(false);
+                gameover = true;
+            }
+        }
+    }
+    IEnumerator stallwarning()
+    {
+        //show the stall warning
+        while(warning)
+        {
+            stall.alpha = 1;
+            yield return new WaitForSeconds(0.5f);
+            stall.alpha = 0;
+            yield return new WaitForSeconds(0.5f);
+        }
+       
 
     }
+    
     public IEnumerator waitforsecondsandlOad()
     {
         LeanTween.alphaCanvas(panel.GetComponent<CanvasGroup>(), 1, 2).setOnComplete(() => SceneManager.LoadScene(selectedmission));
@@ -113,10 +147,14 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(2);
         Debug.Log("Loadout SIZE " + loadout.Count);
         Debug.Log("Scene Loaded");
-        GameObject playerobj = Instantiate(player, new Vector3(-7507, 525, 121), Quaternion.identity);
+        //GameObject playerobj = Instantiate(player, new Vector3(-7507, 525, 121), Quaternion.identity);
+        GameObject playerobj = FindObjectOfType<NewControl>().gameObject;   
         SetPlayerLoadout(loadout, playerobj);
         ingame = true;
         Debug.Log("Player Loadout set");
+        yield return new WaitForSeconds(2);
+        playerobj.GetComponentInChildren<WeaponsManager>().Loadweaponson();
+
 
     }
     public void GameOver(bool win)
@@ -149,7 +187,6 @@ public class GameController : MonoBehaviour
             }
 
             Debug.Log("You Win");
-
         }
         else
         {
@@ -157,12 +194,7 @@ public class GameController : MonoBehaviour
             fadein(End);
             fadein(lose);
             lose.SetActive(true);
-
-           
         }
-       
-
-        
     }
     void UpdateBestTime()
     {

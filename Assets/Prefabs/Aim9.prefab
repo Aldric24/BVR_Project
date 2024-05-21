@@ -109,6 +109,7 @@ MonoBehaviour:
   hasTarget: 0
   launched: 0
   is_equipped: 0
+  mute: 1
 --- !u!82 &4769447519657249043
 AudioSource:
   m_ObjectHideFlags: 0

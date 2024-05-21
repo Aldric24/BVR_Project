@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 9140072386905819385}
   MissileFired: 0
-  missile: {fileID: 8594003265886539387, guid: 427d726ca87939e45b8c91ecea098f1f, type: 3}
+  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missiletype: 
 --- !u!1 &2706624862473377378
 GameObject:
@@ -671,7 +671,7 @@ MonoBehaviour:
   aircraftControl: {fileID: 8712508552463786474}
   AircraftSpeed: 0
   radar: {fileID: 7549182249794207719}
-  lockOnRange: 600
+  lockOnRange: 500
   AircraftCollider: {fileID: 546328631227364503}
   lastKnownTargetPosition: {x: 0, y: 0, z: 0}
   SelectedWeapon: 
@@ -750,6 +750,9 @@ MonoBehaviour:
   isAIMissiletruck: 0
   FlareCount: {fileID: 0}
   ChaffCountText: {fileID: 0}
+  Fox1: []
+  Fox2: []
+  Fox3: []
   selectedHardpoint: {fileID: 0}
 --- !u!50 &6537470680942573358
 Rigidbody2D:
@@ -1134,7 +1137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardpoint: {fileID: 5942755647807685825}
   MissileFired: 0
-  missile: {fileID: 1507734180269956560, guid: a6f5c71442e557447b6c25b2ce81ba83, type: 3}
+  missile: {fileID: 7615198544311990732, guid: fb8d9e1985bc1de4e938b426fa1481f7, type: 3}
   missiletype: 
 --- !u!1 &8502048444993930604
 GameObject:

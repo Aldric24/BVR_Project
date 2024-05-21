@@ -72,7 +72,8 @@ public class Bullet : MonoBehaviour {
             Debug.Log("Targets hit: " + detectedColliders.name);
             if(detectedColliders.tag=="Adversary")
             {
-                Destroy(detectedColliders.gameObject);
+                //Destroy(detectedColliders.gameObject);
+                detectedColliders.gameObject.SetActive(false);
             }
         }
         

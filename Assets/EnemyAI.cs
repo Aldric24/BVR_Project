@@ -209,7 +209,8 @@ public class EnemyAI : MonoBehaviour
         if (collision.tag != "PlayerMissile" && collision.tag != "Player")
         {
 
-            return;
+            playerSeesAI = false;
+            missileinbound = false;
         }
         else
         {
@@ -553,7 +554,7 @@ public class EnemyAI : MonoBehaviour
             // More frequent countermeasures
             if (Time.time > nextFlareCountermeasureTime)
             {
-                Debug.Log("Deploying flares");
+                Debug.Log("Deploying flares against player");
                 Vector3 offset = Random.insideUnitCircle ;
                 GameObject flare = Instantiate(flarePrefab, transform.position + offset, transform.rotation);
                 nextFlareCountermeasureTime = Time.time + flareIntervalNormal;
@@ -561,7 +562,7 @@ public class EnemyAI : MonoBehaviour
             }
             if (Time.time > nextChaffCountermeasureTime)
             {
-                Debug.Log("Deploying chaff");
+                Debug.Log("Deploying chaff against player");
                 Vector3 offset = Random.insideUnitCircle;
                 GameObject chaff = Instantiate(chaffPrefab, transform.position + offset, transform.rotation);
                 nextChaffCountermeasureTime = Time.time + chaffIntervalNormal;
@@ -626,29 +627,17 @@ public class EnemyAI : MonoBehaviour
     private void EvasiveManeuverAwayFromPlayer()
     {
         AircraftSpeed = 75;
-        if (target == null)
+        if (target == null && playerSeesAI)
         {
             Debug.LogWarning("Target became null during evasion. Falling back to waypoint.");
-            aircraftControl.target = GetFarthestWaypoint()?.transform; // Get waypoint if possible
+            heading= GetFarthestWaypoint()?.transform;
+            aircraftControl.target = heading; // Get waypoint if possible
             return;
         }
 
-        Vector3 directionAwayFromPlayer = (transform.position - target.transform.position).normalized;
-        Vector3 farthestEvadePoint = transform.position + directionAwayFromPlayer * 1000;
-
-        // Set up temporary target for movement
-        
-        if (GameObject.FindGameObjectWithTag("Evade Target")==null)
-        {
-            GameObject tempEvadeTarget = new GameObject("Evade Target");
-            tempEvadeTarget.tag = "Evade Target";
-            tempEvadeTarget.transform.position = farthestEvadePoint;
-            aircraftControl.target = tempEvadeTarget.transform;
-        }
-        
 
         // Logic to destroy tempEvadeTarget (with null checks)
-        if (Vector2.Distance(transform.position, GameObject.FindGameObjectWithTag("Evade Target").transform.position) < 20f)
+        if (Vector2.Distance(transform.position, aircraftControl.target.transform.position) < 20f)
         {
             Debug.Log("Arrived at evade position");
             lastKnownTargetPosition = Vector3.zero; // Reset 

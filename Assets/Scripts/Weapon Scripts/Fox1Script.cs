@@ -35,10 +35,7 @@ public class Fox1Script : Weapon
     bool lockestablished = false;
     void Start()
     {
-        if (gameObject.transform.parent.tag == "Player")
-        {
-            gameObject.tag = "PlayerMissile";
-        }
+        
         weaponName = "Fox1 - AIM 7"; // Update with your missile name
         boostTimer = 0;
         
@@ -201,7 +198,8 @@ public class Fox1Script : Weapon
     }
     void OnMissileHit(GameObject objectHit)
     {
-        Destroy(objectHit);
+        //Destroy(objectHit);
+        objectHit.SetActive(false);
         FindAnyObjectByType<HUD_Text>().SplashText(objectHit.name);
     }
     IEnumerator checkTargetinginfo(WeaponsManager info)

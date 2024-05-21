@@ -25,6 +25,7 @@ public class RWR : MonoBehaviour
     {
         StartCoroutine(CheckForStaleRWRObjects());
         StartCoroutine(CheckforENemyLock());
+        StartCoroutine(PlayMissileWarningSound());
     }
     private void Update()
     {
@@ -33,13 +34,13 @@ public class RWR : MonoBehaviour
             transform.position = system.position;
             transform.rotation = system.rotation;
         }
-       
+        
     }
     internal void Popup(GameObject Popup)
     {
         if (!RWRObjects.Contains(Popup)) // Check for duplicates
         {
-            if(Popup.tag == "AdversaryMissile")
+            if (Popup.tag == "AdversaryMissile" || Popup.tag == "Missile")
             {
                 RWRObjects.Add(Popup);
                 lastPingedTimes[Popup] = Time.time;
@@ -47,7 +48,7 @@ public class RWR : MonoBehaviour
                 PopUp missile = Instantiate(Missile, Popup.transform.position, Quaternion.identity).GetComponent<PopUp>();
                 missile.system = gameObject.transform;
                 RWRpings[Popup] = missile;// Record ping time
-                StartCoroutine(PlayMissileWarningSound());
+                
             }
             else
             {
@@ -132,8 +133,9 @@ public class RWR : MonoBehaviour
     {
         while (true)
         {
-            if (RWRObjects.Any(obj => obj.tag == "AdversaryMissile"))
+            if (RWRObjects.Any(obj => obj.tag == "AdversaryMissile") || RWRObjects.Any(obj => obj.tag == "Missile"))
             {
+                Debug.Log("playing missile rwr sound");
                 if(!missileWarningSource.isPlaying )
                 {
                     missileWarningSource.Play();
@@ -149,7 +151,7 @@ public class RWR : MonoBehaviour
                 // Stop the alert when no missiles are detected
                 missileWarningSource.Stop();
                 radarPingSource.Stop();
-                yield break; // Exit the coroutine
+                yield return null; // Exit the coroutine
             }
         }
     }

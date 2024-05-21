@@ -45,13 +45,13 @@ public class Fox2Script : Weapon
     // Start is called before the first frame update
     void Start()
     {
-        if (gameObject.transform.parent.tag == "Player")
+        if (gameObject.transform.parent!= null && gameObject.transform.parent.tag == "Player")
         {
             gameObject.tag = "PlayerMissile";
         }
         StartCoroutine(AudioCallOut());
         weaponName = "Sidewinder AIM-9M";
-       
+
         isSearching = true;
        
         Debug.Log("Target LAyer " + targetLayerMask);
@@ -214,7 +214,8 @@ public class Fox2Script : Weapon
     }
     void OnMissileHit(GameObject objectHit)
     {
-        Destroy(objectHit);
+        //Destroy(objectHit);
+        objectHit.SetActive(false);
         FindAnyObjectByType<HUD_Text>().SplashText(objectHit.name);
     }
     private void guidance()
@@ -264,11 +265,11 @@ public class Fox2Script : Weapon
                 HeatSource heatSource = collider.gameObject.GetComponent<HeatSource>();
                 if(gameObject.tag == "PlayerMissile" && collider.gameObject.tag=="Player")
                 {
-                    //Debug.Log("Player Detected");
+                    return;
                 } 
                 if(gameObject.tag == "AdversaryMissile" && collider.gameObject.tag=="Adversary")
                 {
-                    //Debug.Log("Player Detected");
+                    return;
                 }
                 else if(heatSource != null && heatSource.heatIntensity > largestHeatIntensity)
                 {

@@ -18,7 +18,7 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] private SweepRotation S;
     [SerializeField] TextMeshProUGUI Weapon;
     int missilecount = 0;
-    public List<string> availableWeaponTypes = new List<string>(); // To track found weapon types
+    [SerializeField] List<string> availableWeaponTypes = new List<string>(); // To track found weapon types
     private int currentWeaponTypeIndex = 0;
     // All available missiles
     public string currentMissileType = null; // Currently equipped missile type (or null)
@@ -41,27 +41,26 @@ public class WeaponsManager : MonoBehaviour
     [SerializeField] bool isAIMissiletruck = false;
     [SerializeField] TMPro.TextMeshProUGUI FlareCount;
     [SerializeField] TMPro.TextMeshProUGUI ChaffCountText;
+    [SerializeField]List<HardPoint> Fox1=new List<HardPoint>();
+    [SerializeField]List<HardPoint> Fox2=new List<HardPoint>();
+    [SerializeField]List<HardPoint> Fox3=new List<HardPoint>();
     void Start()
     {
-        FlareCount.text = flareCount.ToString();
-        ChaffCountText.text = ChaffCount.ToString();
+       
         if (AIControl)
         {
             Tempmattach();
         }
-
-        //Tempmattach();
-        foreach (HardPoint hardPoint in hardpoints)
+        if(FlareCount!=null && ChaffCountText!=null)
         {
-            if (hardPoint.missile != null)
-            {
-                missilecount++;
-                if (!availableWeaponTypes.Contains(hardPoint.missiletype))
-                {
-                    availableWeaponTypes.Add(hardPoint.missiletype);
-                }
-            }
+            FlareCount.text = flareCount.ToString();
+            ChaffCountText.text = ChaffCount.ToString();
         }
+           
+        //Loadweaponson();
+        //Tempmattach();
+       
+        
         //SwitchMissile();
 
     }
@@ -71,19 +70,56 @@ public class WeaponsManager : MonoBehaviour
 
         if (isAIMissiletruck == false)
         {
-            if (availableWeaponTypes.Count > 0 && AIControl == false)
-            {
-                // Get the currently selected weapon type (if any)
-                string weaponTypeToDisplay = currentWeaponTypeIndex < availableWeaponTypes.Count
-                                                ? availableWeaponTypes[currentWeaponTypeIndex]
-                                                : "None";
-                Weapon.text = weaponTypeToDisplay + ": " + missilecount;
-            }
+            //if (availableWeaponTypes.Count > 0 && AIControl == false)
+            //{
+            //    // Get the currently selected weapon type (if any)
+            //    string weaponTypeToDisplay = currentWeaponTypeIndex < availableWeaponTypes.Count
+            //                                    ? availableWeaponTypes[currentWeaponTypeIndex]
+            //                                    : "None";
+            //    Weapon.text = weaponTypeToDisplay + ": " + missilecount;
+            //}
+            UpdateWeaponUI();
 
             target = S.LocekdTarget;
         }
 
 
+    }
+    public void Loadweaponson()
+    {
+        foreach (HardPoint hardPoint in hardpoints)
+        {
+            //if (hardPoint.missile != null)
+            //{
+                missilecount++;
+                if (hardPoint.missiletype == "Fox1")
+                {
+                    Fox1.Add(hardPoint);
+                    if (!availableWeaponTypes.Contains("Fox1"))
+                    {
+                        availableWeaponTypes.Add("Fox1");
+                    }
+                }
+                else if (hardPoint.missiletype == "Fox2")
+                {
+                    Fox2.Add(hardPoint);
+                    if (!availableWeaponTypes.Contains("Fox2"))
+                    {
+                        availableWeaponTypes.Add("Fox2");
+                    }
+                }
+                else if (hardPoint.missiletype == "Fox3")
+                {
+                    Fox3.Add(hardPoint);
+                    if (!availableWeaponTypes.Contains("Fox3"))
+                    {
+                        availableWeaponTypes.Add("Fox3");
+                    }
+                }
+                
+            //}
+        }
+        currentMissileType = availableWeaponTypes[0];
     }
     public void Tempmattach()
     {
@@ -96,9 +132,6 @@ public class WeaponsManager : MonoBehaviour
 
         }
     }
-
-
-
     public void FireMissile()
     {
         if (currentMissileType != null)
@@ -106,93 +139,75 @@ public class WeaponsManager : MonoBehaviour
             FireCurrentMissile();
         }
     }
-
+    int i = 0;
     public void SwitchMissile() // Renamed for clarity
     {
-        if (hardpoints.Count(hp => !string.IsNullOrEmpty(hp.missiletype) && hp.MissileFired) == 0)
+       
+        
+        if(availableWeaponTypes.Count!=0)
         {
-            FindAnyObjectByType<HUD_Text>().Notif("No missiles available in hardpoints. Cannot switch.");
-            return;
+            i = (i + 1)% availableWeaponTypes.Count;
+            Debug.Log("index " + i);
+            currentMissileType = availableWeaponTypes[i];
         }
-        List<string> missileTypes = new List<string> { "Fox1", "Fox2", "Fox3" }; // Only missile types
-
-        do
-        {
-            currentWeaponTypeIndex = (currentWeaponTypeIndex + 1) % missileTypes.Count;
-            currentMissileType = missileTypes[currentWeaponTypeIndex];
-        } while (hardpoints.Count(hp => hp.missiletype == currentMissileType) == 0);
+       
         DisableAllMissileScripts();
-        currentMissileIndex = FindNextAvailableOfType(currentMissileType);
-        
-
-        
+        //if()
+        if(currentMissileType=="Fox1" && Fox1.Count>0)
+        {
+            currentMissileType = "Fox1";
+            currentMissileList = Fox1;
+        }
+        else if(currentMissileType== "Fox2" && Fox2.Count>0)
+        {
+            Fox2[0].EnableMissile();
+            currentMissileType = "Fox2";
+            currentMissileList = Fox2;
+        }
+        else if(currentMissileType == "Fox3" && Fox3.Count>0)
+        {
+            currentMissileType = "Fox3";
+            currentMissileList = Fox3;
+        }
         if (AIControl == false)
         {
             UpdateWeaponUI();
         }
-            
+
     }
-
-    //public void SwitchWeapon()
-    //{
-    //    currentWeaponTypeIndex = (currentWeaponTypeIndex + 1) % availableWeaponTypes.Count;
-    //    if (currentWeaponTypeIndex == 0) { equippedCannon.cannonequipped = true; }
-    //    else { equippedCannon.cannonequipped = false; }
-    //    string desiredWeaponType = availableWeaponTypes[currentWeaponTypeIndex];
-
-
 
     private void FireCurrentMissile()
     {
-        
-        int nextIndex = currentMissileIndex;
-
-        if (nextIndex != -1)
+        if(currentMissileType=="Fox1" && Fox1.Count>0)
         {
-            hardpoints[nextIndex].Fire(this);
-            if (hardpoints[nextIndex].MissileFired==true)
-            {
-                missilecount--;
-            }
-            currentMissileIndex = FindNextAvailableOfType(currentMissileType);
-             // Assuming you still want this
+            Fox1[0].EnableMissile();
+            Fox1[0].Fire(this);
+            Fox1.RemoveAt(0);
+            
         }
+        else if(currentMissileType=="Fox2" && Fox2.Count > 0)
+        {
+            
+            Fox2[0].Fire(this);
+            Fox2.RemoveAt(0);
+            if(Fox2.Count>0)
+            {
+                Fox2[0].EnableMissile();
+            }
+
+        }
+        else if(currentMissileType=="Fox3" && Fox3.Count > 0)
+        {
+            Fox3[0].EnableMissile();
+            Fox3[0].Fire(this);
+            Fox3.RemoveAt(0);
+        }
+        
         else
         {
             FindAnyObjectByType<HUD_Text>().Notif($"No more {currentMissileType} missiles available!");
         }
         
-    }
-
-    private int FindNextAvailableOfType(string type)
-    {
-        // Start searching from the next index 
-        for (int i = (currentMissileIndex + 1) % hardpoints.Count; i != currentMissileIndex; i = (i + 1) % hardpoints.Count)
-        {
-            if (hardpoints[i].missiletype == type && !hardpoints[i].MissileFired)
-            {
-                hardpoints[i].EnableMissile();
-                return i;
-            }
-        }
-        return -1; // None found
-    }
-    //}
-    //private int FindNextAvailableInList(List<HardPoint> missileList)
-    //{
-    //    for (int i = 0; i < missileList.Count; i++)
-    //    {
-    //        if (hardpoints[i].missile != null && hardpoints[i].missiletype == missileList.ToString() && !hardpoints[i].MissileFired)
-    //        {
-    //            return i;
-    //        }
-    //    }
-    //    return -1;
-    //}
-    private void EnableCurrentMissileScript()
-    {
-        int nextIndex = FindNextAvailableOfType(currentMissileType);
-        hardpoints[nextIndex].EnableMissile();
     }
 
     private void DisableAllMissileScripts()
@@ -240,29 +255,21 @@ public class WeaponsManager : MonoBehaviour
     }
     private void UpdateWeaponUI()
     {
-        if (availableWeaponTypes.Count == 0)  // Check for any weapons at all
+        if (currentMissileType == "Fox1" )
         {
-            if(Weapon!=null) { Weapon.text = "No weapons available"; }
-                
-            return;
+            
+            Weapon.text = currentMissileType + ": "+ Fox1.Count;
+        }
+        else if (currentMissileType == "Fox2" )
+        {
+            Weapon.text = currentMissileType + ": " + Fox2.Count;
+        }
+        else if (currentMissileType == "Fox3")
+        {
+            Weapon.text = currentMissileType + ": " + Fox3.Count;
         }
 
-        // Ensure the current type is a missile type
-        string weaponTypeToDisplay = currentWeaponTypeIndex < availableWeaponTypes.Count
-                                        && IsMissileType(availableWeaponTypes[currentWeaponTypeIndex])
-                                        ? availableWeaponTypes[currentWeaponTypeIndex]
-                                        : "None";
-
-        // Find the count of missiles of the current type
-        int currentTypeCount = hardpoints.Count(hp => hp.missiletype == weaponTypeToDisplay);
-        Weapon.text = weaponTypeToDisplay + ": " + currentTypeCount;
+        
     }
-
-    // Helper function to check if a weapon type is a missile
-    private bool IsMissileType(string weaponType)
-    {
-        return weaponType == "Fox1" || weaponType == "Fox2" || weaponType == "Fox3";
-    }
-
 
 }

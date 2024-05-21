@@ -197,13 +197,14 @@ public class SweepRotation : MonoBehaviour
             return;
         }
         
-        if (radarPings.ContainsKey(RadarObjects[targetIndex])) // Adjust for zero-based indexing
+        if (radarPings.Count>0 && radarPings.ContainsKey(RadarObjects[targetIndex])) // Adjust for zero-based indexing
         {
 
             radarPings[RadarObjects[targetIndex]].pingHighlight.SetActive(false);
             radarPings[RadarObjects[targetIndex]].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
         }
         // 2. Manage Target Index
+
         targetIndex = (targetIndex + 1) % RadarObjects.Count; // Cycle through targets
 
         // 3. Disable old highlight (if any)

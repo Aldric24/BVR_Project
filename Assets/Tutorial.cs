@@ -17,4 +17,5 @@ public class Tutorial : MonoBehaviour
        
         gameObject.SetActive(false);
     }
+
 }

@@ -142,7 +142,17 @@ public class NewControl: MonoBehaviour
         {
             rwr.Popup(collision.gameObject.transform.parent.gameObject);
         }
-        
+        else if(collision.gameObject.CompareTag("AdversaryMissile"))
+        {
+            rwr.Popup(collision.gameObject.transform.parent.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Missile"))
+        {
+            rwr.Popup(collision.gameObject.transform.parent.gameObject);
+        }
+
+
+
 
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -152,7 +162,14 @@ public class NewControl: MonoBehaviour
         {
             rwr.Popup(collision.gameObject.transform.parent.gameObject);
         }
-
+        else if (collision.gameObject.CompareTag("AdversaryMissile"))
+        {
+            rwr.Popup(collision.gameObject.transform.parent.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Missile"))
+        {
+            rwr.Popup(collision.gameObject.transform.parent.gameObject);
+        }
 
     }
    void Ab()

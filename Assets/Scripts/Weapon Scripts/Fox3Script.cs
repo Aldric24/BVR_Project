@@ -41,7 +41,7 @@ public class Fox3Script : Weapon
         missileParticleEffect.Stop();
         rb = GetComponent<Rigidbody2D>();
         rb.isKinematic = true;
-       
+        radar.gameObject.tag = gameObject.tag;
         weaponName = "Amraam Aim120 -D";
         boostTimer = 0;
 
@@ -226,7 +226,8 @@ public class Fox3Script : Weapon
         if (collider == null) return false;
 
         if(gameObject.CompareTag("PlayerMissile") && collider.gameObject.CompareTag("Player")) return false;
-        if (gameObject.CompareTag("AdversaryMissile") && collider.gameObject.CompareTag("Adversary")) return false;// Ignore player collisions
+        if (gameObject.CompareTag("AdversaryMissile") && collider.gameObject.CompareTag("Adversary")) return false;
+        if (gameObject.CompareTag("Missile") && collider.gameObject.CompareTag("Missile")) return false;// Ignore player collisions
 
 
         return collisionMask.value == (collisionMask.value | (1 << collider.gameObject.layer));
@@ -265,7 +266,7 @@ public class Fox3Script : Weapon
     }
     void OnMissileHit(GameObject objectHit)
     {
-      Destroy(objectHit);
+        objectHit.SetActive(false);
       FindAnyObjectByType<HUD_Text>().SplashText(objectHit.name);
     }
     void AlignWithVelocity()
