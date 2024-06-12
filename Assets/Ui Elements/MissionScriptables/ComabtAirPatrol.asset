@@ -14,5 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   missionImage: {fileID: 21300000, guid: 6d7cec0b5844aec4cb7e0471db6b2fcf, type: 3}
   missionName: CombatAirPatrol
-  missionDescription: Combat Air Patrol
+  missionDescription: 'Combat Air Patrol
+
+
+    Instructor: This is going to be your
+    first combat mission, we have a situation developing in the contested airspace
+    North of our allied base.
+
+
+    Mission: Your mission is to provide Combat Air
+    Patrol in the area and hunt for enemy patrols that are viloting international
+    airspace.
+
+
+    I recommend a medium/long range loadout for this mission so that
+    you have a distance advantage in your engagements.
+
+
+    Complete your patrol
+    and return home safely pilot.'
   recommendedLoadout: A/A

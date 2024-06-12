@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static UnityEngine.GraphicsBuffer;
 
 public class Fox2Script : Weapon
@@ -262,14 +263,18 @@ public class Fox2Script : Weapon
 
             foreach (Collider2D collider in detectedColliders)
             {
+                Debug.Log("Detected: " + detectedColliders.Length+" Targets");
+                Debug.Log("Detected: " + collider.name);
+
                 HeatSource heatSource = collider.gameObject.GetComponent<HeatSource>();
                 if(gameObject.tag == "PlayerMissile" && collider.gameObject.tag=="Player")
                 {
-                    return;
+
+                    continue;
                 } 
                 if(gameObject.tag == "AdversaryMissile" && collider.gameObject.tag=="Adversary")
                 {
-                    return;
+                    continue;
                 }
                 else if(heatSource != null && heatSource.heatIntensity > largestHeatIntensity)
                 {

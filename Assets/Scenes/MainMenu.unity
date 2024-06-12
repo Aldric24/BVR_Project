@@ -1806,7 +1806,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d37f94bce3ae2a74986a03999501739e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3f026636d669eb346a17c9de1d219af5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4582,6 +4582,10 @@ PrefabInstance:
       propertyPath: panel
       value: 
       objectReference: {fileID: 963774098}
+    - target: {fileID: 8021119452208430997, guid: 4ac9657fc030ef542ae72f40fae6f8b7, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7991,7 +7995,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d37f94bce3ae2a74986a03999501739e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6524d49eee89bf045892f453e21e160e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11361,8 +11365,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 93}
-  m_SizeDelta: {x: 1020.09, y: 608.1544}
+  m_AnchoredPosition: {x: -67.8512, y: 108.65796}
+  m_SizeDelta: {x: 884.3876, y: 639.4703}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1286244579
 MonoBehaviour:
@@ -11384,16 +11388,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 1fbad78f412917f4fadb00b095c140dc, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_UseSpriteMesh: 1
+  m_PixelsPerUnitMultiplier: 11.34
 --- !u!222 &1286244580
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14793,7 +14797,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d37f94bce3ae2a74986a03999501739e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8ffde87af38a8f74fb3669c188f8a1d6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -15523,7 +15527,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d37f94bce3ae2a74986a03999501739e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7784840703e93b34c935f5dd34954508, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -15945,9 +15949,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Aldric Shaun
+  m_text: 'Aldric Shaun Rajesh
 
-    ( Gameplay , Art, Sound )'
+    ( Gameplay, Art, Sound )'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 83437deaa823e8a488ec6b26084c5506, type: 2}
   m_sharedMaterial: {fileID: -2579417188573727701, guid: 83437deaa823e8a488ec6b26084c5506, type: 2}

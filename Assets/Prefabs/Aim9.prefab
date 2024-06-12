@@ -86,9 +86,9 @@ MonoBehaviour:
   missileParticleEffect: {fileID: 8115273924998084352}
   raycastDistance: 2
   minVelocityThreshold: 50
-  baseDecelerationRate: 0.5
+  baseDecelerationRate: 3.5
   turningDecelerationMultiplier: 2
-  decelerationRate: 0.5
+  decelerationRate: 5
   acceleration: 35
   velocity: 0
   radarAngle: 30
@@ -122,7 +122,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 7548198313813597645, guid: 75fc7c246ce563943a21efe3967255cc, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.62
   m_Pitch: 1
   Loop: 0
   Mute: 0

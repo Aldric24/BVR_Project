@@ -167,10 +167,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2560
   minVelocityThreshold: 35
-  baseDecelerationRate: 0.5
+  baseDecelerationRate: 3.5
   turningDecelerationMultiplier: 2
-  decelerationRate: 0.5
-  acceleration: 10
+  decelerationRate: 3.5
+  acceleration: 35
   velocity: 0
   acquiredtarget: {fileID: 0}
 --- !u!1001 &693516467025392405

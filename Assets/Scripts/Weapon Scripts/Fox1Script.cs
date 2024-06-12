@@ -123,10 +123,10 @@ public class Fox1Script : Weapon
         rb.velocity = transform.up * (rb.velocity.magnitude - decelerationRate * Time.fixedDeltaTime);
 
         // Self-destruct Logic
-        //if (rb.velocity.magnitude < minVelocityThreshold)
-        //{
-        //  Destroy(gameObject);
-        //}
+        if (rb.velocity.magnitude < minVelocityThreshold)
+        {
+            Destroy(gameObject);
+        }
     }
     void AlignWithVelocity()
     {

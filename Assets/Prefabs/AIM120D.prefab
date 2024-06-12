@@ -278,10 +278,10 @@ MonoBehaviour:
   collisionMask:
     serializedVersion: 2
     m_Bits: 512
-  minVelocityThreshold: 0
+  minVelocityThreshold: 40
   baseDecelerationRate: 0.5
   turningDecelerationMultiplier: 2
-  decelerationRate: 0.5
+  decelerationRate: 5
   acceleration: 35
   velocity: 0
   acquiredtarget: {fileID: 0}

@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     int showscreen;
     [SerializeField] TextMeshProUGUI stall;
     bool warning = false;
+    [SerializeField] bool playeractive = false;
     void Awake()
     {
         Loadoutscreen = FindAnyObjectByType<Loadoutscreen>();
@@ -58,7 +59,7 @@ public class GameController : MonoBehaviour
     private void FixedUpdate()
     {
         if (ingame) {
-           
+            playeractive = player.activeSelf;
             checkPlayeralive();
             
         
@@ -100,7 +101,7 @@ public class GameController : MonoBehaviour
     }
     void checkPlayeralive()
     {         
-        if (FindAnyObjectByType<NewControl>().gameObject.activeSelf==false && ingame && gameover!=true )
+        if (player.activeSelf==false && ingame && gameover!=true )
         {
             GameOver(false);
             gameover = true;
@@ -136,8 +137,6 @@ public class GameController : MonoBehaviour
             stall.alpha = 0;
             yield return new WaitForSeconds(0.5f);
         }
-       
-
     }
     
     public IEnumerator waitforsecondsandlOad()
@@ -148,12 +147,14 @@ public class GameController : MonoBehaviour
         Debug.Log("Loadout SIZE " + loadout.Count);
         Debug.Log("Scene Loaded");
         //GameObject playerobj = Instantiate(player, new Vector3(-7507, 525, 121), Quaternion.identity);
-        GameObject playerobj = FindObjectOfType<NewControl>().gameObject;   
-        SetPlayerLoadout(loadout, playerobj);
+        //GameObject playerobj = FindObjectOfType<NewControl>().gameObject;   
+        player= FindObjectOfType<NewControl>().gameObject;   
+        SetPlayerLoadout(loadout, player);
         ingame = true;
         Debug.Log("Player Loadout set");
+        Debug.Log("player "+ player.name); 
         yield return new WaitForSeconds(2);
-        playerobj.GetComponentInChildren<WeaponsManager>().Loadweaponson();
+        player.GetComponentInChildren<WeaponsManager>().Loadweaponson();
 
 
     }
@@ -222,7 +223,7 @@ public class GameController : MonoBehaviour
     public void Refly()
     {
         //reload the scene
-
+       
 
         showscreen = 2;
         fadeOut(End);
@@ -238,9 +239,14 @@ public class GameController : MonoBehaviour
     }
     public IEnumerator transitiontoMainMenue()
     {
+        ingame = false;
+        Win = false;
+        gameover = false;
         Time.timeScale = 1;
         fadeOut(End);
         yield return new WaitForSeconds(2);
+        Success.SetActive(false);
+        lose.SetActive(false);
         SceneManager.LoadScene("MainMenu");
         
         yield return new WaitForSeconds(0.5f);
