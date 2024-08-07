@@ -224,7 +224,7 @@ public class GameController : MonoBehaviour
     {
         //reload the scene
        
-
+ 
         showscreen = 2;
         fadeOut(End);
         StartCoroutine(transitiontoMainMenue());
