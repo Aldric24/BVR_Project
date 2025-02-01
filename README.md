@@ -28,3 +28,6 @@ Players rely on their instruments to detect threats and navigate through mission
 
 Game Modes
 The combination of these mechanics opens up numerous game modes and scenarios for an engaging gameplay experience.
+
+Gameplay Footage:
+https://drive.google.com/file/d/1QAgi3Oik632KLebZvxKdsmi2nHB3DSVh/view?usp=drive_link
